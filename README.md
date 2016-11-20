@@ -7,7 +7,9 @@ In a project of mine, I needed a way to represent graphs in PHP. None of the exi
 This version of GraphDS is a toned-down version of my original implementation. It is easily extendable by extending the `UndirectedGraph`, `DirectedGraph` or `Graph` class.
 
 ## How to install
-Just require the Composer package
+Simply require the Composer package. In the directory of your project, run:
+
+`composer require algb12/graph-ds`
 
 ## Basic syntax
 GraphDS has functions to create vertices and edges for both, undirected and directed graphs. The user does not need to worry about which type of edge/vertex is created, as this is all abstracted away under the relevant classes.
