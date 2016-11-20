@@ -1,10 +1,16 @@
 {
-    "require": {
-        "phpunit/phpunit": "5.5.*"
-    },
+    "name": "algb12/GraphDS",
+    "description": "A fast implementation of the graph data-structure in PHP",
+    "authors": [
+        {
+            "name": "algb12",
+            "email": "algb12.19@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "GraphDS\\": "GraphDS"
+            "GraphDS\\": "src"
         }
     }
 }
