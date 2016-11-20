@@ -1,13 +1,13 @@
 {
     "name": "algb12/graph-ds",
     "description": "A fast implementation of the graph data-structure in PHP",
+    "license": "MIT",
     "authors": [
         {
             "name": "Alex Gilburg",
             "email": "algb12.19@gmail.com"
         }
     ],
-    "license": "MIT",
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
