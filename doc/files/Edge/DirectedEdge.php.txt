@@ -1,0 +1,35 @@
+<?php
+/**
+ * Directed edge
+ */
+
+namespace GraphDS\Edge;
+
+/**
+ * Class defining a directed edge object
+ */
+class DirectedEdge extends Edge
+{
+    /**
+     * $value A value held by the edge
+     * @var mixed
+     */
+    private $value;
+    /**
+     * $vertices An array of vertices associated with the edge
+     * @var array
+     */
+    private $vertices;
+
+    /**
+     * Constructor for DirectedEdge object
+     * @param string $v1 ID of first vertex
+     * @param string $v2 ID of second vertex
+     */
+    public function __construct($v1, $v2) {
+        parent::__construct();
+        $this->vertices['out'] = $v1;
+        $this->vertices['in'] = $v2;
+    }
+}
+

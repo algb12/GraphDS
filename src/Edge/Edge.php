@@ -1,11 +1,28 @@
 <?php
+/**
+ * Edge
+ */
 
 namespace GraphDS\Edge;
 
+/**
+ * Class defining a generic, extendable edge object
+ */
 class Edge
 {
     /**
-     * [__construct Constructor for general Edge object]
+     * $value A value held by the edge
+     * @var mixed
+     */
+    public $value;
+    /**
+     * $vertices An array of vertices associated with the edge
+     * @var array
+     */
+    public $vertices;
+
+    /**
+     * Constructor for general Edge object
      */
     public function __construct() {
         $this->value = null;
@@ -13,7 +30,7 @@ class Edge
     }
 
     /**
-     * [getValue Returns value associated with this edge (e.g. cost)]
+     * Returns value associated with this edge (e.g. cost)
      * @return mixed Value associated with this edge
      */
     public function getValue() {
@@ -21,15 +38,18 @@ class Edge
     }
 
     /**
-     * [setValue Sets the value associated with this edge (e.g. cost)]
+     * Sets the value associated with this edge (e.g. cost)
      * @param mixed $value Value to be associated with this edge
      */
-    public function setValue($value) {
+    public function setValue($value = null) {
+        if (empty($value)) {
+            trigger_error('No value given. Assuming null.', E_USER_NOTICE);
+        }
         $this->value = $value;
     }
 
     /**
-     * [getConnectedVertices Returns an array of vertices connected by this edge]
+     * Returns an array of vertices connected by this edge
      * @return array Vertices connected by this edge
      */
     public function getConnectedVertices() {

@@ -70,5 +70,62 @@ Note that in undirected graphs, this also adds edge `['v2']['v1']` in addition t
 #### Getting and setting the value of an edge
 To get the value of an edge, `$g->edges['v1']['v2']->getValue()` can be called. To set the value of an edge, `$g->edges['v1']['v2']->setValue(value)` can be called, where `value` can be any storable data-type.
 
+## Algorithms
+Since version 1.0.1, GraphDS has support for algorithms. One such algorithm already shipped with GraphDS is Dijkstra's shortest path algorithm for solving the shortest path problem.
+
+### Dijkstra's shortest path algorithm
+In GraphDS, algorithms are treated as separate objects modifying the graph. This is what makes GraphDS lean and streamlined, as algorithms only have to be loaded into memory if they are needed, as they are not intrinsic to a graph object.
+
+To use Dijkstra's algorithm, use the `GraphDS\Algo\Dijkstra` class. `GraphDS\Algo` is the namespace of algorithms.
+
+For a directed graph `$g`, this is how Dijkstra's algorithm could be used:
+
+```
+<?php
+
+require __DIR__.'/vendor/autoload.php';
+
+use GraphDS\Graph\DirectedGraph;
+use GraphDS\Algo\Dijkstra;
+
+$g = new DirectedGraph;
+
+$g->addVertex('A');
+$g->addVertex('B');
+$g->addVertex('C');
+$g->addVertex('D');
+$g->addVertex('E');
+$g->addVertex('F');
+$g->addVertex('G');
+$g->addVertex('H');
+
+$g->addEdge('A', 'B', 20);
+$g->addEdge('A', 'D', 80);
+$g->addEdge('A', 'G', 90);
+$g->addEdge('B', 'F', 10);
+$g->addEdge('C', 'D', 10);
+$g->addEdge('C', 'F', 50);
+$g->addEdge('C', 'H', 20);
+$g->addEdge('D', 'C', 10);
+$g->addEdge('D', 'G', 20);
+$g->addEdge('E', 'B', 50);
+$g->addEdge('E', 'G', 30);
+$g->addEdge('F', 'C', 10);
+$g->addEdge('F', 'D', 40);
+$g->addEdge('G', 'A', 20);
+
+$d = new Dijkstra($g);
+
+$res = $d->calcDijkstra('A');
+
+echo '<pre>';
+print_r($res['path']['D']);
+echo '</pre>';
+
+echo 'Shortest distance from A to D: '.$res['dist']['D'];
+```
+
+`$res = $d->calcDijkstra(v)` calculates the shortest path to every vertex from vertex `v`, and returns an array `$res`, where `$res['path']` contains the shortest path to every vertex, and `$res['dist']` contains the distances for each vertex's shortest path.
+
 ## In case of bugs and/or suggestions
 If, for any reason, there is a bug found in GraphDS, please message me on GitHub or send me an email to: <algb12.19@gmail.com>. The same goes for any suggestions. Please open up any issues if they arise!

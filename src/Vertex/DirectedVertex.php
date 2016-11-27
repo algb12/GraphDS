@@ -1,11 +1,28 @@
 <?php
+/**
+ * Directed vertex
+ */
 
 namespace GraphDS\Vertex;
 
+/**
+ * Class defining a directed vertex object
+ */
 class DirectedVertex extends Vertex
 {
     /**
-     * [__construct Constructor for DirectedVertex object]
+     * Variable holding the value of this vertex
+     * @var mixed
+     */
+    public $value;
+    /**
+     * Array holding references to all neighboring vertices of this vertex
+     * @var array
+     */
+    public $neighbors;
+
+    /**
+     * Constructor for DirectedVertex object
      */
     public function __construct() {
         parent::__construct();
@@ -14,7 +31,7 @@ class DirectedVertex extends Vertex
     }
 
     /**
-     * [addInNeighbor Adds a neighboring, incoming, directed vertex to this vertex]
+     * Adds a neighboring, incoming, directed vertex to this vertex
      * @param string $v ID of the vertex
      */
     public function addInNeighbor($v) {
@@ -22,7 +39,7 @@ class DirectedVertex extends Vertex
     }
 
     /**
-     * [getInNeighbors Returns an array of all incoming neighbor vertices]
+     * Returns an array of all incoming neighbor vertices
      * @return array Array of all incoming neighbor vertices
      */
     public function getInNeighbors() {
@@ -30,7 +47,7 @@ class DirectedVertex extends Vertex
     }
 
     /**
-     * [addOutNeighbor Adds a neighboring, outgoing, directed vertex to this vertex]
+     * Adds a neighboring, outgoing, directed vertex to this vertex
      * @param string $v ID of the vertex
      */
     public function addOutNeighbor($v) {
@@ -38,7 +55,7 @@ class DirectedVertex extends Vertex
     }
 
     /**
-     * [getOutNeighbors Returns an array of all outgoing neighbor vertices]
+     * Returns an array of all outgoing neighbor vertices
      * @return array Array of all outgoing neighbor vertices
      */
     public function getOutNeighbors() {
@@ -46,7 +63,7 @@ class DirectedVertex extends Vertex
     }
 
     /**
-     * [getNeighbors Returns an array of all neighboring vertices]
+     * Returns an array of all neighboring vertices
      * @return array Array of all neighboring vertices
      */
     public function getNeighbors() {
@@ -54,7 +71,7 @@ class DirectedVertex extends Vertex
     }
 
     /**
-     * [getIndegree Returns the number of incoming neighbor vertices (indegree)]
+     * Returns the number of incoming neighbor vertices (indegree)
      * @return int Number of incoming vertices
      */
     public function getIndegree() {
@@ -62,7 +79,7 @@ class DirectedVertex extends Vertex
     }
 
     /**
-     * [getOutdegree Returns the number of outgoing neighbor vertices (outdegree)]
+     * Returns the number of outgoing neighbor vertices (outdegree)
      * @return int Number of outgoing vertices
      */
     public function getOutdegree() {
@@ -70,7 +87,7 @@ class DirectedVertex extends Vertex
     }
 
     /**
-     * [inAdjacent Checks if a given vertex is an incoming neighbor of this vertex]
+     * Checks if a given vertex is an incoming neighbor of this vertex
      * @param  string  $v ID of vertex
      * @return boolean    Whether given vertex is an incoming neighbor of this vertex
      */
@@ -79,7 +96,7 @@ class DirectedVertex extends Vertex
     }
 
     /**
-     * [inAdjacent Checks if a given vertex is an outgoing neighbor of this vertex]
+     * Checks if a given vertex is an outgoing neighbor of this vertex
      * @param  string  $v ID of vertex
      * @return boolean    Whether given vertex is an outgoing neighbor of this vertex
      */
@@ -88,7 +105,7 @@ class DirectedVertex extends Vertex
     }
 
     /**
-     * [adjacent Checks if a given vertex is adjacent to this vertex]
+     * Checks if a given vertex is adjacent to this vertex
      * @param  string  $v ID of vertex
      * @return boolean    Whether given vertex is adjacent to this vertex
      */
