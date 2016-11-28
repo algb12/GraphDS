@@ -4,7 +4,7 @@ A fast implementation of the graph data-structure in PHP
 ## Why was GraphDS created?
 In a project of mine, I needed a way to represent graphs in PHP. None of the existing solutions have suited me, so I have decided to write my own graph library from scratch. The original implementation used in my project contains additional functions for graph traversal and refactoring of graphs, but these functions are specific to my project.
 
-This version of GraphDS is a toned-down version of my original implementation. It is easily extendable by extending the `UndirectedGraph`, `DirectedGraph` or `Graph` class.
+This version of GraphDS is a toned-down version of my original implementation. It makes use of OOP practices to allow algorithms to be loaded only on demand, making GraphDS fast, extendable and lightweight at the same time.
 
 ## How to install
 Simply require the Composer package. In the directory of your project, run:
