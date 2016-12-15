@@ -34,7 +34,7 @@ class Dijkstra
      *
      * @var array
      */
-    public $unvisited_vertices = array();
+    public $unvisitedVertices = array();
     /**
      * ID of the start vertex.
      *
@@ -68,30 +68,30 @@ class Dijkstra
         if (empty($this->graph->vertices[$start])) {
             throw new InvalidArgumentException("Vertex $start does not exist.");
         }
-        foreach ($this->graph->vertices as $k => $v) {
-            $this->dist[$k] = INF;
-            $this->prev[$k] = null;
-            $this->unvisited_vertices[$k] = null;
+        foreach ($this->graph->vertices as $vertex => $vertexValue) {
+            $this->dist[$vertex] = INF;
+            $this->prev[$vertex] = null;
+            $this->unvisitedVertices[$vertex] = null;
         }
 
         $this->dist[$start] = 0;
 
-        while (count($this->unvisited_vertices) > 0) {
-            $dist_unvisited = array_intersect_key($this->dist, $this->unvisited_vertices);
-            $min_vertex = array_keys($dist_unvisited, min($dist_unvisited))[0];
-            unset($this->unvisited_vertices[$min_vertex]);
+        while (count($this->unvisitedVertices) > 0) {
+            $distUnvisited = array_intersect_key($this->dist, $this->unvisitedVertices);
+            $minVertex = array_keys($distUnvisited, min($distUnvisited))[0];
+            unset($this->unvisitedVertices[$minVertex]);
 
             if (get_class($this->graph) === 'GraphDS\Graph\UndirectedGraph') {
-                $neighbors = $this->graph->vertices[$min_vertex]->getNeighbors();
+                $neighbors = $this->graph->vertices[$minVertex]->getNeighbors();
             } elseif (get_class($this->graph) === 'GraphDS\Graph\DirectedGraph') {
-                $neighbors = $this->graph->vertices[$min_vertex]->getOutNeighbors();
+                $neighbors = $this->graph->vertices[$minVertex]->getOutNeighbors();
             }
 
-            foreach ($neighbors as $v) {
-                $alt = $this->dist[$min_vertex] + $this->graph->edges[$min_vertex][$v]->getValue();
-                if ($alt < $this->dist[$v]) {
-                    $this->dist[$v] = $alt;
-                    $this->prev[$v] = $min_vertex;
+            foreach ($neighbors as $vertex) {
+                $alt = $this->dist[$minVertex] + $this->graph->edges[$minVertex][$vertex]->getValue();
+                if ($alt < $this->dist[$vertex]) {
+                    $this->dist[$vertex] = $alt;
+                    $this->prev[$vertex] = $minVertex;
                 }
             }
         }
