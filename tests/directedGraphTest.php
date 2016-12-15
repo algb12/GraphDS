@@ -3,6 +3,7 @@
 use PHPUnit\Framework\TestCase;
 use GraphDS\Graph\DirectedGraph;
 use GraphDS\Algo\Dijkstra;
+use GraphDS\Algo\FloydWarshall;
 
 class DirectedGraphTest extends TestCase
 {
@@ -138,18 +139,67 @@ class DirectedGraphTest extends TestCase
 
         $d = new Dijkstra($g);
 
-        $res = $d->calcDijkstra('A');
+        $d->calcDijkstra('A');
+        $res_E = $d->getPath('E');
 
-        $this->assertEmpty($res['path']['E']);
-        $this->assertEquals($res['dist']['E'], INF);
+        $this->assertEmpty($res_E['path']);
+        $this->assertEquals($res_E['dist'], INF);
 
+        $res_C = $d->getPath('C');
         $expected_path = array('A', 'B', 'F', 'C');
-        $this->assertEquals($res['path']['C'], $expected_path);
-        $this->assertEquals($res['dist']['C'], 40);
+        $this->assertEquals($res_C['path'], $expected_path);
+        $this->assertEquals($res_C['dist'], 40);
 
-        $res = $d->calcDijkstra('B');
+        $d->calcDijkstra('B');
+        $res_A = $d->getPath('A');
         $expected_path = array('B', 'F', 'C', 'D', 'G', 'A');
-        $this->assertEquals($res['path']['A'], $expected_path);
-        $this->assertEquals($res['dist']['A'], 70);
+        $this->assertEquals($res_A['path'], $expected_path);
+        $this->assertEquals($res_A['dist'], 70);
+    }
+
+    public function testFloydWarshall() {
+        $g = new DirectedGraph;
+
+        $g->addVertex('A');
+        $g->addVertex('B');
+        $g->addVertex('C');
+        $g->addVertex('D');
+        $g->addVertex('E');
+        $g->addVertex('F');
+        $g->addVertex('G');
+        $g->addVertex('H');
+
+        $g->addEdge('A', 'B', 20);
+        $g->addEdge('A', 'D', 80);
+        $g->addEdge('A', 'G', 90);
+        $g->addEdge('B', 'F', 10);
+        $g->addEdge('C', 'D', 10);
+        $g->addEdge('C', 'F', 50);
+        $g->addEdge('C', 'H', 20);
+        $g->addEdge('D', 'C', 10);
+        $g->addEdge('D', 'G', 20);
+        $g->addEdge('E', 'B', 50);
+        $g->addEdge('E', 'G', 30);
+        $g->addEdge('F', 'C', 10);
+        $g->addEdge('F', 'D', 40);
+        $g->addEdge('G', 'A', 20);
+
+        $d = new FloydWarshall($g);
+
+        $d->calcFloydWarshall();
+        $res_E = $d->getPath('A', 'E');
+
+        $this->assertEmpty($res_E['path']);
+        $this->assertEquals($res_E['dist'], null);
+
+        $res_C = $d->getPath('A', 'C');
+        $expected_path = array('A', 'B', 'F', 'C');
+        $this->assertEquals($res_C['path'], $expected_path);
+        $this->assertEquals($res_C['dist'], 40);
+
+        $res_A = $d->getPath('B', 'A');
+        $expected_path = array('B', 'F', 'C', 'D', 'G', 'A');
+        $this->assertEquals($res_A['path'], $expected_path);
+        $this->assertEquals($res_A['dist'], 70);
     }
 }

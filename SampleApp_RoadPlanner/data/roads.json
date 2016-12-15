@@ -1,0 +1,89 @@
+{
+    "countries": {
+        "Germany": {
+            "locations": [
+                "Hamburg",
+                "Bremen",
+                "Berlin",
+                "Hannover",
+                "Dortmund",
+                "Cologne",
+                "Bonn",
+                "Frankfurt",
+                "Nurnberg",
+                "Stuttgart",
+                "Munich"
+            ],
+            "paths": {
+                "Hamburg": {
+                    "Bremen": {
+                        "distance": "130"
+                    },
+                    "Hannover": {
+                        "distance": "170"
+                    },
+                    "Berlin": {
+                        "distance": "290"
+                    }
+                },
+                "Bremen": {
+                    "Hannover": {
+                        "distance": "140"
+                    }
+                },
+                "Berlin": {
+                    "Hannover": {
+                        "distance": "290"
+                    },
+                    "Nurnberg": {
+                        "distance": "440"
+                    }
+                },
+                "Hannover": {
+                    "Dortmund": {
+                        "distance": "210"
+                    },
+                    "Frankfurt": {
+                        "distance": "350"
+                    },
+                    "Nurnberg": {
+                        "distance": "470"
+                    }
+                },
+                "Dortmund": {
+                    "Cologne": {
+                        "distance": "90"
+                    }
+                },
+                "Cologne": {
+                    "Bonn": {
+                        "distance": "30"
+                    }
+                },
+                "Bonn": {
+                    "Frankfurt": {
+                        "distance": "160"
+                    }
+                },
+                "Frankfurt": {
+                    "Stuttgart": {
+                        "distance": "200"
+                    }
+                },
+                "Nurnberg": {
+                    "Stuttgart": {
+                        "distance": "30"
+                    },
+                    "Munich": {
+                        "distance": "170"
+                    }
+                },
+                "Stuttgart": {
+                    "Munich": {
+                        "distance": "240"
+                    }
+                }
+            }
+        }
+    }
+}

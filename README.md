@@ -45,7 +45,7 @@ To get the value of a vertex, `$g->vertices['v']->getValue()` can be called. To 
 #### Getting neighbors of a vertex
 Getting the neighbors of a vertex in an undirected graph can be accomplished by using `$g->vertices['v']->getNeighbors()`.
 
-In a directed graph, `$g->vertices['v']->getInNeighbors` returns an array of all vertices connected by an incoming edge, whereas `$g->vertices['v']->getOutNeighbors` returns an array of all vertices connected by an outgoing edge to the current vertex. `$g->vertices['v']->getNeighbors()` returns an array of two subarrays, `in` and `out` for incoming and outgoing vertices.
+In a directed graph, `$g->vertices['v']->getInNeighbors` returns an array of all vertices connected by an incoming edge, whereas `$g->vertices['v']->getOutNeighbors()` returns an array of all vertices connected by an outgoing edge to the current vertex. `$g->vertices['v']->getNeighbors()` returns an array of two subarrays, `in` and `out` for incoming and outgoing vertices.
 
 #### Indegrees and Outdegrees
 The indegree and outdegree of a vertex is simply how many incoming and outgoing vertices are connected to a vertex, respectively.
@@ -72,11 +72,12 @@ To get the value of an edge, `$g->edges['v1']['v2']->getValue()` can be called. 
 
 ## Algorithms
 Since version 1.0.1, GraphDS has support for algorithms. One such algorithm already shipped with GraphDS is Dijkstra's shortest path algorithm for solving the shortest path problem.
+`GraphDS\Algo` is the namespace of algorithms in GraphDS.
 
 ### Dijkstra's shortest path algorithm
 In GraphDS, algorithms are treated as separate objects modifying the graph. This is what makes GraphDS lean and streamlined, as algorithms only have to be loaded into memory if they are needed, as they are not intrinsic to a graph object.
 
-To use Dijkstra's algorithm, use the `GraphDS\Algo\Dijkstra` class. `GraphDS\Algo` is the namespace of algorithms.
+To use Dijkstra's algorithm, use the `GraphDS\Algo\Dijkstra` class.
 
 For a directed graph `$g`, this is how Dijkstra's algorithm could be used:
 
@@ -116,16 +117,29 @@ $g->addEdge('G', 'A', 20);
 
 $d = new Dijkstra($g);
 
-$res = $d->calcDijkstra('A');
+$d->calcDijkstra('A');
+$res_D = $d->getPath('D');
 
 echo '<pre>';
-print_r($res['path']['D']);
+print_r($res_D['path']);
 echo '</pre>';
 
-echo 'Shortest distance from A to D: '.$res['dist']['D'];
+echo 'Shortest distance from A to D: '.$res_D['dist'];
 ```
 
-`$res = $d->calcDijkstra(v)` calculates the shortest path to every vertex from vertex `v`, and returns an array `$res`, where `$res['path']` contains the shortest path to every vertex, and `$res['dist']` contains the distances for each vertex's shortest path.
+`$d->calcDijkstra(u)` calculates the shortest path to every vertex from vertex `u`.
+`$d->getPath(v)` returns an array `$res`, where `$res['path']` contains the shortest path and `$res['dist']` contains the distance of that path from the origin vertex `u` to the destination vertex `v`.
+
+### Floyd-Warshall algorithm
+The Floyd-Warshall algorithm calculates the shortest path between every single vertex.
+
+To use Dijkstra's algorithm, use the `GraphDS\Algo\FloydWarshall` class, and run `$fw = new FloydWarshall($g)`, where `$fw` is the Floyd-Warshall algorithm object, and `$g` is a graph.
+
+After initializing the algorithm, the actual calculation of shortest paths in the graph can be invoked using `$fw->calcFloydWarshall()`.
+
+Getting a path from the graph then is as easy as running `$res = $fw->getPath($u, $v)`, where `$u` and `$v` are two vertices.This returns an array of the path, `$res`, where `$res['path']` is the path, and `$res['distance']` is the distance of that path.
 
 ## In case of bugs and/or suggestions
-If, for any reason, there is a bug found in GraphDS, please message me on GitHub or send me an email to: <algb12.19@gmail.com>. The same goes for any suggestions. Please open up any issues if they arise!
+If, for any reason, there is a bug found in GraphDS, please message me on GitHub or send me an email to: <algb12.19@gmail.com>. The same goes for any suggestions.
+
+Despite thorough unit testing, bugs will inevitably appear, so please open up any issues on GitHub if they arise!
