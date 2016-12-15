@@ -1,3 +1,5 @@
+[![Code Climate](https://codeclimate.com/github/algb12/GraphDS/badges/gpa.svg)](https://codeclimate.com/github/algb12/GraphDS)
+
 # GraphDS
 A fast implementation of the graph data-structure in PHP
 
