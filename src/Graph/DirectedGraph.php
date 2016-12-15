@@ -86,6 +86,7 @@ class DirectedGraph extends Graph
      *
      * @param string $vertex1 ID of first vertex
      * @param string $vertex2 ID of second vertex
+     * @param mixed  $value   The value the edge should hold
      */
     public function addEdge($vertex1, $vertex2, $value = null)
     {
