@@ -11,6 +11,9 @@ Simply require the Composer package. In the directory of your project, run:
 
 `composer require algb12/graph-ds`
 
+## What is it even useful for?
+Please see the sample app in the `SampleApp_RoadPlanner` directory to find a primitive application of GraphDS. The RoadPlanner app calculates the shortest road between two cities, using Dijkstra's and the Floyd-Warshall algorithm.
+
 ## Basic syntax
 GraphDS has functions to create vertices and edges for both, undirected and directed graphs. The user does not need to worry about which type of edge/vertex is created, as this is all abstracted away under the relevant classes.
 
