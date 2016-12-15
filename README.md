@@ -2,7 +2,7 @@
 [![Code Climate](https://codeclimate.com/github/algb12/GraphDS/badges/gpa.svg)](https://codeclimate.com/github/algb12/GraphDS)
 
 ## What is GraphDS and why was it created?
-GraphDS is a fast implementation of the graph data-structure in PHP.
+GraphDS is an object-oriented, lightweight implementation of the graph data-structure in PHP.
 
 In a project of mine, I needed a way to represent graphs in PHP. None of the existing solutions have suited me, so I have decided to write my own graph library from scratch. The original implementation used in my project contains additional functions for graph traversal and refactoring of graphs, but these functions are specific to my project.
 
