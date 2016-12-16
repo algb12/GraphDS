@@ -82,18 +82,17 @@ class FloydWarshall
      */
     public function getPath($start, $dest)
     {
-        $s = $start;
+        $startReal = $start;
         $path = array($start);
         while ($start !== $dest) {
-            if ($start = $this->next[$start][$dest]) {
-                $path[] = $start;
-            } else {
+            if (!($start = $this->next[$start][$dest])) {
                 return;
             }
+            $path[] = $start;
         }
 
         $result['path'] = $path;
-        $result['dist'] = $this->dist[$s][$dest];
+        $result['dist'] = $this->dist[$startReal][$dest];
 
         return $result;
     }

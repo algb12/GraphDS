@@ -46,10 +46,10 @@ class DirectedGraph extends Graph
      *
      * @param string $v ID of the vertex
      */
-    public function addVertex($v)
+    public function addVertex($vertex)
     {
-        if (empty($this->vertices[$v])) {
-            $this->vertices[$v] = new DirectedVertex();
+        if (empty($this->vertices[$vertex])) {
+            $this->vertices[$vertex] = new DirectedVertex();
         }
     }
 

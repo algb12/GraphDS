@@ -106,7 +106,7 @@ class Dijkstra
      */
     public function getPath($dest)
     {
-        $d = $dest;
+        $destReal = $dest;
         $path = array();
         while (isset($this->prev[$dest])) {
             array_unshift($path, $dest);
@@ -116,7 +116,7 @@ class Dijkstra
             array_unshift($path, $dest);
         }
         $result['path'] = $path;
-        $result['dist'] = $this->dist[$d];
+        $result['dist'] = $this->dist[$destReal];
 
         return $result;
     }
