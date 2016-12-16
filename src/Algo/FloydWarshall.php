@@ -47,28 +47,22 @@ class FloydWarshall
      */
     public function calcFloydWarshall()
     {
-        foreach ($this->graph->vertices as $vertex1 => &$vertex1Value) {
-            foreach ($this->graph->vertices as $vertex2 => &$vertex2Value) {
+        foreach ($this->graph->vertices as $vertex1 => $vertex1Value) {
+            foreach ($this->graph->vertices as $vertex2 => $vertex2Value) {
                 $this->dist[$vertex1][$vertex2] = INF;
-            }
-        }
-        foreach ($this->graph->vertices as $vertex1 => &$vertex1Value) {
-            foreach ($this->graph->vertices as $vertex2 => &$vertex2Value) {
                 $this->next[$vertex1][$vertex2] = null;
+                $this->dist[$vertex1][$vertex1] = 0;
             }
         }
-        foreach ($this->graph->vertices as $vertex => &$vertexValue) {
-            $this->dist[$vertex][$vertex] = 0;
-        }
-        foreach ($this->graph->edges as $vertex1 => &$vertex1Value) {
-            foreach ($vertex1Value as $vertex2 => &$vertex2Value) {
+        foreach ($this->graph->edges as $vertex1 => $vertex1Value) {
+            foreach ($vertex1Value as $vertex2 => $vertex2Value) {
                 $this->dist[$vertex1][$vertex2] = $vertex2Value->getValue();
                 $this->next[$vertex1][$vertex2] = $vertex2;
             }
         }
-        foreach ($this->graph->vertices as $k => &$kv) {
-            foreach ($this->graph->vertices as $i => &$iv) {
-                foreach ($this->graph->vertices as $j => &$jv) {
+        foreach ($this->graph->vertices as $k => $kv) {
+            foreach ($this->graph->vertices as $i => $iv) {
+                foreach ($this->graph->vertices as $j => $jv) {
                     if ($this->dist[$i][$j] > ($this->dist[$i][$k] + $this->dist[$k][$j])) {
                         $this->dist[$i][$j] = $this->dist[$i][$k] + $this->dist[$k][$j];
                         $this->next[$i][$j] = $this->next[$i][$k];
