@@ -113,19 +113,13 @@ class UndirectedGraph extends Graph
         if (empty($this->edges[$vertex1][$vertex2]) && empty($this->edges[$vertex2][$vertex1])) {
             throw new InvalidArgumentException("No edge between $vertex1 and $vertex2.");
         }
-        if (($key = array_search($vertex2, $this->vertices[$vertex1]->neighbors)) !== false) {
-            unset($this->vertices[$vertex1]->neighbors[$key]);
-        }
-        if (($key = array_search($vertex1, $this->vertices[$vertex2]->neighbors)) !== false) {
-            unset($this->vertices[$vertex2]->neighbors[$key]);
-        }
-        if (isset($this->edges[$vertex1][$vertex2])) {
+        $this->vertices[$vertex1]->removeNeighbor($vertex2);
+        $this->vertices[$vertex2]->removeNeighbor($vertex1);
+        if (isset($this->edges[$vertex1][$vertex2]) && isset($this->edges[$vertex2][$vertex1])) {
             unset($this->edges[$vertex1][$vertex2]);
             if (empty($this->edges[$vertex1])) {
                 unset($this->edges[$vertex1]);
             }
-        }
-        if (isset($this->edges[$vertex2][$vertex1])) {
             unset($this->edges[$vertex2][$vertex1]);
             if (empty($this->edges[$vertex2])) {
                 unset($this->edges[$vertex2]);

@@ -117,12 +117,8 @@ class DirectedGraph extends Graph
         if (empty($this->edges[$vertex1][$vertex2])) {
             throw new InvalidArgumentException("No edge from $vertex1 to $vertex2.");
         }
-        if (($key = array_search($vertex2, $this->vertices[$vertex1]->neighbors['out'])) !== false) {
-            unset($this->vertices[$vertex1]->neighbors['out'][$key]);
-        }
-        if (($key = array_search($vertex1, $this->vertices[$vertex2]->neighbors['in'])) !== false) {
-            unset($this->vertices[$vertex2]->neighbors['in'][$key]);
-        }
+        $this->vertices[$vertex1]->removeOutNeighbor($vertex2);
+        $this->vertices[$vertex2]->removeInNeighbor($vertex1);
         if (isset($this->edges[$vertex1][$vertex2])) {
             unset($this->edges[$vertex1][$vertex2]);
             if (empty($this->edges[$vertex1])) {

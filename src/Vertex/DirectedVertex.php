@@ -43,6 +43,18 @@ class DirectedVertex extends Vertex
     }
 
     /**
+     * Removes a neighboring, incoming, directed vertex from this vertex.
+     *
+     * @param string $vertex ID of the vertex
+     */
+    public function removeInNeighbor($vertex)
+    {
+        if (($key = array_search($vertex, $this->neighbors['in'])) !== false) {
+            unset($this->neighbors['in'][$key]);
+        }
+    }
+
+    /**
      * Returns an array of all incoming neighbor vertices.
      *
      * @return array Array of all incoming neighbor vertices
@@ -60,6 +72,18 @@ class DirectedVertex extends Vertex
     public function addOutNeighbor($vertex)
     {
         $this->neighbors['out'][] = $vertex;
+    }
+
+    /**
+     * Removes a neighboring, outgoing, directed vertex from this vertex.
+     *
+     * @param string $vertex ID of the vertex
+     */
+    public function removeOutNeighbor($vertex)
+    {
+        if (($key = array_search($vertex, $this->neighbors['out'])) !== false) {
+            unset($this->neighbors['out'][$key]);
+        }
     }
 
     /**

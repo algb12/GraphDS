@@ -33,6 +33,18 @@ class UndirectedVertex extends Vertex
     }
 
     /**
+     * Removes a neighboring, undirected vertex from this vertex.
+     *
+     * @param string $vertex ID of vertex
+     */
+    public function removeNeighbor($vertex)
+    {
+        if (($key = array_search($vertex, $this->neighbors)) !== false) {
+            unset($this->neighbors[$key]);
+        }
+    }
+
+    /**
      * Returns an array of all neighboring vertices of this vertex.
      *
      * @return array Array of all neighboring vertices of this vertex
