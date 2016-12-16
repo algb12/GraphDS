@@ -68,7 +68,7 @@ class Dijkstra
         if (empty($this->graph->vertices[$start])) {
             throw new InvalidArgumentException("Vertex $start does not exist.");
         }
-        foreach ($this->graph->vertices as $vertex => $vertexValue) {
+        foreach (array_keys($this->graph->vertices) as $vertex) {
             $this->dist[$vertex] = INF;
             $this->prev[$vertex] = null;
             $this->unvisitedVertices[$vertex] = null;

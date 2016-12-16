@@ -60,9 +60,9 @@ class FloydWarshall
                 $this->next[$vertex1][$vertex2] = $vertex2;
             }
         }
-        foreach ($this->graph->vertices as $k => $kv) {
-            foreach ($this->graph->vertices as $i => $iv) {
-                foreach ($this->graph->vertices as $j => $jv) {
+        foreach (array_keys($this->graph->vertices) as $k) {
+            foreach (array_keys($this->graph->vertices) as $i) {
+                foreach (array_keys($this->graph->vertices) as $j) {
                     if ($this->dist[$i][$j] > ($this->dist[$i][$k] + $this->dist[$k][$j])) {
                         $this->dist[$i][$j] = $this->dist[$i][$k] + $this->dist[$k][$j];
                         $this->next[$i][$j] = $this->next[$i][$k];
