@@ -35,9 +35,11 @@ class ImportGraph
     }
 
     /**
-     * Saves the graph to a GraphML file.
+     * Returns GraphDS graph represented by GraphML.
      *
-     * @param string $file The file to which the graph should be written
+     * @param string $file File containing the GraphML markup
+     *
+     * @return object The graph reconstructed from the GraphML
      */
     public function fromGraphML($file)
     {

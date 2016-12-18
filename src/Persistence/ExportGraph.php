@@ -34,7 +34,7 @@ class ExportGraph
     }
 
     /**
-     * Saves the graph to a GraphML file.
+     * Returns the GraphML output representing the graph.
      *
      * @param string $file The file to which the graph should be written
      */
