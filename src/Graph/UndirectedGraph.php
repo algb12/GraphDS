@@ -20,11 +20,23 @@ class UndirectedGraph extends Graph
      */
     public $vertices;
     /**
+     * A running count of all the vertices.
+     *
+     * @var int
+     */
+    public $vertexCount;
+    /**
      * An array holding all edges of the graph.
      *
      * @var array
      */
     public $edges;
+    /**
+     * A running count of all the edges.
+     *
+     * @var int
+     */
+    public $edgeCount;
     /**
      * Defines whether the graph is directed or not.
      *
@@ -50,6 +62,7 @@ class UndirectedGraph extends Graph
     {
         if (empty($this->vertices[$vertex])) {
             $this->vertices[$vertex] = new UndirectedVertex();
+            ++$this->vertexCount;
         }
     }
 
@@ -68,12 +81,33 @@ class UndirectedGraph extends Graph
             if (($key = array_search($vertex, $this->vertices[$neighbor]->neighbors)) !== false) {
                 unset($this->vertices[$neighbor]->neighbors[$key]);
             }
-            if (isset($this->edges[$neighbor][$vertex])) {
+            if ($this->edge($neighbor, $vertex)) {
                 $this->removeEdge($neighbor, $vertex);
             }
         }
         unset($this->edges[$vertex]);
         unset($this->vertices[$vertex]);
+        --$this->vertexCount;
+    }
+
+    /**
+     * Returns an edge object in the graph, regardless of vertex order (undirected).
+     *
+     * @param string $vertex1 ID of first vertex
+     * @param string $vertex2 ID of second vertex
+     *
+     * @return object Instance of UndirectedEdge between $vertex1 and $vertex2
+     */
+    public function edge($vertex1, $vertex2)
+    {
+        if (empty($this->vertices[$vertex1]) || empty($this->vertices[$vertex2])) {
+            throw new InvalidArgumentException('One of the vertices does not exist.');
+        }
+        if (isset($this->edges[$vertex1][$vertex2])) {
+            return $this->edges[$vertex1][$vertex2];
+        } elseif (isset($this->edges[$vertex2][$vertex1])) {
+            return $this->edges[$vertex2][$vertex1];
+        }
     }
 
     /**
@@ -81,7 +115,7 @@ class UndirectedGraph extends Graph
      *
      * @param string $vertex1 ID of first vertex
      * @param string $vertex2 ID of second vertex
-     * @param mixed  $value   The value the edge should hold
+     * @param double $value   The value/weight the edge should hold
      */
     public function addEdge($vertex1, $vertex2, $value = null)
     {
@@ -91,12 +125,12 @@ class UndirectedGraph extends Graph
         if (empty($this->vertices[$vertex1]) || empty($this->vertices[$vertex2])) {
             throw new InvalidArgumentException('One of the vertices does not exist.');
         }
-        if (empty($this->edges[$vertex1][$vertex2]) || empty($this->edges[$vertex2][$vertex1])) {
+        if (null === $this->edge($vertex1, $vertex2)) {
             $this->edges[$vertex1][$vertex2] = new UndirectedEdge($vertex1, $vertex2, $value);
-            $this->edges[$vertex2][$vertex1] = $this->edges[$vertex1][$vertex2];
             $this->vertices[$vertex1]->addNeighbor($vertex2);
             $this->vertices[$vertex2]->addNeighbor($vertex1);
         }
+        ++$this->edgeCount;
     }
 
     /**
@@ -110,21 +144,24 @@ class UndirectedGraph extends Graph
         if (empty($this->vertices[$vertex1]) || empty($this->vertices[$vertex2])) {
             throw new InvalidArgumentException('One of the vertices does not exist.');
         }
-        if (empty($this->edges[$vertex1][$vertex2]) && empty($this->edges[$vertex2][$vertex1])) {
+        if (null === $this->edge($vertex1, $vertex2)) {
             throw new InvalidArgumentException("No edge between $vertex1 and $vertex2.");
         }
         $this->vertices[$vertex1]->removeNeighbor($vertex2);
         $this->vertices[$vertex2]->removeNeighbor($vertex1);
-        if (isset($this->edges[$vertex1][$vertex2]) && isset($this->edges[$vertex2][$vertex1])) {
+        if (isset($this->edges[$vertex1][$vertex2])) {
             unset($this->edges[$vertex1][$vertex2]);
             if (empty($this->edges[$vertex1])) {
                 unset($this->edges[$vertex1]);
             }
+        }
+        if (isset($this->edges[$vertex1][$vertex2])) {
             unset($this->edges[$vertex2][$vertex1]);
             if (empty($this->edges[$vertex2])) {
                 unset($this->edges[$vertex2]);
             }
         }
+        --$this->edgeCount;
     }
 
     /**
@@ -140,14 +177,11 @@ class UndirectedGraph extends Graph
         if (empty($this->vertices[$vertex1]) || empty($this->vertices[$vertex2])) {
             throw new InvalidArgumentException('One of the vertices does not exist.');
         }
-        if (empty($this->edges[$vertex1][$vertex2]) && empty($this->edges[$vertex2][$vertex1])) {
+        if (null === $this->edge($vertex1, $vertex2)) {
             throw new InvalidArgumentException("No edge between $vertex1 and $vertex2.");
         }
-        if (isset($this->edges[$vertex1][$vertex2])) {
-            return $this->edges[$vertex1][$vertex2]->getValue();
-        } elseif (isset($this->edges[$vertex2][$vertex1])) {
-            return $this->edges[$vertex2][$vertex1]->getValue();
-        }
+
+        return $this->edge($vertex1, $vertex2)->getValue();
     }
 
     /**
@@ -162,13 +196,9 @@ class UndirectedGraph extends Graph
         if (empty($this->vertices[$vertex1]) || empty($this->vertices[$vertex2])) {
             throw new InvalidArgumentException('One of the vertices does not exist.');
         }
-        if (empty($this->edges[$vertex1][$vertex2]) && empty($this->edges[$vertex2][$vertex1])) {
+        if (null === $this->edge($vertex1, $vertex2)) {
             throw new InvalidArgumentException("No edge between $vertex1 and $vertex2.");
         }
-        if (isset($this->edges[$vertex1][$vertex2])) {
-            $this->edges[$vertex1][$vertex2]->setValue($value);
-        } elseif (isset($this->edges[$vertex2][$vertex1])) {
-            $this->edges[$vertex2][$vertex1]->setValue($value);
-        }
+        $this->edge($vertex1, $vertex2)->setValue($value);
     }
 }

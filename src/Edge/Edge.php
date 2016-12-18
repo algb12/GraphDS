@@ -10,9 +10,9 @@ namespace GraphDS\Edge;
 class Edge
 {
     /**
-     * $value A value held by the edge.
+     * $value A value/weight held by the edge.
      *
-     * @var mixed
+     * @var double
      */
     public $value;
     /**
@@ -27,31 +27,28 @@ class Edge
      */
     public function __construct()
     {
-        $this->value = null;
+        $this->value = 0.0;
         $this->vertices = array();
     }
 
     /**
-     * Returns value associated with this edge (e.g. cost).
+     * Returns value/weight associated with this edge.
      *
-     * @return mixed Value associated with this edge
+     * @return double Value/weight associated with this edge
      */
     public function getValue()
     {
-        return $this->value;
+        return (double) $this->value;
     }
 
     /**
-     * Sets the value associated with this edge (e.g. cost).
+     * Sets the value/weight associated with this edge.
      *
-     * @param mixed $value Value to be associated with this edge
+     * @param double $value Value/weight to be associated with this edge
      */
     public function setValue($value = null)
     {
-        if (empty($value)) {
-            trigger_error('No value given. Assuming null.', E_USER_NOTICE);
-        }
-        $this->value = $value;
+        $this->value = (double) $value;
     }
 
     /**

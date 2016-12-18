@@ -20,11 +20,23 @@ class DirectedGraph extends Graph
      */
     public $vertices;
     /**
+     * A running count of all the vertices.
+     *
+     * @var int
+     */
+    public $vertexCount;
+    /**
      * An array holding all edges of the graph.
      *
      * @var array
      */
     public $edges;
+    /**
+     * A running count of all the edges.
+     *
+     * @var int
+     */
+    public $edgeCount;
     /**
      * Defines whether the graph is directed or not.
      *
@@ -50,6 +62,7 @@ class DirectedGraph extends Graph
     {
         if (empty($this->vertices[$vertex])) {
             $this->vertices[$vertex] = new DirectedVertex();
+            ++$this->vertexCount;
         }
     }
 
@@ -73,11 +86,30 @@ class DirectedGraph extends Graph
             if (($key = array_search($vertex, $this->vertices[$neighbor]->neighbors['out'])) !== false) {
                 unset($this->vertices[$neighbor]->neighbors['out'][$key]);
             }
-            if (isset($this->edges[$neighbor][$vertex])) {
+            if ($this->edge($neighbor, $vertex)) {
                 $this->removeEdge($neighbor, $vertex);
             }
             unset($this->edges[$vertex]);
             unset($this->vertices[$vertex]);
+        }
+        --$this->vertexCount;
+    }
+
+    /**
+     * Returns an edge object in the graph from $vertex1 to $vertex2.
+     *
+     * @param string $vertex1 ID of first vertex
+     * @param string $vertex2 ID of second vertex
+     *
+     * @return object Instance of DirectedEdge from $vertex1 to $vertex2
+     */
+    public function edge($vertex1, $vertex2)
+    {
+        if (empty($this->vertices[$vertex1]) || empty($this->vertices[$vertex2])) {
+            throw new InvalidArgumentException('One of the vertices does not exist.');
+        }
+        if (isset($this->edges[$vertex1][$vertex2])) {
+            return $this->edges[$vertex1][$vertex2];
         }
     }
 
@@ -86,7 +118,7 @@ class DirectedGraph extends Graph
      *
      * @param string $vertex1 ID of first vertex
      * @param string $vertex2 ID of second vertex
-     * @param mixed  $value   The value the edge should hold
+     * @param double $value   The value/weight the edge should hold
      */
     public function addEdge($vertex1, $vertex2, $value = null)
     {
@@ -96,11 +128,12 @@ class DirectedGraph extends Graph
         if (empty($this->vertices[$vertex1]) || empty($this->vertices[$vertex2])) {
             throw new InvalidArgumentException('One of the vertices does not exist.');
         }
-        if (empty($this->edges[$vertex1][$vertex2])) {
+        if (null === $this->edge($vertex1, $vertex2)) {
             $this->edges[$vertex1][$vertex2] = new DirectedEdge($vertex1, $vertex2, $value);
             $this->vertices[$vertex1]->addOutNeighbor($vertex2);
             $this->vertices[$vertex2]->addInNeighbor($vertex1);
         }
+        ++$this->edgeCount;
     }
 
     /**
@@ -114,17 +147,16 @@ class DirectedGraph extends Graph
         if (empty($this->vertices[$vertex1]) || empty($this->vertices[$vertex2])) {
             throw new InvalidArgumentException('One of the vertices does not exist.');
         }
-        if (empty($this->edges[$vertex1][$vertex2])) {
+        if (null === $this->edge($vertex1, $vertex2)) {
             throw new InvalidArgumentException("No edge from $vertex1 to $vertex2.");
         }
         $this->vertices[$vertex1]->removeOutNeighbor($vertex2);
         $this->vertices[$vertex2]->removeInNeighbor($vertex1);
-        if (isset($this->edges[$vertex1][$vertex2])) {
-            unset($this->edges[$vertex1][$vertex2]);
-            if (empty($this->edges[$vertex1])) {
-                unset($this->edges[$vertex1]);
-            }
+        unset($this->edges[$vertex1][$vertex2]);
+        if (empty($this->edges[$vertex1])) {
+            unset($this->edges[$vertex1]);
         }
+        --$this->edgeCount;
     }
 
     /**
@@ -140,12 +172,11 @@ class DirectedGraph extends Graph
         if (empty($this->vertices[$vertex1]) || empty($this->vertices[$vertex2])) {
             throw new InvalidArgumentException('One of the vertices does not exist.');
         }
-        if (empty($this->edges[$vertex1][$vertex2])) {
+        if (null === $this->edge($vertex1, $vertex2)) {
             throw new InvalidArgumentException("No edge from $vertex1 to $vertex2.");
         }
-        if (isset($this->edges[$vertex1][$vertex2])) {
-            return $this->edges[$vertex1][$vertex2]->getValue();
-        }
+
+        return $this->edge($vertex1, $vertex2)->getValue();
     }
 
     /**
@@ -160,9 +191,9 @@ class DirectedGraph extends Graph
         if (empty($this->vertices[$vertex1]) || empty($this->vertices[$vertex2])) {
             throw new InvalidArgumentException('One of the vertices does not exist.');
         }
-        if (empty($this->edges[$vertex1][$vertex2])) {
+        if (null === $this->edge($vertex1, $vertex2)) {
             throw new InvalidArgumentException("No edge from $vertex1 to $vertex2.");
         }
-        $this->edges[$vertex1][$vertex2]->setValue($value);
+        $this->edge($vertex1, $vertex2)->setValue($value);
     }
 }

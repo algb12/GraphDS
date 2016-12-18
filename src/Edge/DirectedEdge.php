@@ -10,9 +10,9 @@ namespace GraphDS\Edge;
 class DirectedEdge extends Edge
 {
     /**
-     * $value A value held by the edge.
+     * $value A value/weight held by the edge.
      *
-     * @var mixed
+     * @var double
      */
     public $value;
     /**
@@ -27,7 +27,7 @@ class DirectedEdge extends Edge
      *
      * @param string $vertex1 ID of first vertex
      * @param string $vertex2 ID of second vertex
-     * @param mixed  $value   The value the edge should hold
+     * @param double $value   The value/weight the edge should hold
      */
     public function __construct($vertex1, $vertex2, $value = null)
     {

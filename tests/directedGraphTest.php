@@ -7,7 +7,8 @@ use GraphDS\Algo\FloydWarshall;
 
 class DirectedGraphTest extends TestCase
 {
-    public function testVertexAddRemove() {
+    public function testVertexAddRemove()
+    {
         $g = new DirectedGraph();
         $g->addVertex('v1');
         $this->assertArrayHasKey('v1', $g->vertices);
@@ -29,35 +30,38 @@ class DirectedGraphTest extends TestCase
         $this->assertArrayNotHasKey('v1', $g->edges);
     }
 
-    public function testEdgeAddRemove() {
+    public function testEdgeAddRemove()
+    {
         $g = new DirectedGraph();
         $g->addVertex('v1');
         $g->addVertex('v2');
         $g->addEdge('v1', 'v2');
-        $this->assertEquals(isset($g->edges['v1']['v2']), true);
-        $this->assertEquals(isset($g->edges['v2']['v1']), false);
+        $this->assertEquals(true, isset($g->edges['v1']['v2']));
+        $this->assertEquals(false, isset($g->edges['v2']['v1']));
         $this->assertContains('v2', $g->vertices['v1']->getOutNeighbors());
         $this->assertContains('v1', $g->vertices['v2']->getInNeighbors());
         $this->assertNotContains('v2', $g->vertices['v1']->getInNeighbors());
         $this->assertNotContains('v1', $g->vertices['v2']->getOutNeighbors());
         $g->removeEdge('v1', 'v2');
-        $this->assertEquals(isset($g->edges['v1']['v2']), false);
-        $this->assertEquals(isset($g->edges['v2']['v1']), false);
+        $this->assertEquals(false, isset($g->edges['v1']['v2']));
+        $this->assertEquals(false, isset($g->edges['v2']['v1']));
         $this->assertNotContains('v2', $g->vertices['v1']->getOutNeighbors());
         $this->assertNotContains('v1', $g->vertices['v2']->getInNeighbors());
     }
 
-    public function testVertexGetSetValue() {
+    public function testVertexGetSetValue()
+    {
         $g = new DirectedGraph();
         $g->addVertex('v1');
         $g->vertices['v1']->setValue('testval1');
-        $this->assertEquals($g->vertices['v1']->getValue(), 'testval1');
+        $this->assertEquals('testval1', $g->vertices['v1']->getValue());
         $g->addVertex('v2');
         $g->vertices['v2']->setValue('testval2');
-        $this->assertEquals($g->vertices['v2']->getValue(), 'testval2');
+        $this->assertEquals('testval2', $g->vertices['v2']->getValue());
     }
 
-    public function testEdgeGetSetValue() {
+    public function testEdgeGetSetValue()
+    {
         $g = new DirectedGraph();
         $g->addVertex('v1');
         $g->addVertex('v2');
@@ -65,15 +69,16 @@ class DirectedGraphTest extends TestCase
         $g->addEdge('v1', 'v2');
         $g->addEdge('v1', 'v3');
         $g->addEdge('v3', 'v1');
-        $g->edges['v1']['v2']->setValue('testval1');
-        $g->edges['v1']['v3']->setValue('testval2');
-        $g->edges['v3']['v1']->setValue('testval3');
-        $this->assertEquals($g->edges['v1']['v2']->getValue(), 'testval1');
-        $this->assertEquals($g->edges['v1']['v3']->getValue(), 'testval2');
-        $this->assertEquals($g->edges['v3']['v1']->getValue(), 'testval3');
+        $g->edges['v1']['v2']->setValue(1.0);
+        $g->edges['v1']['v3']->setValue(1.1);
+        $g->edges['v3']['v1']->setValue(2);
+        $this->assertEquals('1.0', $g->edges['v1']['v2']->getValue());
+        $this->assertEquals('1.1', $g->edges['v1']['v3']->getValue());
+        $this->assertEquals('2', $g->edges['v3']['v1']->getValue());
     }
 
-    public function testVertexAdjacencyMethods() {
+    public function testVertexAdjacencyMethods()
+    {
         $g = new DirectedGraph();
         $g->addVertex('v1');
         $g->addVertex('v2');
@@ -82,19 +87,20 @@ class DirectedGraphTest extends TestCase
         $g->addEdge('v1', 'v2');
         $g->addEdge('v1', 'v3');
         $g->addEdge('v3', 'v2');
-        $this->assertEquals($g->vertices['v1']->outAdjacent('v2'), true);
-        $this->assertEquals($g->vertices['v2']->outAdjacent('v1'), false);
-        $this->assertEquals($g->vertices['v3']->inAdjacent('v1'), true);
-        $this->assertEquals($g->vertices['v1']->inAdjacent('v3'), false);
-        $this->assertEquals($g->vertices['v1']->adjacent('v2'), true);
-        $this->assertEquals($g->vertices['v2']->adjacent('v1'), true);
-        $this->assertEquals($g->vertices['v3']->adjacent('v1'), true);
-        $this->assertEquals($g->vertices['v1']->adjacent('v3'), true);
-        $this->assertEquals($g->vertices['v1']->adjacent('v4'), false);
-        $this->assertEquals($g->vertices['v4']->adjacent('v1'), false);
+        $this->assertEquals(true, $g->vertices['v1']->outAdjacent('v2'));
+        $this->assertEquals(false, $g->vertices['v2']->outAdjacent('v1'));
+        $this->assertEquals(true, $g->vertices['v3']->inAdjacent('v1'));
+        $this->assertEquals(false, $g->vertices['v1']->inAdjacent('v3'));
+        $this->assertEquals(true, $g->vertices['v1']->adjacent('v2'));
+        $this->assertEquals(true, $g->vertices['v2']->adjacent('v1'));
+        $this->assertEquals(true, $g->vertices['v3']->adjacent('v1'));
+        $this->assertEquals(true, $g->vertices['v1']->adjacent('v3'));
+        $this->assertEquals(false, $g->vertices['v1']->adjacent('v4'));
+        $this->assertEquals(false, $g->vertices['v4']->adjacent('v1'));
     }
 
-    public function testIndegreeAndOutdegree() {
+    public function testIndegreeAndOutdegree()
+    {
         $g = new DirectedGraph();
         $g->addVertex('v1');
         $g->addVertex('v2');
@@ -102,16 +108,33 @@ class DirectedGraphTest extends TestCase
         $g->addEdge('v1', 'v2');
         $g->addEdge('v1', 'v3');
         $g->addEdge('v3', 'v1');
-        $this->assertEquals($g->vertices['v1']->getIndegree(), 1);
-        $this->assertEquals($g->vertices['v1']->getOutdegree(), 2);
-        $this->assertEquals($g->vertices['v2']->getIndegree(), 1);
-        $this->assertEquals($g->vertices['v2']->getOutdegree(), 0);
-        $this->assertEquals($g->vertices['v3']->getIndegree(), 1);
-        $this->assertEquals($g->vertices['v3']->getOutdegree(), 1);
+        $this->assertEquals(1, $g->vertices['v1']->getIndegree());
+        $this->assertEquals(2, $g->vertices['v1']->getOutdegree());
+        $this->assertEquals(1, $g->vertices['v2']->getIndegree());
+        $this->assertEquals(0, $g->vertices['v2']->getOutdegree());
+        $this->assertEquals(1, $g->vertices['v3']->getIndegree());
+        $this->assertEquals(1, $g->vertices['v3']->getOutdegree());
     }
 
-    public function testDijkstra() {
-        $g = new DirectedGraph;
+    public function testVertexAndEdgeCount()
+    {
+        $g = new DirectedGraph();
+        $g->addVertex('v1');
+        $g->addVertex('v2');
+        $g->addVertex('v3');
+        $g->addVertex('v4');
+        $g->removeVertex('v4');
+        $g->addEdge('v1', 'v2');
+        $g->addEdge('v1', 'v3');
+        $g->addEdge('v3', 'v1');
+        $g->removeEdge('v1', 'v3');
+        $this->assertEquals(3, $g->vertexCount);
+        $this->assertEquals(2, $g->edgeCount);
+    }
+
+    public function testDijkstra()
+    {
+        $g = new DirectedGraph();
 
         $g->addVertex('A');
         $g->addVertex('B');
@@ -143,22 +166,23 @@ class DirectedGraphTest extends TestCase
         $res_E = $d->getPath('E');
 
         $this->assertEmpty($res_E['path']);
-        $this->assertEquals($res_E['dist'], INF);
+        $this->assertEquals(INF, $res_E['dist']);
 
         $res_C = $d->getPath('C');
         $expected_path = array('A', 'B', 'F', 'C');
-        $this->assertEquals($res_C['path'], $expected_path);
-        $this->assertEquals($res_C['dist'], 40);
+        $this->assertEquals($expected_path, $res_C['path']);
+        $this->assertEquals(40, $res_C['dist']);
 
         $d->calcDijkstra('B');
         $res_A = $d->getPath('A');
         $expected_path = array('B', 'F', 'C', 'D', 'G', 'A');
-        $this->assertEquals($res_A['path'], $expected_path);
-        $this->assertEquals($res_A['dist'], 70);
+        $this->assertEquals($expected_path, $res_A['path']);
+        $this->assertEquals(70, $res_A['dist']);
     }
 
-    public function testFloydWarshall() {
-        $g = new DirectedGraph;
+    public function testFloydWarshall()
+    {
+        $g = new DirectedGraph();
 
         $g->addVertex('A');
         $g->addVertex('B');
@@ -190,16 +214,16 @@ class DirectedGraphTest extends TestCase
         $res_E = $d->getPath('A', 'E');
 
         $this->assertEmpty($res_E['path']);
-        $this->assertEquals($res_E['dist'], null);
+        $this->assertEquals(null, $res_E['dist']);
 
         $res_C = $d->getPath('A', 'C');
         $expected_path = array('A', 'B', 'F', 'C');
-        $this->assertEquals($res_C['path'], $expected_path);
-        $this->assertEquals($res_C['dist'], 40);
+        $this->assertEquals($expected_path, $res_C['path']);
+        $this->assertEquals(40, $res_C['dist']);
 
         $res_A = $d->getPath('B', 'A');
         $expected_path = array('B', 'F', 'C', 'D', 'G', 'A');
-        $this->assertEquals($res_A['path'], $expected_path);
-        $this->assertEquals($res_A['dist'], 70);
+        $this->assertEquals($expected_path, $res_A['path']);
+        $this->assertEquals(70, $res_A['dist']);
     }
 }

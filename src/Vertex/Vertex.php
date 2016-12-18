@@ -48,9 +48,6 @@ class Vertex
      */
     public function setValue($value = null)
     {
-        if (empty($value)) {
-            trigger_error('No value given. Assuming null.', E_USER_NOTICE);
-        }
         $this->value = $value;
     }
 }

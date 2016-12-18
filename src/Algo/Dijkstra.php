@@ -88,7 +88,7 @@ class Dijkstra
             }
 
             foreach ($neighbors as $vertex) {
-                $alt = $this->dist[$minVertex] + $this->graph->edges[$minVertex][$vertex]->getValue();
+                $alt = $this->dist[$minVertex] + $this->graph->edge($minVertex, $vertex)->getValue();
                 if ($alt < $this->dist[$vertex]) {
                     $this->dist[$vertex] = $alt;
                     $this->prev[$vertex] = $minVertex;

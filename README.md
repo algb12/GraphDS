@@ -65,15 +65,24 @@ In a directed graph, inward and outward adjacency can be asserted by using `$g->
 ### Edges
 Edges are the objects that connect vertices together. Note that in GraphDS, edges are _not actual_ connections between vertices, but merely _abstract_ connections, meaning that they are stored as separate objects to the vertices.
 
-Accessing an edge can easily be done with `$g->edges['v1']['v2']`, where `v1` and `v2` are the vertices connected by the edge. Note that in an undirected graph, `$g->edges['v1']['v2']` and `$g->edges['v2']['v1']` are equivalent, whereas in directed graphs, they represent 2 distinct edges.
+Edges can be accessed easily via  `$g->edge('v1', 'v2')`, where `v1` and `v2` are the vertices connected by the edge. Note that in an undirected graph, `$g->edge('v1', 'v2')` and `$g->edge('v2', 'v1')` are equivalent, whereas in directed graphs, they represent 2 distinct edges.
+
+#### Real and virtual edges
+In GraphDS, edges are stored as object, and each object takes up space. To reduce the spatial footprint, the `edge` function was introduced in version 1.0.3, which returns both, real edges and "virtual" edges.
+
+Real edges are actual `DirectedEdge` or `UndirectedEdge` objects, whereas virtual edges are _not_ actually edge objects, but merely a result of the `edge` function returning edge `('v1', 'v2')`, even when `('v2', 'v1')` is requested. A virtual edge can be modified just like a real edge, with the exception of being removed. Virtual edges are not part of directed graphs.
+
+This is desired behavior, as in undirected graphs, edge `('v1', 'v2')` would be equivalent to `('v2', 'v1')`. Virtual edges also eliminate the problem of edge duplication in undirected graphs, and therefore also reduce the memory GraphDS takes up.
 
 #### Adding and removing edges
-To add an edge, simply call `$g->addEdge('v1', 'v2')`, where `v1` and `v2` are the vertices to be connected by this edge.
+To add an edge, simply call `$g->addEdge('v1', 'v2', 'value')`, where `v1` and `v2` are the vertices in graph `$g` to be connected by this edge, and `value` an optional value for the edge. The default value of edges is `null`.
 
-Note that in undirected graphs, this also adds edge `['v2']['v1']` in addition to `['v1']['v2']`. The fact that both 'directions' for the edge are affected goes for any method concerning edges.
+Note that in undirected graphs, this also adds a "virtual" edge `('v2', 'v1')` in addition to `('v1', 'v2')`.
+
+Removing an edge can be accomplished via `$g->removeEdge('v1', 'v2')`. Due to the behavior of virtual edges, this will remove both, the real edge `('v1', 'v2')` and the virtual edge `('v1', 'v2')` in an undirected graph, but only the real edge in a directed graph.
 
 #### Getting and setting the value of an edge
-To get the value of an edge, `$g->edges['v1']['v2']->getValue()` can be called. To set the value of an edge, `$g->edges['v1']['v2']->setValue(value)` can be called, where `value` can be any storable data-type.
+To get the value of an edge, `$g->edge('v1', 'v2')->getValue()` can be called. To set the value of an edge, `$g->edge('v1', 'v2')->setValue(value)` can be called, where `value` can be any storable data-type.
 
 ## Algorithms
 Since version 1.0.1, GraphDS has support for algorithms. One such algorithm already shipped with GraphDS is Dijkstra's shortest path algorithm for solving the shortest path problem.

@@ -58,6 +58,10 @@ class FloydWarshall
             foreach ($vertex1Value as $vertex2 => $vertex2Value) {
                 $this->dist[$vertex1][$vertex2] = $vertex2Value->getValue();
                 $this->next[$vertex1][$vertex2] = $vertex2;
+                if (get_class($this->graph) === 'GraphDS\Graph\UndirectedGraph') {
+                    $this->dist[$vertex2][$vertex1] = $this->dist[$vertex1][$vertex2];
+                    $this->next[$vertex2][$vertex1] = $vertex1;
+                }
             }
         }
         foreach (array_keys($this->graph->vertices) as $k) {
