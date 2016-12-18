@@ -6,7 +6,6 @@ namespace GraphDS\Persistence;
 
 use InvalidArgumentException;
 use SimpleXMLElement;
-use DOMDocument;
 use GraphDS\Graph\UndirectedGraph;
 use GraphDS\Graph\DirectedGraph;
 
@@ -53,7 +52,7 @@ class ImportGraph
 
         if ($directionality === 'directed') {
             $g = new DirectedGraph();
-        } else if ($directionality === 'undirected') {
+        } elseif ($directionality === 'undirected') {
             $g = new UndirectedGraph();
         }
 
