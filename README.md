@@ -45,7 +45,7 @@ In any graph, all vertices can be accessed through the `$g->vertices` array, whe
 Adding and removing vertices can be accomplished using the `$g->addVertex('v')` and `$g->removeVertex('v')` methods, where `v` is the name of the vertex to be added/removed.
 
 #### Getting and setting the value of a vertex
-To get the value of a vertex, `$g->vertices['v']->getValue()` can be called. To set the value of a vertex, `$g->vertices['v']->setValue(value)` can be called, where `value` can be any storable data-type.
+To get the value of a vertex, `$g->vertices['v']->getValue()` can be called. To set the value of a vertex, `$g->vertices['v']->setValue(value)` can be called, where `value` is stored as a string.
 
 #### Getting neighbors of a vertex
 Getting the neighbors of a vertex in an undirected graph can be accomplished by using `$g->vertices['v']->getNeighbors()`.
@@ -75,7 +75,7 @@ Real edges are actual `DirectedEdge` or `UndirectedEdge` objects, whereas virtua
 This is desired behavior, as in undirected graphs, edge `('v1', 'v2')` would be equivalent to `('v2', 'v1')`. Virtual edges also eliminate the problem of edge duplication in undirected graphs, and therefore also reduce the memory GraphDS takes up.
 
 #### Adding and removing edges
-To add an edge, simply call `$g->addEdge('v1', 'v2', 'value')`, where `v1` and `v2` are the vertices in graph `$g` to be connected by this edge, and `value` an optional value for the edge. The default value of edges is `null`.
+To add an edge, simply call `$g->addEdge('v1', 'v2', 'value')`, where `v1` and `v2` are the vertices in graph `$g` to be connected by this edge, and `value` an optional value for the edge, which must be numeric. The default value of edges is `null`.
 
 Note that in undirected graphs, this also adds a "virtual" edge `('v2', 'v1')` in addition to `('v1', 'v2')`.
 
@@ -147,11 +147,24 @@ echo 'Shortest distance from A to D: '.$res_D['dist'];
 ### Floyd-Warshall algorithm
 The Floyd-Warshall algorithm calculates the shortest path between every single vertex.
 
-To use Dijkstra's algorithm, use the `GraphDS\Algo\FloydWarshall` class, and run `$fw = new FloydWarshall($g)`, where `$fw` is the Floyd-Warshall algorithm object, and `$g` is a graph.
+To use the Floyd-Warshall algorithm, use the `GraphDS\Algo\FloydWarshall` class, and run `$fw = new FloydWarshall($g)`, where `$fw` is the Floyd-Warshall algorithm object, and `$g` is a graph.
 
 After initializing the algorithm, the actual calculation of shortest paths in the graph can be invoked using `$fw->calcFloydWarshall()`.
 
 Getting a path from the graph then is as easy as running `$res = $fw->getPath($u, $v)`, where `$u` and `$v` are two vertices.This returns an array of the path, `$res`, where `$res['path']` is the path, and `$res['distance']` is the distance of that path.
+
+## Persistence
+GraphDS has the ability to export and import graphs using the popular GraphML format. Note that for graph persistence to function correctly, the correct read/write permissions should be set on the server, which is beyond the scope of this README.
+
+Examples of GraphML files are `graphUndirected.graphml` and `graphDirected.graphml`, both found in this repository.
+
+### Exporting graphs
+To export a graph to a GraphML file, use the `GraphDS\Persistence\ExportGraph` class, and run `$e = new ExportGraph($g)`, where `$e` is the graph exporter object, and `$g` is a graph. `$graphml = $e->getGraphML()` sets `$graphml` to the GraphML markup of the graph, and `$e->saveToFile($graphml, 'graph.graphml')` writes this markup to the file `graph.graphml`.
+
+### Importing graphs
+To import a graph from a GraphML file, use the `GraphDS\Persistence\ImportGraph` class, and run `$i = new ImportGraph()`, where `$i` is the graph importer object. `$g = $i->fromGraphML('graph.graphml')` sets `$g` to a GraphDS graph object represented by the GraphML markup in the file `graph.graphml`.
+
+The object `$g` is now a conventional GraphDS, reconstructed from the GraphML markup in the file of `graph.graphml`.
 
 ## In case of bugs and/or suggestions
 If, for any reason, there is a bug found in GraphDS, please message me on GitHub or send me an email to: <algb12.19@gmail.com>. The same goes for any suggestions.

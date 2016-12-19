@@ -4,6 +4,8 @@ use PHPUnit\Framework\TestCase;
 use GraphDS\Graph\DirectedGraph;
 use GraphDS\Algo\Dijkstra;
 use GraphDS\Algo\FloydWarshall;
+use GraphDS\Persistence\ImportGraph;
+use GraphDS\Persistence\ExportGraph;
 
 class DirectedGraphTest extends TestCase
 {
@@ -128,8 +130,8 @@ class DirectedGraphTest extends TestCase
         $g->addEdge('v1', 'v3');
         $g->addEdge('v3', 'v1');
         $g->removeEdge('v1', 'v3');
-        $this->assertEquals(3, $g->vertexCount);
-        $this->assertEquals(2, $g->edgeCount);
+        $this->assertEquals(3, $g->getVertexCount());
+        $this->assertEquals(2, $g->getEdgeCount());
     }
 
     public function testDijkstra()
@@ -225,5 +227,28 @@ class DirectedGraphTest extends TestCase
         $expected_path = array('B', 'F', 'C', 'D', 'G', 'A');
         $this->assertEquals($expected_path, $res_A['path']);
         $this->assertEquals(70, $res_A['dist']);
+    }
+
+    public function testImportExport()
+    {
+        $g = new DirectedGraph();
+
+        $g->addVertex('A');
+        $g->addVertex('B');
+        $g->addVertex('C');
+
+        $g->addEdge('A', 'B', 20);
+        $g->addEdge('A', 'C', 80);
+        $g->addEdge('B', 'C', 90);
+        $g->addEdge('C', 'B', 70);
+
+        $e = new ExportGraph($g);
+        $graphml = $e->getGraphML();
+        $e->saveToFile($graphml, 'graphDirected.graphml');
+
+        $i = new ImportGraph($g);
+        $gi = $i->fromGraphML('graphDirected.graphml');
+
+        $this->assertEquals($g, $gi);
     }
 }

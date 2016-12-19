@@ -20,23 +20,11 @@ class UndirectedGraph extends Graph
      */
     public $vertices;
     /**
-     * A running count of all the vertices.
-     *
-     * @var int
-     */
-    public $vertexCount;
-    /**
      * An array holding all edges of the graph.
      *
      * @var array
      */
     public $edges;
-    /**
-     * A running count of all the edges.
-     *
-     * @var int
-     */
-    public $edgeCount;
     /**
      * Defines whether the graph is directed or not.
      *
@@ -62,7 +50,6 @@ class UndirectedGraph extends Graph
     {
         if (empty($this->vertices[$vertex])) {
             $this->vertices[$vertex] = new UndirectedVertex();
-            ++$this->vertexCount;
         }
     }
 
@@ -87,7 +74,6 @@ class UndirectedGraph extends Graph
         }
         unset($this->edges[$vertex]);
         unset($this->vertices[$vertex]);
-        --$this->vertexCount;
     }
 
     /**
@@ -130,7 +116,6 @@ class UndirectedGraph extends Graph
             $this->vertices[$vertex1]->addNeighbor($vertex2);
             $this->vertices[$vertex2]->addNeighbor($vertex1);
         }
-        ++$this->edgeCount;
     }
 
     /**
@@ -161,7 +146,6 @@ class UndirectedGraph extends Graph
                 unset($this->edges[$vertex2]);
             }
         }
-        --$this->edgeCount;
     }
 
     /**

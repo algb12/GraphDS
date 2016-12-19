@@ -20,23 +20,11 @@ class DirectedGraph extends Graph
      */
     public $vertices;
     /**
-     * A running count of all the vertices.
-     *
-     * @var int
-     */
-    public $vertexCount;
-    /**
      * An array holding all edges of the graph.
      *
      * @var array
      */
     public $edges;
-    /**
-     * A running count of all the edges.
-     *
-     * @var int
-     */
-    public $edgeCount;
     /**
      * Defines whether the graph is directed or not.
      *
@@ -62,7 +50,6 @@ class DirectedGraph extends Graph
     {
         if (empty($this->vertices[$vertex])) {
             $this->vertices[$vertex] = new DirectedVertex();
-            ++$this->vertexCount;
         }
     }
 
@@ -89,10 +76,9 @@ class DirectedGraph extends Graph
             if ($this->edge($neighbor, $vertex)) {
                 $this->removeEdge($neighbor, $vertex);
             }
-            unset($this->edges[$vertex]);
-            unset($this->vertices[$vertex]);
         }
-        --$this->vertexCount;
+        unset($this->edges[$vertex]);
+        unset($this->vertices[$vertex]);
     }
 
     /**
@@ -118,7 +104,7 @@ class DirectedGraph extends Graph
      *
      * @param string $vertex1 ID of first vertex
      * @param string $vertex2 ID of second vertex
-     * @param double $value   The value/weight the edge should hold
+     * @param float  $value   The value/weight the edge should hold
      */
     public function addEdge($vertex1, $vertex2, $value = null)
     {
@@ -133,7 +119,6 @@ class DirectedGraph extends Graph
             $this->vertices[$vertex1]->addOutNeighbor($vertex2);
             $this->vertices[$vertex2]->addInNeighbor($vertex1);
         }
-        ++$this->edgeCount;
     }
 
     /**
@@ -156,7 +141,6 @@ class DirectedGraph extends Graph
         if (empty($this->edges[$vertex1])) {
             unset($this->edges[$vertex1]);
         }
-        --$this->edgeCount;
     }
 
     /**

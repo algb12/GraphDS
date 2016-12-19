@@ -62,8 +62,8 @@ class ExportGraph
         $graphElem = $export->addChild('graph');
         $graphElem->addAttribute('id', 'G');
         $graphElem->addAttribute('edgedefault', $directionality);
-        $graphElem->addAttribute('parse.nodes', $this->graph->vertexCount);
-        $graphElem->addAttribute('parse.edges', $this->graph->edgeCount);
+        $graphElem->addAttribute('parse.nodes', $this->graph->getVertexCount());
+        $graphElem->addAttribute('parse.edges', $this->graph->getEdgeCount());
         $graphElem->addAttribute('parse.nodeids', 'free');
         $graphElem->addAttribute('parse.edgeids', 'free');
         $graphElem->addAttribute('parse.order', 'nodesfirst');
@@ -79,8 +79,8 @@ class ExportGraph
         foreach ($this->graph->edges as $edgeSource) {
             foreach ($edgeSource as $edgeTarget) {
                 $edge = $graphElem->addChild('edge');
-                $edge->addAttribute('source', $edgeTarget->vertices[0]);
-                $edge->addAttribute('target', $edgeTarget->vertices[1]);
+                $edge->addAttribute('source', $edgeTarget->vertices['from']);
+                $edge->addAttribute('target', $edgeTarget->vertices['to']);
                 if (null !== ($value = $edgeTarget->getValue())) {
                     $data = $edge->addChild('data', $value);
                     $data->addAttribute('key', 'd1');

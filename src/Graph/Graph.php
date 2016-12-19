@@ -16,23 +16,11 @@ class Graph
      */
     public $vertices;
     /**
-     * A running count of all the vertices.
-     *
-     * @var int
-     */
-    public $vertexCount;
-    /**
      * An array holding all edges of the graph.
      *
      * @var array
      */
     public $edges;
-    /**
-     * A running count of all the edges.
-     *
-     * @var int
-     */
-    public $edgeCount;
     /**
      * Defines whether the graph is directed or not.
      *
@@ -46,8 +34,33 @@ class Graph
     public function __construct()
     {
         $this->vertices = array();
-        $this->vertexCount = 0;
         $this->edges = array();
-        $this->edgeCount = 0;
+    }
+
+    /**
+     * Returns the number of vertices in the graph.
+     *
+     * @return int Number of vertices in the graph
+     */
+    public function getVertexCount()
+    {
+        return count($this->vertices);
+    }
+
+    /**
+     * Returns the number of edges in the graph.
+     *
+     * @return int Number of edges in the graph
+     */
+    public function getEdgeCount()
+    {
+        $count = 0;
+        foreach ($this->edges as $edgeFrom) {
+            foreach ($edgeFrom as $edgeTo) {
+                ++$count;
+            }
+        }
+
+        return $count;
     }
 }

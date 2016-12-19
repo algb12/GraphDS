@@ -32,8 +32,8 @@ class UndirectedEdge extends Edge
     public function __construct($vertex1, $vertex2, $value = null)
     {
         parent::__construct();
-        $this->vertices[] = $vertex1;
-        $this->vertices[] = $vertex2;
+        $this->vertices['from'] = $vertex1;
+        $this->vertices['to'] = $vertex2;
         $this->value = $value;
     }
 }
