@@ -142,42 +142,4 @@ class DirectedGraph extends Graph
             unset($this->edges[$vertex1]);
         }
     }
-
-    /**
-     * Returns the value associated with the edge between two directed vertices (e.g. cost, $vertex1 to $vertex2).
-     *
-     * @param string $vertex1 ID of first vertex
-     * @param string $vertex2 ID of second vertex
-     *
-     * @return string Value associated with the edge between $vertex1 and $vertex2
-     */
-    public function getEdgeValue($vertex1, $vertex2)
-    {
-        if (empty($this->vertices[$vertex1]) || empty($this->vertices[$vertex2])) {
-            throw new InvalidArgumentException('One of the vertices does not exist.');
-        }
-        if (null === $this->edge($vertex1, $vertex2)) {
-            throw new InvalidArgumentException("No edge from $vertex1 to $vertex2.");
-        }
-
-        return $this->edge($vertex1, $vertex2)->getValue();
-    }
-
-    /**
-     * Sets the value associated with the edge between two directed vertices (e.g. cost, $vertex1 to $vertex2).
-     *
-     * @param string $vertex1 ID of first vertex
-     * @param string $vertex2 ID of second vertex
-     * @param string $value   Value to be set for the edge between $vertex1 and $vertex2
-     */
-    public function setEdgeValue($vertex1, $vertex2, $value)
-    {
-        if (empty($this->vertices[$vertex1]) || empty($this->vertices[$vertex2])) {
-            throw new InvalidArgumentException('One of the vertices does not exist.');
-        }
-        if (null === $this->edge($vertex1, $vertex2)) {
-            throw new InvalidArgumentException("No edge from $vertex1 to $vertex2.");
-        }
-        $this->edge($vertex1, $vertex2)->setValue($value);
-    }
 }
