@@ -198,4 +198,4 @@ The object `$g` is now a conventional GraphDS, reconstructed from the GraphML ma
 ## In case of bugs and/or suggestions
 If, for any reason, there is a bug found in GraphDS, please message me on GitHub or send me an email to: <algb12.19@gmail.com>. The same goes for any suggestions.
 
-Despite thorough unit testing, bugs will inevitably appear, so please open up any issues on GitHub if they arise!
+Despite thorough unit testing, bugs will inevitably appear, so please open up any issues on GitHub if they arise!.
