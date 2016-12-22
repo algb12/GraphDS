@@ -55,10 +55,8 @@ class Graph
     public function getEdgeCount()
     {
         $count = 0;
-        foreach ($this->edges as $edgeFrom) {
-            foreach ($edgeFrom as $edgeTo) {
-                ++$count;
-            }
+        foreach ($this->edges as $edgesFrom) {
+            $count += count($edgesFrom);
         }
 
         return $count;

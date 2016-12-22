@@ -53,9 +53,9 @@ class ImportGraph
         $directionality = (string) $this->import->graph['edgedefault'];
 
         if ($directionality === 'directed') {
-            $g = new DirectedGraph();
+            $graph = new DirectedGraph();
         } elseif ($directionality === 'undirected') {
-            $g = new UndirectedGraph();
+            $graph = new UndirectedGraph();
         }
 
         foreach ($this->import->graph->node as $node) {
@@ -66,8 +66,8 @@ class ImportGraph
                     $value = (string) $this->import->xpath('key[@for="node"]/default');
                 }
             }
-            $g->addVertex($vertex);
-            $g->vertices[$vertex]->setValue($value);
+            $graph->addVertex($vertex);
+            $graph->vertices[$vertex]->setValue($value);
         }
 
         foreach ($this->import->graph->edge as $edge) {
@@ -78,10 +78,10 @@ class ImportGraph
                     $value = (string) $this->import->xpath('key[@for="edge"]/default');
                 }
             }
-            $g->addEdge($edgeSource, $edgeTarget);
-            $g->edge($edgeSource, $edgeTarget)->setValue($value);
+            $graph->addEdge($edgeSource, $edgeTarget);
+            $graph->edge($edgeSource, $edgeTarget)->setValue($value);
         }
 
-        return $g;
+        return $graph;
     }
 }

@@ -47,8 +47,8 @@ class FloydWarshall
      */
     public function run()
     {
-        foreach ($this->graph->vertices as $vertex1 => $vertex1Value) {
-            foreach ($this->graph->vertices as $vertex2 => $vertex2Value) {
+        foreach (array_keys($this->graph->vertices) as $vertex1) {
+            foreach (array_keys($this->graph->vertices) as $vertex2) {
                 $this->dist[$vertex1][$vertex2] = INF;
                 $this->next[$vertex1][$vertex2] = null;
                 $this->dist[$vertex1][$vertex1] = 0;
