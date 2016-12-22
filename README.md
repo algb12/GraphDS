@@ -85,73 +85,102 @@ Removing an edge can be accomplished via `$g->removeEdge('v1', 'v2')`. Due to th
 To get the value of an edge, `$g->edge('v1', 'v2')->getValue()` can be called. To set the value of an edge, `$g->edge('v1', 'v2')->setValue(value)` can be called, where `value` can be any storable data-type.
 
 ## Algorithms
-Since version 1.0.1, GraphDS has support for algorithms. One such algorithm already shipped with GraphDS is Dijkstra's shortest path algorithm for solving the shortest path problem.
-`GraphDS\Algo` is the namespace of algorithms in GraphDS.
+Since version 1.0.1, GraphDS has support for algorithms. `GraphDS\Algo` is the namespace of algorithms in GraphDS.
+
+In GraphDS, algorithms are treated as separate objects modifying the graph. They accept the graph and work on it, but do not impact the graph's core functionality.
+
+This is what makes GraphDS lean and streamlined, as algorithms only have to be loaded into memory if they are needed, as they are not intrinsic to a graph object.
+
+### Running algorithms
+1. Any algorithm first has to be "used" by PHP, e.g. `use GraphDS\Algo\Algorithm`
+2. An new instance of the algorithm on the relevant graph (`$g`) has to be created, e.g. `$a = new Algorithm($g)`
+3. The algorithm can now be run using `$a->run(args)`, where `args` are arguments which differ from algorithm to algorithm
+4. Getting the results of an algorithm is done using `$a->get(args)`, where args are arguments which differ from algorithm to algorithm
+
+The "run-and-get" pragma eases the use of algorithms, as these are the only two methods an algorithm should have. From now on, the documentation will only refer to the arguments the algorithm methods accept.
+
+### Writing GraphDS algorithms
+In order to ease the writing of algorithms, PHP's Standard PHP Library (SPL) provides useful helper classes, such as:
+- SplQueue: An implementation of a FIFO queue
+- SplStack: An implementation of a LIFO stack
+
+These classes greatly simplify the writing of algorithms, such as depth-first search (DFS) and breadth-first search (BFS), which can be found in the directory with the algorithms.
+
+The following outlines the basic structure of GraphDS algorithms. For the sake of brevity, docblocks have been left out, although it is most recommended to properly document the algorithm:
+
+```php
+<?php
+namespace GraphDS\Algo;
+
+use InvalidArgumentException;
+
+// Class defining an algorithm named "Algorithm"
+class Algorithm
+{
+    // Reference to the graph
+    public $graph;
+
+    // Constructor accepts a GraphDS graph and validates it
+    public function __construct($graph)
+    {
+        if (empty($graph) || get_parent_class($graph)  !== 'GraphDS\Graph\Graph') {
+            throw new InvalidArgumentException("Dijkstra's shortest path algorithm requires a graph.");
+        }
+        $this->graph = &$graph;
+    }
+
+    // Running the algorithm
+    public function run(args)
+    {
+        code...
+    }
+
+    // Getting the results of the algorithm
+    public function get(args)
+    {
+        code...
+    }
+}
+```
+
+The above, outlined in words again:
+- Check if graph is actually a graph and use it, otherwise throw `InvalidArgumentException`
+- `run(args)` executes the algorithm, where `args` are arguments
+- `get(args)` gets the results of the algorithm, where `args` are arguments
+
+### Breadth-first search (BFS)
+BFS, a path traversal algorithm, is in the class `GraphDS\Algo\BFS`. It visits every vertex in the graph, and goes along the breadth of the graph. As such, level by level, it visits every vertex in the graph.
+
+- `$bfs->run($root)` accepts `$root` as a compulsory argument, this is the starting vertex for the BFS
+- `$bfs->get()` accepts no arguments. It returns an array `$arr`, with subarrays:
+  - `$arr['discovered']` (vertices discovered in BFS order)
+  - `$arr['dist']` (the distances of each vertex to the root vertex, in hops)
+  - `$arr['parent']`, each vertex's parent vertex when using BFS
+
+### Depth-first search (DFS)
+DFS, a path traversal algorithm, is in the class `GraphDS\Algo\DFS`. It visits every vertex in the graph, and goes along the depth of the graph. As such, it visits every vertex in the graph, and only move from vertex to vertex once the vertex has been visited to its full depth.
+
+- `$dfs->run($root)` accepts `$root` as a compulsory argument, this is the starting vertex for the DFS
+- `$dfs->get()` accepts no arguments. It returns an array `$arr`, with subarrays:
+  - `$arr['discovered']` (vertices discovered in DFS order)
+  - `$arr['dist']` (the distances of each vertex to the root vertex, in hops)
+  - `$arr['parent']`, each vertex's parent vertex when using DFS
 
 ### Dijkstra's shortest path algorithm
-In GraphDS, algorithms are treated as separate objects modifying the graph. This is what makes GraphDS lean and streamlined, as algorithms only have to be loaded into memory if they are needed, as they are not intrinsic to a graph object.
+Dijkstra's shortest path algorithm finds the shortest path between a vertex and all other vertices. It is in the class `GraphDS\Algo\Dijkstra`.
 
-To use Dijkstra's algorithm, use the `GraphDS\Algo\Dijkstra` class.
-
-For a directed graph `$g`, this is how Dijkstra's algorithm could be used:
-
-```
-<?php
-
-require __DIR__.'/vendor/autoload.php';
-
-use GraphDS\Graph\DirectedGraph;
-use GraphDS\Algo\Dijkstra;
-
-$g = new DirectedGraph;
-
-$g->addVertex('A');
-$g->addVertex('B');
-$g->addVertex('C');
-$g->addVertex('D');
-$g->addVertex('E');
-$g->addVertex('F');
-$g->addVertex('G');
-$g->addVertex('H');
-
-$g->addEdge('A', 'B', 20);
-$g->addEdge('A', 'D', 80);
-$g->addEdge('A', 'G', 90);
-$g->addEdge('B', 'F', 10);
-$g->addEdge('C', 'D', 10);
-$g->addEdge('C', 'F', 50);
-$g->addEdge('C', 'H', 20);
-$g->addEdge('D', 'C', 10);
-$g->addEdge('D', 'G', 20);
-$g->addEdge('E', 'B', 50);
-$g->addEdge('E', 'G', 30);
-$g->addEdge('F', 'C', 10);
-$g->addEdge('F', 'D', 40);
-$g->addEdge('G', 'A', 20);
-
-$d = new Dijkstra($g);
-
-$d->calcDijkstra('A');
-$res_D = $d->getPath('D');
-
-echo '<pre>';
-print_r($res_D['path']);
-echo '</pre>';
-
-echo 'Shortest distance from A to D: '.$res_D['dist'];
-```
-
-`$d->calcDijkstra(u)` calculates the shortest path to every vertex from vertex `u`.
-`$d->getPath(v)` returns an array `$res`, where `$res['path']` contains the shortest path and `$res['dist']` contains the distance of that path from the origin vertex `u` to the destination vertex `v`.
+- `$dijkstra->run($start)` accepts `$start` as a compulsory argument, this is the vertex from which Dijkstra should start
+- `$dfs->get($dest)` accepts `$dest` as a compulsory argument, which is the destination vertex to which the shortest path should be returned. It returns an array `$arr`, with subarrays:
+  - `$arr['path']` (the shortest path to the vertex `$dest` from `$start`)
+  - `$arr['dist']` (the distances of each vertex to the root vertex, in edge weights)
 
 ### Floyd-Warshall algorithm
-The Floyd-Warshall algorithm calculates the shortest path between every single vertex.
+The Floyd-Warshall algorithm calculates the shortest path between every single vertex in the graph. It is in the class `GraphDS\Algo\FloydWarshall`.
 
-To use the Floyd-Warshall algorithm, use the `GraphDS\Algo\FloydWarshall` class, and run `$fw = new FloydWarshall($g)`, where `$fw` is the Floyd-Warshall algorithm object, and `$g` is a graph.
-
-After initializing the algorithm, the actual calculation of shortest paths in the graph can be invoked using `$fw->calcFloydWarshall()`.
-
-Getting a path from the graph then is as easy as running `$res = $fw->getPath($u, $v)`, where `$u` and `$v` are two vertices.This returns an array of the path, `$res`, where `$res['path']` is the path, and `$res['distance']` is the distance of that path.
+- `$fw->run()` accepts no arguments, and simply runs then algorithm on the graph
+- `$fw->get($startVertex, $destVertex)` accepts `$startVertex` and `$destVertex` as a compulsory argument, which are the start vertex and the destination vertex, respectively, between which the shortest path should be worked out. It returns an array `$arr`, with subarrays:
+  - `$arr['path']` (the shortest path to the vertex `$dest` from `$start`)
+  - `$arr['dist']` (the distance of the destination vertex to the start vertex, in edge weights)
 
 ## Persistence
 GraphDS has the ability to export and import graphs using the popular GraphML format. Note that for graph persistence to function correctly, the correct read/write permissions should be set on the server, which is beyond the scope of this README.
