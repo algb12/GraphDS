@@ -14,7 +14,7 @@ class Edge
      *
      * @var double
      */
-    public $value;
+    protected $value;
     /**
      * $vertices An array of vertices associated with the edge.
      *
@@ -27,7 +27,7 @@ class Edge
      */
     public function __construct()
     {
-        $this->value = 0.0;
+        $this->value = null;
         $this->vertices = array();
     }
 
@@ -38,7 +38,7 @@ class Edge
      */
     public function getValue()
     {
-        return (double) $this->value;
+        return $this->value;
     }
 
     /**

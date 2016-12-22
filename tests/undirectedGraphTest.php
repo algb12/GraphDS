@@ -140,21 +140,21 @@ class UndirectedGraphTest extends TestCase
 
         $d = new Dijkstra($g);
 
-        $d->calcDijkstra('A');
-        $res_E = $d->getPath('E');
+        $d->run('A');
+        $res_E = $d->get('E');
 
         $this->assertNotEmpty($res_E['path']);
         $expected_path = array('A', 'B', 'E');
         $this->assertEquals($expected_path, $res_E['path']);
         $this->assertEquals(70, $res_E['dist']);
 
-        $res_C = $d->getPath('C');
+        $res_C = $d->get('C');
         $expected_path = array('A', 'B', 'F', 'C');
         $this->assertEquals($expected_path, $res_C['path']);
         $this->assertEquals(80, $res_C['dist']);
 
-        $d->calcDijkstra('B');
-        $res_A = $d->getPath('A');
+        $d->run('B');
+        $res_A = $d->get('A');
         $expected_path = array('B', 'A');
         $this->assertEquals($expected_path, $res_A['path']);
         $this->assertEquals(20, $res_A['dist']);
@@ -190,20 +190,20 @@ class UndirectedGraphTest extends TestCase
 
         $d = new FloydWarshall($g);
 
-        $d->calcFloydWarshall();
-        $res_E = $d->getPath('A', 'E');
+        $d->run();
+        $res_E = $d->get('A', 'E');
 
         $this->assertNotEmpty($res_E['path']);
         $expected_path = array('A', 'B', 'E');
         $this->assertEquals($expected_path, $res_E['path']);
         $this->assertEquals(70, $res_E['dist']);
 
-        $res_C = $d->getPath('A', 'C');
+        $res_C = $d->get('A', 'C');
         $expected_path = array('A', 'B', 'F', 'C');
         $this->assertEquals($expected_path, $res_C['path']);
         $this->assertEquals(80, $res_C['dist']);
 
-        $res_A = $d->getPath('B', 'A');
+        $res_A = $d->get('B', 'A');
         $expected_path = array('B', 'A');
         $this->assertEquals($expected_path, $res_A['path']);
         $this->assertEquals(20, $res_A['dist']);

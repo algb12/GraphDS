@@ -45,7 +45,7 @@ class FloydWarshall
     /**
      * Calculates the shortest paths in the graph using the Floyd-Warshall algorithm.
      */
-    public function calcFloydWarshall()
+    public function run()
     {
         foreach ($this->graph->vertices as $vertex1 => $vertex1Value) {
             foreach ($this->graph->vertices as $vertex2 => $vertex2Value) {
@@ -84,7 +84,7 @@ class FloydWarshall
      *
      * @return array An array containing the shortest path and distance
      */
-    public function getPath($start, $dest)
+    public function get($start, $dest)
     {
         $startReal = $start;
         $path = array($start);
@@ -95,9 +95,9 @@ class FloydWarshall
             $path[] = $start;
         }
 
-        $result['path'] = $path;
-        $result['dist'] = $this->dist[$startReal][$dest];
-
-        return $result;
+        return array(
+            'path' => $path,
+            'dist' => $this->dist[$startReal][$dest]
+        );
     }
 }

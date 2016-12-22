@@ -62,7 +62,7 @@ class Dijkstra
      *
      * @return array Array holding the distances and previous vertices as calculated by Dijkstra's algorithm
      */
-    public function calcDijkstra($start)
+    public function run($start)
     {
         $this->start = $start;
         if (empty($this->graph->vertices[$start])) {
@@ -104,7 +104,7 @@ class Dijkstra
      *
      * @return array An array containing the shortest path and distance
      */
-    public function getPath($dest)
+    public function get($dest)
     {
         $destReal = $dest;
         $path = array();
@@ -115,9 +115,10 @@ class Dijkstra
         if ($dest === $this->start) {
             array_unshift($path, $dest);
         }
-        $result['path'] = $path;
-        $result['dist'] = $this->dist[$destReal];
 
-        return $result;
+        return array(
+            'path' => $path,
+            'dist' => $this->dist[$destReal]
+        );
     }
 }

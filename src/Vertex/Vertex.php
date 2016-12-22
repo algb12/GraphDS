@@ -14,7 +14,7 @@ class Vertex
      *
      * @var mixed
      */
-    public $value;
+    protected $value;
     /**
      * Array holding references to all neighboring vertices of this vertex.
      *

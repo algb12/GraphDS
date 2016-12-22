@@ -14,7 +14,7 @@ class UndirectedEdge extends Edge
      *
      * @var double
      */
-    public $value;
+    protected $value;
     /**
      * $vertices An array of vertices associated with the edge.
      *

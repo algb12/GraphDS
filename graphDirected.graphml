@@ -4,7 +4,7 @@
     <default/>
   </key>
   <key id="d1" for="edge" attr.name="weight" attr.type="double">
-    <default>0</default>
+    <default/>
   </key>
   <graph id="G" edgedefault="directed" parse.nodes="3" parse.edges="4" parse.nodeids="free" parse.edgeids="free" parse.order="nodesfirst">
     <node id="A"/>

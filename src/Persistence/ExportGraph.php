@@ -57,7 +57,7 @@ class ExportGraph
         $keyEdge->addAttribute('for', 'edge');
         $keyEdge->addAttribute('attr.name', 'weight');
         $keyEdge->addAttribute('attr.type', 'double');
-        $keyEdge->addChild('default', 0.0);
+        $keyEdge->addChild('default', '');
 
         $graphElem = $export->addChild('graph');
         $graphElem->addAttribute('id', 'G');
