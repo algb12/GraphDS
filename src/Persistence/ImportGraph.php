@@ -43,11 +43,10 @@ class ImportGraph
      */
     public function fromGraphML($file)
     {
-        if (file_exists($file)) {
-            $importRaw = file_get_contents($file);
-        } else {
+        if (!file_exists($file)) {
             throw new InvalidArgumentException('File '.$file.' does not exist.');
         }
+        $importRaw = file_get_contents($file);
 
         $this->import = new SimpleXMLElement($importRaw);
         $directionality = (string) $this->import->graph['edgedefault'];
