@@ -79,7 +79,7 @@ To add an edge, simply call `$g->addEdge('v1', 'v2', 'value')`, where `v1` and `
 
 Note that in undirected graphs, this also adds a "virtual" edge `('v2', 'v1')` in addition to `('v1', 'v2')`.
 
-Removing an edge can be accomplished via `$g->removeEdge('v1', 'v2')`. Due to the behavior of virtual edges, this will remove both, the real edge `('v1', 'v2')` and the virtual edge `('v1', 'v2')` in an undirected graph, but only the real edge in a directed graph.
+Removing an edge can be accomplished via `$g->removeEdge('v1', 'v2')`. Due to the behavior of virtual edges, this will remove both, the real edge `('v1', 'v2')` and the virtual edge `('v2', 'v1')` in an undirected graph, but only the real edge in a directed graph.
 
 #### Getting and setting the value of an edge
 To get the value of an edge, `$g->edge('v1', 'v2')->getValue()` can be called. To set the value of an edge, `$g->edge('v1', 'v2')->setValue(value)` can be called, where `value` can be any storable data-type.
@@ -124,7 +124,7 @@ class Algorithm
     public function __construct($graph)
     {
         if (empty($graph) || get_parent_class($graph)  !== 'GraphDS\Graph\Graph') {
-            throw new InvalidArgumentException("Dijkstra's shortest path algorithm requires a graph.");
+            throw new InvalidArgumentException("Algorithm requires a graph.");
         }
         $this->graph = &$graph;
     }
