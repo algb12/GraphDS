@@ -105,13 +105,12 @@ class ExportGraph
     public function saveToFile($data, $file)
     {
         $dir = dirname($file);
-        if (is_writable($dir)) {
-            $fp = fopen($file, 'w');
-            fwrite($fp, $data);
-            fclose($fp);
-        } else {
+        if (!is_writable($dir)) {
             throw new InvalidArgumentException('Directory '.$dir.' not writable. Cannot write to '.$file.'.');
         }
+        $handle = fopen($file, 'w');
+        fwrite($handle, $data);
+        fclose($handle);
     }
 }
 
