@@ -56,8 +56,10 @@
         // Floyd-Warshall
         // --------------
         $fw = new FloydWarshall($g);
-        $fw->calcFloydWarshall();
-        $fw_res = $fw->getPath($start_city, $dest_city);
+        $fw_starttime = round(microtime(true) * 1000);
+        $fw->run();
+        $fw_res = $fw->get($start_city, $dest_city);
+        $fw_benchmark = (round(microtime(true) * 1000)) - $fw_starttime;
 
         // Create path info text
         $info_fw_path = 'To get from '.$start_city.' to '.$dest_city.': ';
@@ -79,8 +81,10 @@
         // Dijkstra
         // --------
         $dijk = new Dijkstra($g);
-        $dijk->calcDijkstra($start_city);
-        $dijk_res = $dijk->getPath($dest_city);
+        $dijk_starttime = round(microtime(true) * 1000);
+        $dijk->run($start_city);
+        $dijk_res = $dijk->get($dest_city);
+        $dijk_benchmark = (round(microtime(true) * 1000)) - $dijk_starttime;
 
         // Create path info text
         $info_dijk_path = 'To get from '.$start_city.' to '.$dest_city.': ';
@@ -161,9 +165,11 @@
             echo '<h4>Dijkstra calculation:</h4>
             <p>'.$info_dijk_path.'</p>
             <p>'.$info_dijk_dist.'</p>
+            <p>Algorithm execution took '.$dijk_benchmark.'ms.</p>
             <h4>Floyd-Warshall calculation:</h4>
             <p>'.$info_fw_path.'</p>
-            <p>'.$info_fw_dist.'</p>';
+            <p>'.$info_fw_dist.'</p>
+            <p>Algorithm execution took '.$fw_benchmark.'ms.</p>';
         }
     ?>
 </body>
