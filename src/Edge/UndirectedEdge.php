@@ -12,7 +12,7 @@ class UndirectedEdge extends Edge
     /**
      * $value A value/weight held by the edge.
      *
-     * @var double
+     * @var float
      */
     protected $value;
     /**
@@ -27,7 +27,7 @@ class UndirectedEdge extends Edge
      *
      * @param string $vertex1 ID of first vertex
      * @param string $vertex2 ID of second vertex
-     * @param double $value   The value/weight the edge should hold
+     * @param float  $value   The value/weight the edge should hold
      */
     public function __construct($vertex1, $vertex2, $value = null)
     {

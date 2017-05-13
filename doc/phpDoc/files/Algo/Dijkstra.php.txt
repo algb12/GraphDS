@@ -118,7 +118,7 @@ class Dijkstra
 
         return array(
             'path' => $path,
-            'dist' => $this->dist[$destReal]
+            'dist' => $this->dist[$destReal],
         );
     }
 }

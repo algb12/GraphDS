@@ -3,6 +3,7 @@
 use PHPUnit\Framework\TestCase;
 use GraphDS\Graph\UndirectedGraph;
 use GraphDS\Algo\Dijkstra;
+use GraphDS\Algo\DijkstraMulti;
 use GraphDS\Algo\FloydWarshall;
 use GraphDS\Persistence\ImportGraph;
 use GraphDS\Persistence\ExportGraph;
@@ -158,6 +159,76 @@ class UndirectedGraphTest extends TestCase
         $expected_path = array('B', 'A');
         $this->assertEquals($expected_path, $res_A['path']);
         $this->assertEquals(20, $res_A['dist']);
+    }
+
+    public function testDijkstraMulti()
+    {
+        $g = new UndirectedGraph();
+
+        $g->addVertex('A');
+        $g->addVertex('B');
+        $g->addVertex('C');
+        $g->addVertex('D');
+        $g->addVertex('E');
+        $g->addVertex('F');
+        $g->addVertex('G');
+        $g->addVertex('H');
+        $g->addVertex('I');
+        $g->addVertex('J');
+        $g->addVertex('K');
+
+        $g->addEdge('A', 'B', 5);
+        $g->addEdge('A', 'C', 3);
+        $g->addEdge('A', 'G', 3);
+        $g->addEdge('B', 'F', 3);
+        $g->addEdge('B', 'J', 5);
+        $g->addEdge('B', 'K', 2);
+        $g->addEdge('C', 'B', 3);
+        $g->addEdge('C', 'D', 2);
+        $g->addEdge('C', 'E', 1);
+        $g->addEdge('D', 'F', 2);
+        $g->addEdge('E', 'F', 3);
+        $g->addEdge('F', 'I', 2);
+        $g->addEdge('F', 'J', 3);
+        $g->addEdge('G', 'E', 4);
+        $g->addEdge('G', 'H', 3);
+        $g->addEdge('H', 'I', 2);
+        $g->addEdge('I', 'J', 2);
+        $g->addEdge('I', 'K', 3);
+        $g->addEdge('J', 'K', 7);
+
+        $d = new DijkstraMulti($g);
+
+        $d->run('A');
+        $res_J = $d->get('J');
+
+        $this->assertNotEmpty($res_J['paths']);
+        $expected_paths = array(
+            ['A', 'B', 'J'],
+            ['A', 'C', 'E', 'F', 'J'],
+            ['A', 'C', 'D', 'F', 'J'],
+            ['A', 'G', 'H', 'I', 'J']
+        );
+        $this->assertEquals($expected_paths, $res_J['paths'], "\$canonicalize = true", $delta = 0.0, $maxDepth = 10, $canonicalize = true);
+        $this->assertEquals(10, $res_J['dist']);
+
+        $d->run('C');
+        $res_J = $d->get('J');
+        $expected_paths = array(
+            ['C', 'D', 'F', 'J'],
+            ['C', 'E', 'F', 'J']
+        );
+        $this->assertEquals($expected_paths, $res_J['paths'], "\$canonicalize = true", $delta = 0.0, $maxDepth = 10, $canonicalize = true);
+        $this->assertEquals(7, $res_J['dist']);
+
+        $d->run('J');
+        $res_C = $d->get('C');
+        $expected_paths = array(
+            ['J', 'F', 'D', 'C'],
+            ['J', 'F', 'E', 'C']
+        );
+        $this->assertEquals($expected_paths, $res_C['paths'], "\$canonicalize = true", $delta = 0.0, $maxDepth = 10, $canonicalize = true);
+        $this->assertEquals(7, $res_C['dist']);
     }
 
     public function testFloydWarshall()

@@ -90,7 +90,7 @@ class BFS
     }
 
     /**
-     * Returns the result of a BFS Returns.
+     * Returns the result of the BFS.
      *
      * @return array Array of vertex distance to root, parents and vertices in BFS order
      */

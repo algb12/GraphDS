@@ -1,15 +1,16 @@
 <?php
 /**
- * Dijkstra's shortest path algorithm.
+ * Multi-path version of Dijkstra's shortest path algorithm.
  */
 namespace GraphDS\Algo;
 
 use InvalidArgumentException;
+use SplStack;
 
 /**
- * Class defining Dijkstra's shortest path algorithm.
+ * Class defining the multi-path version of Dijkstra's shortest path algorithm.
  */
-class Dijkstra
+class DijkstraMulti
 {
     /**
      * Reference to the graph.
@@ -41,11 +42,23 @@ class Dijkstra
      * @var array
      */
     public $start;
+    /**
+     * Array holding a single shortest path.
+     *
+     * @var object SplStack
+     */
+    public $path = array();
+    /**
+     * Array holding the shortest paths in the graph.
+     *
+     * @var array
+     */
+    public $paths = array();
 
     /**
-     * Constructor for the Dijkstra algorithm.
+     * Constructor for the multi-path version of Dijkstra algorithm.
      *
-     * @param object $graph The graph to which the Dijkstra algorithm should be applied
+     * @param object $graph The graph to which the multi-path Dijkstra algorithm should be applied
      */
     public function __construct($graph)
     {
@@ -58,7 +71,7 @@ class Dijkstra
     /**
      * Calculates the shortest path to every vertex from vertex $start.
      *
-     * @param mixed $start ID of the starting vertex for Dijkstra's algorithm
+     * @param mixed $start ID of the starting vertex for multi-path Dijkstra's algorithm
      *
      * @return array Array holding the distances and previous vertices as calculated by Dijkstra's algorithm
      */
@@ -91,14 +104,19 @@ class Dijkstra
                 $alt = $this->dist[$minVertex] + $this->graph->edge($minVertex, $vertex)->getValue();
                 if ($alt < $this->dist[$vertex]) {
                     $this->dist[$vertex] = $alt;
-                    $this->prev[$vertex] = $minVertex;
+                    $this->prev[$vertex] = null;
+                    $this->prev[$vertex][] = $minVertex;
+                } elseif ($alt === $this->dist[$vertex]) {
+                    $this->prev[$vertex][] = $minVertex;
                 }
             }
         }
+
+        return $this->prev;
     }
 
     /**
-     * Returns the shortest path to $dest from the origin vertex in the graph.
+     * Returns all shortest paths to $dest from the origin vertex $this->start in the graph.
      *
      * @param string $dest ID of the destination vertex
      *
@@ -106,19 +124,42 @@ class Dijkstra
      */
     public function get($dest)
     {
-        $destReal = $dest;
-        $path = array();
-        while (isset($this->prev[$dest])) {
-            array_unshift($path, $dest);
-            $dest = $this->prev[$dest];
-        }
-        if ($dest === $this->start) {
-            array_unshift($path, $dest);
-        }
+        $this->paths = [];
+        $this->enumerate($dest, $this->start);
 
         return array(
-            'path' => $path,
-            'dist' => $this->dist[$destReal],
+            'paths' => $this->paths,
+            'dist' => $this->dist[$dest],
         );
+    }
+
+    /**
+     * Enumerates the result of the multi-path Dijkstra as paths.
+     *
+     * @param string $source ID of the source vertex
+     * @param string $dest   ID of the destination vertex
+     */
+    private function enumerate($source, $dest)
+    {
+        array_unshift($this->path, $source);
+        $discovered[] = $source;
+
+        if ($source === $dest) {
+            $this->paths[] = $this->path;
+        } else {
+            if (!$this->prev[$source]) {
+                return;
+            }
+            foreach ($this->prev[$source] as $child) {
+                if (!in_array($child, $discovered)) {
+                    $this->enumerate($child, $dest);
+                }
+            }
+        }
+
+        array_shift($this->path);
+        if (($key = array_search($source, $discovered)) !== false) {
+            unset($discovered[$key]);
+        }
     }
 }

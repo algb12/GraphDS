@@ -84,6 +84,100 @@
                     }
                 }
             }
+        },
+        "X": {
+            "locations": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+                "G",
+                "H",
+                "I",
+                "J",
+                "K"
+            ],
+            "paths": {
+                "A": {
+                    "B": {
+                        "distance": "5"
+                    },
+                    "C": {
+                        "distance": "3"
+                    },
+                    "G": {
+                        "distance": "3"
+                    }
+                },
+                "B": {
+                    "F": {
+                        "distance": "3"
+                    },
+                    "J": {
+                        "distance": "5"
+                    },
+                    "K": {
+                        "distance": "2"
+                    }
+                },
+                "C": {
+                    "B": {
+                        "distance": "3"
+                    },
+                    "D": {
+                        "distance": "2"
+                    },
+                    "E": {
+                        "distance": "1"
+                    }
+                },
+                "D": {
+                    "F": {
+                        "distance": "2"
+                    }
+                },
+                "E": {
+                    "F": {
+                        "distance": "3"
+                    }
+                },
+                "F": {
+                    "I": {
+                        "distance": "2"
+                    },
+                    "J": {
+                        "distance": "3"
+                    }
+                },
+                "G": {
+                    "E": {
+                        "distance": "4"
+                    },
+                    "H": {
+                        "distance": "3"
+                    }
+                },
+                "H": {
+                    "I": {
+                        "distance": "2"
+                    }
+                },
+                "I": {
+                    "J": {
+                        "distance": "2"
+                    },
+                    "K": {
+                        "distance": "3"
+                    }
+                },
+                "J": {
+                    "K": {
+                        "distance": "7"
+                    }
+                }
+            }
         }
     }
 }

@@ -12,7 +12,7 @@ class Edge
     /**
      * $value A value/weight held by the edge.
      *
-     * @var double
+     * @var float
      */
     protected $value;
     /**
@@ -34,7 +34,7 @@ class Edge
     /**
      * Returns value/weight associated with this edge.
      *
-     * @return double Value/weight associated with this edge
+     * @return float Value/weight associated with this edge
      */
     public function getValue()
     {
@@ -44,7 +44,7 @@ class Edge
     /**
      * Sets the value/weight associated with this edge.
      *
-     * @param double $value Value/weight to be associated with this edge
+     * @param float $value Value/weight to be associated with this edge
      */
     public function setValue($value = null)
     {

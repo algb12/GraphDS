@@ -101,7 +101,7 @@ class UndirectedGraph extends Graph
      *
      * @param string $vertex1 ID of first vertex
      * @param string $vertex2 ID of second vertex
-     * @param double $value   The value/weight the edge should hold
+     * @param float  $value   The value/weight the edge should hold
      */
     public function addEdge($vertex1, $vertex2, $value = null)
     {

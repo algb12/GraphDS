@@ -4,7 +4,7 @@
 ## What is GraphDS and why was it created?
 GraphDS is an object-oriented, lightweight implementation of the graph data-structure in PHP.
 
-In a project of mine, I needed a way to represent graphs in PHP. None of the existing solutions have suited me, so I have decided to write my own graph library from scratch. The original implementation used in my project contains additional functions for graph traversal and refactoring of graphs, but these functions are specific to my project.
+In a project of mine, I needed a way to represent graphs in PHP. None of the existing solutions suited me, so I have decided to write my own graph library from scratch. The original implementation used in my project contains additional functions for graph traversal and refactoring of graphs, but these functions are specific to my project.
 
 This version of GraphDS is a toned-down version of my original implementation. It makes use of OOP practices to allow algorithms to be loaded only on demand, making GraphDS fast, extendable and lightweight at the same time.
 
@@ -14,7 +14,7 @@ Simply require the Composer package. In the directory of your project, run:
 `composer require algb12/graph-ds`
 
 ## What is it even useful for?
-Please see the sample app in the `SampleApp_RoadPlanner` directory to find a primitive application of GraphDS. The RoadPlanner app calculates the shortest road between two cities, using Dijkstra's and the Floyd-Warshall algorithm.
+Please see the sample app in the `SampleApp_RoadPlanner` directory to find a primitive application of GraphDS. The RoadPlanner app calculates the shortest road between two cities, using Dijkstra's, multi-path Dijkstra's and the Floyd-Warshall algorithm.
 
 ## Basic syntax
 GraphDS has functions to create vertices and edges for both, undirected and directed graphs. The user does not need to worry about which type of edge/vertex is created, as this is all abstracted away under the relevant classes.
@@ -55,7 +55,7 @@ In a directed graph, `$g->vertices['v']->getInNeighbors` returns an array of all
 #### Indegrees and Outdegrees
 The indegree and outdegree of a vertex is simply how many incoming and outgoing vertices are connected to a vertex, respectively.
 
-The indegree and outdegree of a vertex can be easily determined using `$g->vertices['v']->getIndegree` and `$g->vertices['v']->getOutdegree`.
+The indegree and outdegree of a vertex can be easily determined using `$g->vertices['v']->getIndegree()` and `$g->vertices['v']->getOutdegree()`.
 
 #### Asserting vertex adjacency
 In any graph, asserting that vertex `v2` is adjacent to `v1` can be done by calling `$g->vertices['v1']->adjacent('v2')`. Note that in a directed graph, a vertex will be considered as adjacent using the `adjacent` method, no matter whether it is incoming or outgoing.
@@ -65,7 +65,7 @@ In a directed graph, inward and outward adjacency can be asserted by using `$g->
 ### Edges
 Edges are the objects that connect vertices together. Note that in GraphDS, edges are _not actual_ connections between vertices, but merely _abstract_ connections, meaning that they are stored as separate objects to the vertices.
 
-Edges can be accessed easily via  `$g->edge('v1', 'v2')`, where `v1` and `v2` are the vertices connected by the edge. Note that in an undirected graph, `$g->edge('v1', 'v2')` and `$g->edge('v2', 'v1')` are equivalent, whereas in directed graphs, they represent 2 distinct edges.
+Edges can be accessed easily via `$g->edge('v1', 'v2')`, where `v1` and `v2` are the vertices connected by the edge. Note that in an undirected graph, `$g->edge('v1', 'v2')` and `$g->edge('v2', 'v1')` are equivalent, whereas in directed graphs, they represent 2 distinct edges.
 
 #### Real and virtual edges
 In GraphDS, edges are stored as object, and each object takes up space. To reduce the spatial footprint, the `edge` function was introduced in version 1.0.3, which returns both, real edges and "virtual" edges.
@@ -97,7 +97,7 @@ This is what makes GraphDS lean and streamlined, as algorithms only have to be l
 3. The algorithm can now be run using `$a->run(args)`, where `args` are arguments which differ from algorithm to algorithm
 4. Getting the results of an algorithm is done using `$a->get(args)`, where args are arguments which differ from algorithm to algorithm
 
-The "run-and-get" pragma eases the use of algorithms, as these are the only two methods an algorithm should have. From now on, the documentation will only refer to the arguments the algorithm methods accept.
+The "run-and-get" pragma eases the use of algorithms, as these are the only two public methods an algorithm should have. From now on, the documentation will only refer to the arguments the algorithm methods accept.
 
 ### Writing GraphDS algorithms
 In order to ease the writing of algorithms, PHP's Standard PHP Library (SPL) provides useful helper classes, such as:
@@ -120,6 +120,8 @@ class Algorithm
     // Reference to the graph
     public $graph;
 
+    // Any global variables...
+
     // Constructor accepts a GraphDS graph and validates it
     public function __construct($graph)
     {
@@ -140,6 +142,8 @@ class Algorithm
     {
         code...
     }
+
+    // Any private helper methods...
 }
 ```
 
@@ -170,9 +174,17 @@ DFS, a path traversal algorithm, is in the class `GraphDS\Algo\DFS`. It visits e
 Dijkstra's shortest path algorithm finds the shortest path between a vertex and all other vertices. It is in the class `GraphDS\Algo\Dijkstra`.
 
 - `$dijkstra->run($start)` accepts `$start` as a compulsory argument, this is the vertex from which Dijkstra should start
-- `$dfs->get($dest)` accepts `$dest` as a compulsory argument, which is the destination vertex to which the shortest path should be returned. It returns an array `$arr`, with subarrays:
+- `$dijkstra->get($dest)` accepts `$dest` as a compulsory argument, which is the destination vertex to which the shortest path should be returned. It returns an array `$arr`, with subarrays:
   - `$arr['path']` (the shortest path to the vertex `$dest` from `$start`)
-  - `$arr['dist']` (the distances of each vertex to the root vertex, in edge weights)
+  - `$arr['dist']` (the shortest distances of each vertex to the root vertex, in edge weights)
+
+### Multi-path Dijkstra's shortest path algorithm
+Unlike the single-path version, the multi-path Dijkstra's shortest path algorithm finds _all_ the shortest path between a vertex and all other vertices. It is in the class `GraphDS\Algo\DijkstraMulti`.
+
+- `$dijkstra_mult->run($start)` accepts `$start` as a compulsory argument, this is the vertex from which Dijkstra should start
+- `$dijkstra_mult->get($dest)` accepts `$dest` as a compulsory argument, which is the destination vertex to which all the shortest paths should be returned. It returns an array `$arr`, with subarrays:
+  - `$arr['paths']` (an array of all the shortest paths to the vertex `$dest` from `$start`)
+  - `$arr['dist']` (the shortest distances of each vertex to the root vertex, in edge weights)
 
 ### Floyd-Warshall algorithm
 The Floyd-Warshall algorithm calculates the shortest path between every single vertex in the graph. It is in the class `GraphDS\Algo\FloydWarshall`.
@@ -180,7 +192,7 @@ The Floyd-Warshall algorithm calculates the shortest path between every single v
 - `$fw->run()` accepts no arguments, and simply runs then algorithm on the graph
 - `$fw->get($startVertex, $destVertex)` accepts `$startVertex` and `$destVertex` as a compulsory argument, which are the start vertex and the destination vertex, respectively, between which the shortest path should be worked out. It returns an array `$arr`, with subarrays:
   - `$arr['path']` (the shortest path to the vertex `$dest` from `$start`)
-  - `$arr['dist']` (the distance of the destination vertex to the start vertex, in edge weights)
+  - `$arr['dist']` (the shortest distance of the destination vertex to the start vertex, in edge weights)
 
 ## Persistence
 GraphDS has the ability to export and import graphs using the popular GraphML format. Note that for graph persistence to function correctly, the correct read/write permissions should be set on the server, which is beyond the scope of this README.

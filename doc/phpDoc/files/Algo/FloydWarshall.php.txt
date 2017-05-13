@@ -97,7 +97,7 @@ class FloydWarshall
 
         return array(
             'path' => $path,
-            'dist' => $this->dist[$startReal][$dest]
+            'dist' => $this->dist[$startReal][$dest],
         );
     }
 }

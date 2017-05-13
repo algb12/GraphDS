@@ -21,54 +21,54 @@
     <script src="../js/jquery.smooth-scroll.js"></script>
     <script src="../js/prism.min.js"></script>
     <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
-    <script type="text/javascript">
-    function loadExternalCodeSnippets() {
-        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
-            var src = pre.getAttribute('data-src');
-            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
-            var language = 'php';
+        <script type="text/javascript">
+        function loadExternalCodeSnippets() {
+            Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+                var src = pre.getAttribute('data-src');
+                var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+                var language = 'php';
 
-            var code = document.createElement('code');
-            code.className = 'language-' + language;
+                var code = document.createElement('code');
+                code.className = 'language-' + language;
 
-            pre.textContent = '';
+                pre.textContent = '';
 
-            code.textContent = 'Loading…';
+                code.textContent = 'Loading…';
 
-            pre.appendChild(code);
+                pre.appendChild(code);
 
-            var xhr = new XMLHttpRequest();
+                var xhr = new XMLHttpRequest();
 
-            xhr.open('GET', src, true);
+                xhr.open('GET', src, true);
 
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState == 4) {
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) {
 
-                    if (xhr.status < 400 && xhr.responseText) {
-                        code.textContent = xhr.responseText;
+                        if (xhr.status < 400 && xhr.responseText) {
+                            code.textContent = xhr.responseText;
 
-                        Prism.highlightElement(code);
+                            Prism.highlightElement(code);
+                        }
+                        else if (xhr.status >= 400) {
+                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                        }
+                        else {
+                            code.textContent = '✖ Error: File does not exist or is empty';
+                        }
                     }
-                    else if (xhr.status >= 400) {
-                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
-                    }
-                    else {
-                        code.textContent = '✖ Error: File does not exist or is empty';
-                    }
-                }
-            };
+                };
 
-            xhr.send(null);
+                xhr.send(null);
+            });
+        }
+
+        $(document).ready(function(){
+            loadExternalCodeSnippets();
         });
-    }
-
-    $(document).ready(function(){
-        loadExternalCodeSnippets();
-    });
-    $('#source-view').on('shown', function () {
-        loadExternalCodeSnippets();
-    })
-</script>
+        $('#source-view').on('shown', function () {
+            loadExternalCodeSnippets();
+        })
+    </script>
 
     <link rel="shortcut icon" href="../images/favicon.ico"/>
     <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
@@ -144,28 +144,28 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1435571281"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1162595109"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-1435571281" class="accordion-body collapse in">
+            <div id="namespace-1162595109" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1798654083"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1948810828"></a>
                                 <a href="../namespaces/GraphDS.html" style="margin-left: 30px; padding-left: 0">GraphDS</a>
             </div>
-            <div id="namespace-1798654083" class="accordion-body collapse ">
+            <div id="namespace-1948810828" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2008284258"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1264062098"></a>
                                 <a href="../namespaces/GraphDS.Algo.html" style="margin-left: 30px; padding-left: 0">Algo</a>
             </div>
-            <div id="namespace-2008284258" class="accordion-body collapse ">
+            <div id="namespace-1264062098" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -184,10 +184,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-423441747"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-265744216"></a>
                                 <a href="../namespaces/GraphDS.Edge.html" style="margin-left: 30px; padding-left: 0">Edge</a>
             </div>
-            <div id="namespace-423441747" class="accordion-body collapse ">
+            <div id="namespace-265744216" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -204,10 +204,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-255602974"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-477471359"></a>
                                 <a href="../namespaces/GraphDS.Graph.html" style="margin-left: 30px; padding-left: 0">Graph</a>
             </div>
-            <div id="namespace-255602974" class="accordion-body collapse ">
+            <div id="namespace-477471359" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -224,10 +224,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-629615858"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1070713077"></a>
                                 <a href="../namespaces/GraphDS.Persistence.html" style="margin-left: 30px; padding-left: 0">Persistence</a>
             </div>
-            <div id="namespace-629615858" class="accordion-body collapse ">
+            <div id="namespace-1070713077" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -243,10 +243,10 @@
                                                     <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1266775890"></a>
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-887624458"></a>
                                 <a href="../namespaces/GraphDS.Vertex.html" style="margin-left: 30px; padding-left: 0">Vertex</a>
             </div>
-            <div id="namespace-1266775890" class="accordion-body collapse ">
+            <div id="namespace-887624458" class="accordion-body collapse ">
                 <div class="accordion-inner">
 
                     
@@ -281,241 +281,53 @@
     <section class="row-fluid">
         <div class="span10 offset2">
             <div class="row-fluid">
-                <div class="span8 content class">
+                <div class="span8 content file">
                     <nav>
-                                                <a href="../namespaces/GraphDS.Persistence.html">\GraphDS\Persistence</a> <i class="icon-level-up"></i>
-                                            </nav>
+                                                                    </nav>
+
                     <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+                    <h1><small>Algo</small>DijkstraMulti.php</h1>
+                    <p><em>Multi-path version of Dijkstra&#039;s shortest path algorithm.</em></p>
+                    
 
-                    <h1><small>\GraphDS\Persistence</small>ExportGraph</h1>
-                    <p><em>Class defining the graph exporter methods.</em></p>
                     
                     
-                                        
-                    <section id="summary">
-                        <h2>Summary</h2>
-                        <section class="row-fluid heading">
-                            <section class="span4">
-                                <a href="#methods">Methods</a>
-                            </section>
-                            <section class="span4">
-                                <a href="#properties">Properties</a>
-                            </section>
-                            <section class="span4">
-                                <a href="#constants">Constants</a>
-                            </section>
-                        </section>
-                        <section class="row-fluid public">
-                            <section class="span4">
-                                                                    <a href="../classes/GraphDS.Persistence.ExportGraph.html#method___construct" class="">__construct()</a><br />
-                                                                    <a href="../classes/GraphDS.Persistence.ExportGraph.html#method_getGraphML" class="">getGraphML()</a><br />
-                                                                    <a href="../classes/GraphDS.Persistence.ExportGraph.html#method_saveToFile" class="">saveToFile()</a><br />
-                                                            </section>
-                            <section class="span4">
-                                                                    <a href="../classes/GraphDS.Persistence.ExportGraph.html#property_graph" class="">$graph</a><br />
-                                                            </section>
-                            <section class="span4">
-                                                                    <em>No constants found</em>
-                                                            </section>
-                        </section>
-                        <section class="row-fluid protected">
-                            <section class="span4">
-                                                                    <em>No protected methods found</em>
-                                                            </section>
-                            <section class="span4">
-                                                                    <em>No protected properties found</em>
-                                                            </section>
-                            <section class="span4">
-                                <em>N/A</em>
-                            </section>
-                        </section>
-                        <section class="row-fluid private">
-                            <section class="span4">
-                                                                    <em>No private methods found</em>
-                                                            </section>
-                            <section class="span4">
-                                                                    <em>No private properties found</em>
-                                                            </section>
-                            <section class="span4">
-                                <em>N/A</em>
-                            </section>
-                        </section>
-                    </section>
-                </div>
+                                        <h2>Classes</h2>
+                    <table class="table table-hover">
+                                            <tr>
+                            <td><a href="../classes/GraphDS.Algo.DijkstraMulti.html">DijkstraMulti</a></td>
+                            <td><em>Class defining the multi-path version of Dijkstra&#039;s shortest path algorithm.</em></td>
+                        </tr>
+                                        </table>
+                                    </div>
+
                 <aside class="span4 detailsbar">
-                                        
-                    
                     <dl>
-                        <dt>File</dt>
-                            <dd><a href="../files/Persistence.ExportGraph.html"><div class="path-wrapper">Persistence/ExportGraph.php</div></a></dd>
-                                                <dt>Package</dt>
-                            <dd><div class="namespace-wrapper">Default</div></dd>
-                                                <dt>Class hierarchy</dt>
-                            <dd class="hierarchy">
-                                                                                                                                                                    <div class="namespace-wrapper">\GraphDS\Persistence\ExportGraph</div>
-                            </dd>
-
+                                                    <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">\Default</div></dd>
                         
                         
-                        
-                        
-                                                                        </dl>
+                    </dl>
                     <h2>Tags</h2>
                     <table class="table table-condensed">
-                                            <tr><td colspan="2"><em>None found</em></td></tr>
-                                        </table>
+                                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                                            </table>
+
                 </aside>
             </div>
 
-                        
-                                    <a id="properties" name="properties"></a>
-            <div class="row-fluid">
-                <div class="span8 content class">
-                    <h2>Properties</h2>
-                </div>
-                <aside class="span4 detailsbar"></aside>
-            </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="property_graph" name="property_graph" class="anchor"></a>
-            <article class="property">
-                <h3 class="public ">$graph</h3>
-                <pre class="signature">$graph : object</pre>
-                <p><em>Reference to the graph.</em></p>
-                
-
-                                <h4>Type</h4>
-                object
-                                            </article>
+            
+            
         </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                        <dl>
-                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                                            
-                                    <a id="methods" name="methods"></a>
-            <div class="row-fluid">
-                <div class="span8 content class"><h2>Methods</h2></div>
-                <aside class="span4 detailsbar"></aside>
-            </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method___construct" name="method___construct" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">__construct()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">__construct(object  <span class="argument">$graph</span>) </pre>
-                <p><em>Constructor for the graph exporter.</em></p>
-                
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>object</td>
-                                <td>$graph </td>
-                                <td><p>The graph to be exported</p></td>
-                            </tr>
-                                            </table>
-                
-                
-                				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_getGraphML" name="method_getGraphML" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">getGraphML()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">getGraphML() </pre>
-                <p><em>Returns the GraphML output representing the graph.</em></p>
-                
-
-                
-                
-                				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method_saveToFile" name="method_saveToFile" class="anchor"></a>
-            <article class="method">
-                <h3 class="public ">saveToFile()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">saveToFile(mixed  <span class="argument">$data</span>, string  <span class="argument">$file</span>) </pre>
-                <p><em>Saves given data to a files.</em></p>
-                
-
-                                    <h4>Parameters</h4>
-                    <table class="table table-condensed table-hover">
-                                                    <tr>
-                                <td>mixed</td>
-                                <td>$data </td>
-                                <td><p>The data to be saved</p></td>
-                            </tr>
-                                                    <tr>
-                                <td>string</td>
-                                <td>$file </td>
-                                <td><p>Filename where the data should be saved to</p></td>
-                            </tr>
-                                            </table>
-                
-                
-                				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr><td colspan="2"><em>None found</em></td></tr>
-                            </table>
-        </aside>
-    </div>
-
-                                                                    </div>
     </section>
 
     <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h3 id="source-view-label">ExportGraph.php</h3>
+            <h3 id="source-view-label"></h3>
         </div>
         <div class="modal-body">
-            <pre data-src="../files/Persistence/ExportGraph.php.txt" class="language-php line-numbers"></pre>
+            <pre data-src="../files/Algo/DijkstraMulti.php.txt" class="language-php line-numbers"></pre>
         </div>
     </div>
 

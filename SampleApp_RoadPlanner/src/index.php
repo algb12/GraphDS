@@ -13,6 +13,7 @@
     // Declare GraphDS libraries
     use GraphDS\Graph\UndirectedGraph;
     use GraphDS\Algo\Dijkstra;
+    use GraphDS\Algo\DijkstraMulti;
     use GraphDS\Algo\FloydWarshall;
 
     // Load JSON datafile and create array with data
@@ -56,13 +57,13 @@
         // Floyd-Warshall
         // --------------
         $fw = new FloydWarshall($g);
-        $fw_starttime = round(microtime(true) * 1000);
+        $fw_starttime = round(microtime(true) * 1000000);
         $fw->run();
         $fw_res = $fw->get($start_city, $dest_city);
-        $fw_benchmark = (round(microtime(true) * 1000)) - $fw_starttime;
+        $fw_benchmark = (round(microtime(true) * 1000000)) - $fw_starttime;
 
         // Create path info text
-        $info_fw_path = 'To get from '.$start_city.' to '.$dest_city.': ';
+        $info_fw_path = 'To get from '.$start_city.' to '.$dest_city.':<br>';
         $stops = $fw_res['path'];
         $last = count($stops) - 1;
         foreach ($stops as $k => $stop) {
@@ -81,13 +82,13 @@
         // Dijkstra
         // --------
         $dijk = new Dijkstra($g);
-        $dijk_starttime = round(microtime(true) * 1000);
+        $dijk_starttime = round(microtime(true) * 1000000);
         $dijk->run($start_city);
         $dijk_res = $dijk->get($dest_city);
-        $dijk_benchmark = (round(microtime(true) * 1000)) - $dijk_starttime;
+        $dijk_benchmark = (round(microtime(true) * 1000000)) - $dijk_starttime;
 
         // Create path info text
-        $info_dijk_path = 'To get from '.$start_city.' to '.$dest_city.': ';
+        $info_dijk_path = 'To get from '.$start_city.' to '.$dest_city.':<br>';
         $stops = $dijk_res['path'];
         $last = count($stops) - 1;
         foreach ($stops as $k => $stop) {
@@ -102,6 +103,34 @@
         $info_dijk_dist = 'The distance is ';
         $info_dijk_dist .= $dijk_res['dist'];
         $info_dijk_dist .= ' km.';
+
+        // Multi-path Dijkstra
+        // --------
+        $dijk_mult = new DijkstraMulti($g);
+        $dijk_mult_starttime = round(microtime(true) * 1000000);
+        $dijk_mult->run($start_city);
+        $dijk_mult_res = $dijk_mult->get($dest_city);
+        $dijk_mult_benchmark = (round(microtime(true) * 1000000)) - $dijk_mult_starttime;
+
+        // Create path info text
+        $info_dijk_mult_path = 'To get from '.$start_city.' to '.$dest_city.':<br>';
+        foreach ($dijk_mult_res['paths'] as $path) {
+            $stops = $path;
+            $last = count($stops) - 1;
+            foreach ($stops as $k => $stop) {
+                if ($k !== $last) {
+                    $info_dijk_mult_path .= $stop.' → ';
+                } else {
+                    $info_dijk_mult_path .= $stop;
+                }
+            }
+            $info_dijk_mult_path .= '<br>';
+        }
+
+        // Create distance info text
+        $info_dijk_mult_dist = 'The distance is ';
+        $info_dijk_mult_dist .= $dijk_mult_res['dist'];
+        $info_dijk_mult_dist .= ' km.';
     }
 ?>
 
@@ -122,7 +151,8 @@
     <p>All the graph-related logic is handled by GraphDS and the relevant algorithms, which act as extensions to the core GraphDS library.</p>
     <p>For more about GraphDS, please see <a href="https://github.com/algb12/GraphDS">https://github.com/algb12/GraphDS</a>.</p>
     <hr>
-    <p>Please select the start and destination city below, and the calculated shortest path to get to the destination city will be shows.</p>
+    <p>Please select the start and destination city below, and the calculated shortest path to get to the destination city will be shown.</p>
+    <p>To try the multi-path Dijkstra shortest path algorithm, choose country X, with start city A and destination city J.</p>
     <form action="<?=$_SERVER['PHP_SELF']?>" method="GET">
         <?php
             if (empty($_GET['country'])) {
@@ -165,11 +195,15 @@
             echo '<h4>Dijkstra calculation:</h4>
             <p>'.$info_dijk_path.'</p>
             <p>'.$info_dijk_dist.'</p>
-            <p>Algorithm execution took '.$dijk_benchmark.'ms.</p>
+            <p>Algorithm execution took '.$dijk_benchmark.'&mu;s.</p>
+            <h4>Multi-path Dijkstra calculation:</h4>
+            <p>'.$info_dijk_mult_path.'</p>
+            <p>'.$info_dijk_mult_dist.'</p>
+            <p>Algorithm execution took '.$dijk_mult_benchmark.'&mu;s.</p>
             <h4>Floyd-Warshall calculation:</h4>
             <p>'.$info_fw_path.'</p>
             <p>'.$info_fw_dist.'</p>
-            <p>Algorithm execution took '.$fw_benchmark.'ms.</p>';
+            <p>Algorithm execution took '.$fw_benchmark.'&mu;s.</p>';
         }
     ?>
 </body>
