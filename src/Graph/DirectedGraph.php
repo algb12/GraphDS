@@ -142,4 +142,23 @@ class DirectedGraph extends Graph
             unset($this->edges[$vertex1]);
         }
     }
+
+    /**
+     * Transposes the graph, reversing each directed edge.
+     * @return DirectedGraph The transposed graph
+     */
+    public function getTranspose()
+    {
+        $graph = clone $this;
+
+        foreach ($graph->edges as $vertex1=>$vertex1Data) {
+            foreach ($vertex1Data as $vertex2=>$vertex2Data) {
+                $value = $graph->edge($vertex1, $vertex2)->getValue();
+                $graph->removeEdge($vertex1, $vertex2);
+                $graph->addEdge($vertex2, $vertex1, $value);
+            }
+        }
+
+        return $graph;
+    }
 }

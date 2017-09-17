@@ -60,9 +60,11 @@ class ImportGraph
         foreach ($this->import->graph->node as $node) {
             $vertex = (string) $node['id'];
             $value = (string) $node->data;
-            if (empty($value = (string) $node->data)) {
-                if (!empty($this->import->xpath('key[@for="node"]/default'))) {
-                    $value = (string) $this->import->xpath('key[@for="node"]/default');
+            if (empty($value)) {
+                $default = $this->import->xpath('key[@for="node"]/default');
+                if (!empty($default)) {
+                    print_r($default);
+                    $value = (string) $default;
                 }
             }
             $graph->addVertex($vertex);
@@ -72,9 +74,11 @@ class ImportGraph
         foreach ($this->import->graph->edge as $edge) {
             $edgeSource = (string) $edge['source'];
             $edgeTarget = (string) $edge['target'];
-            if (empty($value = (string) $edge->data)) {
-                if (!empty($this->import->xpath('key[@for="edge"]/default'))) {
-                    $value = (string) $this->import->xpath('key[@for="edge"]/default');
+            $value = (string) $edge->data;
+            if (empty($value)) {
+                $default = $this->import->xpath('key[@for="edge"]/default');
+                if (!empty($default)) {
+                    $value = (string) $default;
                 }
             }
             $graph->addEdge($edgeSource, $edgeTarget);

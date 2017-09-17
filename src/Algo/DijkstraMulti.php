@@ -5,7 +5,6 @@
 namespace GraphDS\Algo;
 
 use InvalidArgumentException;
-use SplStack;
 
 /**
  * Class defining the multi-path version of Dijkstra's shortest path algorithm.
@@ -45,7 +44,7 @@ class DijkstraMulti
     /**
      * Array holding a single shortest path.
      *
-     * @var object SplStack
+     * @var array
      */
     public $path = array();
     /**
@@ -91,7 +90,8 @@ class DijkstraMulti
 
         while (count($this->unvisitedVertices) > 0) {
             $distUnvisited = array_intersect_key($this->dist, $this->unvisitedVertices);
-            $minVertex = array_keys($distUnvisited, min($distUnvisited))[0];
+            $minVertexTmp = array_keys($distUnvisited, min($distUnvisited));
+            $minVertex = $minVertexTmp[0];
             unset($this->unvisitedVertices[$minVertex]);
 
             if (get_class($this->graph) === 'GraphDS\Graph\UndirectedGraph') {
@@ -124,7 +124,7 @@ class DijkstraMulti
      */
     public function get($dest)
     {
-        $this->paths = [];
+        $this->paths = array();
         $this->enumerate($dest, $this->start);
 
         return array(

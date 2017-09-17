@@ -78,7 +78,8 @@ class Dijkstra
 
         while (count($this->unvisitedVertices) > 0) {
             $distUnvisited = array_intersect_key($this->dist, $this->unvisitedVertices);
-            $minVertex = array_keys($distUnvisited, min($distUnvisited))[0];
+            $minVertexTmp = array_keys($distUnvisited, min($distUnvisited));
+            $minVertex = $minVertexTmp[0];
             unset($this->unvisitedVertices[$minVertex]);
 
             if (get_class($this->graph) === 'GraphDS\Graph\UndirectedGraph') {

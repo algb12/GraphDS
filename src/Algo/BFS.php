@@ -65,6 +65,8 @@ class BFS
             $this->parent[$vertex] = null;
         }
 
+        $this->discovered = array();
+
         $queue = new SplQueue();
 
         $this->dist[$root] = 0;
@@ -79,7 +81,7 @@ class BFS
                 $neighbors = $this->graph->vertices[$current]->getOutNeighbors();
             }
 
-            foreach ($this->graph->vertices[$current]->getNeighbors() as $vertex) {
+            foreach ($neighbors as $vertex) {
                 if ($this->dist[$vertex] == INF) {
                     $this->dist[$vertex] = $this->dist[$current] + 1;
                     $this->parent[$vertex] = $current;

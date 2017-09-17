@@ -63,6 +63,8 @@ class DFS
             $this->parent[$vertex] = null;
         }
 
+        $this->discovered = array();
+
         $stack = new SplStack();
 
         $this->dist[$root] = 0;

@@ -8,13 +8,15 @@ In a project of mine, I needed a way to represent graphs in PHP. None of the exi
 
 This version of GraphDS is a toned-down version of my original implementation. It makes use of OOP practices to allow algorithms to be loaded only on demand, making GraphDS fast, extendable and lightweight at the same time.
 
+GraphDS requires at least PHP version 5.3. Unit tests are run from PHP 5.4 onwards.
+
 ## How to install
 Simply require the Composer package. In the directory of your project, run:
 
 `composer require algb12/graph-ds`
 
 ## What is it even useful for?
-Please see the sample app in the `SampleApp_RoadPlanner` directory to find a primitive application of GraphDS. The RoadPlanner app calculates the shortest road between two cities, using Dijkstra's, multi-path Dijkstra's and the Floyd-Warshall algorithm.
+Please see the sample app in the `SampleApp_RoadPlanner` directory to find a primitive application of GraphDS. The RoadPlanner app calculates the shortest road between two cities, using Dijkstra's, multi-path Dijkstra's and the Floyd-Warshall algorithm. It also shows the order of vertex discoveries by the BFS and DFS algorithms.
 
 ## Basic syntax
 GraphDS has functions to create vertices and edges for both, undirected and directed graphs. The user does not need to worry about which type of edge/vertex is created, as this is all abstracted away under the relevant classes.
@@ -38,8 +40,17 @@ Note that a graph is an object, and any vertices and edges are contained within 
 
 In a similar manner, an undirected graph can be initialized, by creating an instance of the `UndirectedGraph` object in place of `DirectedGraph`.
 
+### Transpose graphs
+The _transpose graph_ of a directed graph is when all edges `(u, v)` become `(v, u)`, where `u` and `v` are vertices connected by an edge.
+
+To get the transpose of a directed graph `$g` as a `DirectedGraph` object, call:
+
+`$g->getTranspose()`
+
+This may be useful for algorithms which require graph transposition, and now, GraphDS provides a method to achieve it.
+
 ### Vertices
-In any graph, all vertices can be accessed through the `$g->vertices` array, where `$g` is an instance of a graph object. So, to access vertex `v1`, the syntax would be `$g->vertices['v1']`.
+In any graph, all vertices can be accessed through the `$g->vertices` array, where `$g` is an instance of a graph object. So, to access vertex `A`, the syntax would be `$g->vertices['A']`.
 
 #### Adding and removing vertices
 Adding and removing vertices can be accomplished using the `$g->addVertex('v')` and `$g->removeVertex('v')` methods, where `v` is the name of the vertex to be added/removed.
@@ -58,31 +69,31 @@ The indegree and outdegree of a vertex is simply how many incoming and outgoing 
 The indegree and outdegree of a vertex can be easily determined using `$g->vertices['v']->getIndegree()` and `$g->vertices['v']->getOutdegree()`.
 
 #### Asserting vertex adjacency
-In any graph, asserting that vertex `v2` is adjacent to `v1` can be done by calling `$g->vertices['v1']->adjacent('v2')`. Note that in a directed graph, a vertex will be considered as adjacent using the `adjacent` method, no matter whether it is incoming or outgoing.
+In any graph, asserting that vertex `B` is adjacent to `A` can be done by calling `$g->vertices['A']->adjacent('B')`. Note that in a directed graph, a vertex will be considered as adjacent using the `adjacent` method, no matter whether it is incoming or outgoing.
 
-In a directed graph, inward and outward adjacency can be asserted by using `$g->vertices['v1']->inAdjacent('v2')` and `$g->vertices['v1']->outAdjacent('v2')`, respectively.
+In a directed graph, inward and outward adjacency can be asserted by using `$g->vertices['A']->inAdjacent('B')` and `$g->vertices['A']->outAdjacent('B')`, respectively.
 
 ### Edges
 Edges are the objects that connect vertices together. Note that in GraphDS, edges are _not actual_ connections between vertices, but merely _abstract_ connections, meaning that they are stored as separate objects to the vertices.
 
-Edges can be accessed easily via `$g->edge('v1', 'v2')`, where `v1` and `v2` are the vertices connected by the edge. Note that in an undirected graph, `$g->edge('v1', 'v2')` and `$g->edge('v2', 'v1')` are equivalent, whereas in directed graphs, they represent 2 distinct edges.
+Edges can be accessed easily via `$g->edge('A', 'B')`, where `A` and `B` are the vertices connected by the edge. Note that in an undirected graph, `$g->edge('A', 'B')` and `$g->edge('B', 'A')` are equivalent, whereas in directed graphs, they represent 2 distinct edges.
 
 #### Real and virtual edges
 In GraphDS, edges are stored as object, and each object takes up space. To reduce the spatial footprint, the `edge` function was introduced in version 1.0.3, which returns both, real edges and "virtual" edges.
 
-Real edges are actual `DirectedEdge` or `UndirectedEdge` objects, whereas virtual edges are _not_ actually edge objects, but merely a result of the `edge` function returning edge `('v1', 'v2')`, even when `('v2', 'v1')` is requested. A virtual edge can be modified just like a real edge, with the exception of being removed. Virtual edges are not part of directed graphs.
+Real edges are actual `DirectedEdge` or `UndirectedEdge` objects, whereas virtual edges are _not_ actually edge objects, but merely a result of the `edge` function returning edge `('A', 'B')`, even when `('B', 'A')` is requested. A virtual edge can be modified just like a real edge, with the exception of being removed. Virtual edges are not part of directed graphs.
 
-This is desired behavior, as in undirected graphs, edge `('v1', 'v2')` would be equivalent to `('v2', 'v1')`. Virtual edges also eliminate the problem of edge duplication in undirected graphs, and therefore also reduce the memory GraphDS takes up.
+This is desired behavior, as in undirected graphs, edge `('A', 'B')` would be equivalent to `('B', 'A')`. Virtual edges also eliminate the problem of edge duplication in undirected graphs, and therefore also reduce the memory GraphDS takes up.
 
 #### Adding and removing edges
-To add an edge, simply call `$g->addEdge('v1', 'v2', 'value')`, where `v1` and `v2` are the vertices in graph `$g` to be connected by this edge, and `value` an optional value for the edge, which must be numeric. The default value of edges is `null`.
+To add an edge, simply call `$g->addEdge('A', 'B', 'value')`, where `A` and `B` are the vertices in graph `$g` to be connected by this edge, and `value` an optional value for the edge, which must be numeric. The default value of edges is `null`.
 
-Note that in undirected graphs, this also adds a "virtual" edge `('v2', 'v1')` in addition to `('v1', 'v2')`.
+Note that in undirected graphs, this also adds a "virtual" edge `('B', 'A')` in addition to `('A', 'B')`.
 
-Removing an edge can be accomplished via `$g->removeEdge('v1', 'v2')`. Due to the behavior of virtual edges, this will remove both, the real edge `('v1', 'v2')` and the virtual edge `('v2', 'v1')` in an undirected graph, but only the real edge in a directed graph.
+Removing an edge can be accomplished via `$g->removeEdge('A', 'B')`. Due to the behavior of virtual edges, this will remove both, the real edge `('A', 'B')` and the virtual edge `('B', 'A')` in an undirected graph, but only the real edge in a directed graph.
 
 #### Getting and setting the value of an edge
-To get the value of an edge, `$g->edge('v1', 'v2')->getValue()` can be called. To set the value of an edge, `$g->edge('v1', 'v2')->setValue(value)` can be called, where `value` can be any storable data-type.
+To get the value of an edge, `$g->edge('A', 'B')->getValue()` can be called. To set the value of an edge, `$g->edge('A', 'B')->setValue(value)` can be called, where `value` can be any storable data-type.
 
 ## Algorithms
 Since version 1.0.1, GraphDS has support for algorithms. `GraphDS\Algo` is the namespace of algorithms in GraphDS.
@@ -210,4 +221,4 @@ The object `$g` is now a conventional GraphDS, reconstructed from the GraphML ma
 ## In case of bugs and/or suggestions
 If, for any reason, there is a bug found in GraphDS, please message me on GitHub or send me an email to: <algb12.19@gmail.com>. The same goes for any suggestions.
 
-Despite thorough unit testing, bugs will inevitably appear, so please open up any issues on GitHub if they arise!
+Despite thorough unit testing, bugs will inevitably appear, so please open up any issues on GitHub if they arise! Currently, PHP 5.3 and onwards is supported, although at least PHP 5.6 is recommended.
