@@ -108,9 +108,6 @@ class DirectedGraph extends Graph
      */
     public function addEdge($vertex1, $vertex2, $value = null)
     {
-        if ($vertex1 === $vertex2) {
-            throw new InvalidArgumentException('Cannot connect vertex to itself.');
-        }
         if (empty($this->vertices[$vertex1]) || empty($this->vertices[$vertex2])) {
             throw new InvalidArgumentException('One of the vertices does not exist.');
         }
