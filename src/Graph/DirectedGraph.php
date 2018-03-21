@@ -13,24 +13,6 @@ use InvalidArgumentException;
  */
 class DirectedGraph extends Graph
 {
-    /**
-     * An array holding all vertices of the graph.
-     *
-     * @var array
-     */
-    public $vertices;
-    /**
-     * An array holding all edges of the graph.
-     *
-     * @var array
-     */
-    public $edges;
-    /**
-     * Defines whether the graph is directed or not.
-     *
-     * @var bool
-     */
-    public $directed;
 
     /**
      * Constructor for DirectedGraph object.
@@ -44,7 +26,7 @@ class DirectedGraph extends Graph
     /**
      * Adds a directed vertex to the graph.
      *
-     * @param string $v ID of the vertex
+     * @param string $vertex ID of the vertex
      */
     public function addVertex($vertex)
     {
@@ -56,7 +38,8 @@ class DirectedGraph extends Graph
     /**
      * Removes a directed vertex from the graph.
      *
-     * @param string $v ID of the vertex
+     * @param string $vertex ID of the vertex
+     * @throws \InvalidArgumentException
      */
     public function removeVertex($vertex)
     {
@@ -77,8 +60,7 @@ class DirectedGraph extends Graph
                 $this->removeEdge($neighbor, $vertex);
             }
         }
-        unset($this->edges[$vertex]);
-        unset($this->vertices[$vertex]);
+        unset($this->edges[$vertex], $this->vertices[$vertex]);
     }
 
     /**
@@ -88,6 +70,7 @@ class DirectedGraph extends Graph
      * @param string $vertex2 ID of second vertex
      *
      * @return object Instance of DirectedEdge from $vertex1 to $vertex2
+     * @throws \InvalidArgumentException
      */
     public function edge($vertex1, $vertex2)
     {
@@ -104,7 +87,8 @@ class DirectedGraph extends Graph
      *
      * @param string $vertex1 ID of first vertex
      * @param string $vertex2 ID of second vertex
-     * @param float  $value   The value/weight the edge should hold
+     * @param float $value The value/weight the edge should hold
+     * @throws \InvalidArgumentException
      */
     public function addEdge($vertex1, $vertex2, $value = null)
     {
@@ -123,6 +107,7 @@ class DirectedGraph extends Graph
      *
      * @param string $vertex1 ID of first vertex
      * @param string $vertex2 ID of second vertex
+     * @throws \InvalidArgumentException
      */
     public function removeEdge($vertex1, $vertex2)
     {
@@ -143,13 +128,14 @@ class DirectedGraph extends Graph
     /**
      * Transposes the graph, reversing each directed edge.
      * @return DirectedGraph The transposed graph
+     * @throws \InvalidArgumentException
      */
     public function getTranspose()
     {
         $graph = clone $this;
 
-        foreach ($graph->edges as $vertex1=>$vertex1Data) {
-            foreach ($vertex1Data as $vertex2=>$vertex2Data) {
+        foreach ($graph->edges as $vertex1 => $vertex1Data) {
+            foreach ($vertex1Data as $vertex2 => $vertex2Data) {
                 $value = $graph->edge($vertex1, $vertex2)->getValue();
                 $graph->removeEdge($vertex1, $vertex2);
                 $graph->addEdge($vertex2, $vertex1, $value);

@@ -2,6 +2,7 @@
 /**
  * Undirected graph.
  */
+
 namespace GraphDS\Graph;
 
 use GraphDS\Vertex\UndirectedVertex;
@@ -14,25 +15,6 @@ use InvalidArgumentException;
 class UndirectedGraph extends Graph
 {
     /**
-     * An array holding all vertices of the graph.
-     *
-     * @var array
-     */
-    public $vertices;
-    /**
-     * An array holding all edges of the graph.
-     *
-     * @var array
-     */
-    public $edges;
-    /**
-     * Defines whether the graph is directed or not.
-     *
-     * @var bool
-     */
-    public $directed;
-
-    /**
      * Constructor for UndirectedGraph object.
      */
     public function __construct()
@@ -44,7 +26,7 @@ class UndirectedGraph extends Graph
     /**
      * Adds an undirected vertex to the graph.
      *
-     * @param string $v ID of the vertex
+     * @param string $vertex ID of the vertex
      */
     public function addVertex($vertex)
     {
@@ -57,6 +39,7 @@ class UndirectedGraph extends Graph
      * Removes an undirected vertex from the graph.
      *
      * @param string $vertex ID of the vertex
+     * @throws \InvalidArgumentException
      */
     public function removeVertex($vertex)
     {
@@ -72,8 +55,7 @@ class UndirectedGraph extends Graph
                 $this->removeEdge($neighbor, $vertex);
             }
         }
-        unset($this->edges[$vertex]);
-        unset($this->vertices[$vertex]);
+        unset($this->edges[$vertex], $this->vertices[$vertex]);
     }
 
     /**
@@ -83,6 +65,7 @@ class UndirectedGraph extends Graph
      * @param string $vertex2 ID of second vertex
      *
      * @return object Instance of UndirectedEdge between $vertex1 and $vertex2
+     * @throws \InvalidArgumentException
      */
     public function edge($vertex1, $vertex2)
     {
@@ -101,7 +84,8 @@ class UndirectedGraph extends Graph
      *
      * @param string $vertex1 ID of first vertex
      * @param string $vertex2 ID of second vertex
-     * @param float  $value   The value/weight the edge should hold
+     * @param float $value The value/weight the edge should hold
+     * @throws \InvalidArgumentException
      */
     public function addEdge($vertex1, $vertex2, $value = null)
     {
@@ -123,6 +107,7 @@ class UndirectedGraph extends Graph
      *
      * @param string $vertex1 ID of first undirected vertex
      * @param string $vertex2 ID of second undirected vertex
+     * @throws \InvalidArgumentException
      */
     public function removeEdge($vertex1, $vertex2)
     {

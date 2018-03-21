@@ -10,19 +10,6 @@ namespace GraphDS\Vertex;
 class UndirectedVertex extends Vertex
 {
     /**
-     * Variable holding the value of this vertex.
-     *
-     * @var mixed
-     */
-    protected $value;
-    /**
-     * Array holding references to all neighboring vertices of this vertex.
-     *
-     * @var array
-     */
-    public $neighbors;
-
-    /**
      * Adds a neighboring, undirected vertex to this vertex.
      *
      * @param string $vertex ID of vertex
