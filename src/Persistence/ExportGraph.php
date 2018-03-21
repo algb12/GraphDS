@@ -4,6 +4,7 @@
  */
 namespace GraphDS\Persistence;
 
+use GraphDS\Graph\Graph;
 use InvalidArgumentException;
 use SimpleXMLElement;
 use DOMDocument;
@@ -16,14 +17,15 @@ class ExportGraph
     /**
      * Reference to the graph.
      *
-     * @var object
+     * @var Graph
      */
     public $graph;
 
     /**
      * Constructor for the graph exporter.
      *
-     * @param object $graph The graph to be exported
+     * @param Graph $graph The graph to be exported
+     * @throws \InvalidArgumentException
      */
     public function __construct($graph)
     {
@@ -36,7 +38,7 @@ class ExportGraph
     /**
      * Returns the GraphML output representing the graph.
      *
-     * @param string $file The file to which the graph should be written
+     * @return string
      */
     public function getGraphML()
     {
@@ -99,8 +101,9 @@ class ExportGraph
     /**
      * Saves given data to a files.
      *
-     * @param mixed  $data The data to be saved
+     * @param mixed $data The data to be saved
      * @param string $file Filename where the data should be saved to
+     * @throws \InvalidArgumentException
      */
     public function saveToFile($data, $file)
     {

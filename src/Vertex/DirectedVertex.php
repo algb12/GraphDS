@@ -2,6 +2,7 @@
 /**
  * Directed vertex.
  */
+
 namespace GraphDS\Vertex;
 
 /**
@@ -9,19 +10,6 @@ namespace GraphDS\Vertex;
  */
 class DirectedVertex extends Vertex
 {
-    /**
-     * Variable holding the value of this vertex.
-     *
-     * @var mixed
-     */
-    protected $value;
-    /**
-     * Array holding references to all neighboring vertices of this vertex.
-     *
-     * @var array
-     */
-    public $neighbors;
-
     /**
      * Constructor for DirectedVertex object.
      */

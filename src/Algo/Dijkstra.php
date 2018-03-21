@@ -4,6 +4,9 @@
  */
 namespace GraphDS\Algo;
 
+use GraphDS\Graph\DirectedGraph;
+use GraphDS\Graph\Graph;
+use GraphDS\Graph\UndirectedGraph;
 use InvalidArgumentException;
 
 /**
@@ -14,7 +17,7 @@ class Dijkstra
     /**
      * Reference to the graph.
      *
-     * @var object
+     * @var Graph
      */
     public $graph;
     /**
@@ -45,7 +48,8 @@ class Dijkstra
     /**
      * Constructor for the Dijkstra algorithm.
      *
-     * @param object $graph The graph to which the Dijkstra algorithm should be applied
+     * @param Graph $graph The graph to which the Dijkstra algorithm should be applied
+     * @throws \InvalidArgumentException
      */
     public function __construct($graph)
     {
@@ -59,8 +63,8 @@ class Dijkstra
      * Calculates the shortest path to every vertex from vertex $start.
      *
      * @param mixed $start ID of the starting vertex for Dijkstra's algorithm
-     *
-     * @return array Array holding the distances and previous vertices as calculated by Dijkstra's algorithm
+     * @return void
+     * @throws \InvalidArgumentException
      */
     public function run($start)
     {
@@ -82,9 +86,9 @@ class Dijkstra
             $minVertex = $minVertexTmp[0];
             unset($this->unvisitedVertices[$minVertex]);
 
-            if (get_class($this->graph) === 'GraphDS\Graph\UndirectedGraph') {
+            if ($this->graph instanceof UndirectedGraph) {
                 $neighbors = $this->graph->vertices[$minVertex]->getNeighbors();
-            } elseif (get_class($this->graph) === 'GraphDS\Graph\DirectedGraph') {
+            } elseif ($this->graph instanceof DirectedGraph) {
                 $neighbors = $this->graph->vertices[$minVertex]->getOutNeighbors();
             }
 

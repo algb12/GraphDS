@@ -9,18 +9,6 @@ namespace GraphDS\Edge;
  */
 class DirectedEdge extends Edge
 {
-    /**
-     * $value A value/weight held by the edge.
-     *
-     * @var float
-     */
-    protected $value;
-    /**
-     * $vertices An array of vertices associated with the edge.
-     *
-     * @var array
-     */
-    public $vertices;
 
     /**
      * Constructor for DirectedEdge object.

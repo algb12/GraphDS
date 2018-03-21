@@ -4,6 +4,8 @@
  */
 namespace GraphDS\Algo;
 
+use GraphDS\Graph\Graph;
+use GraphDS\Graph\UndirectedGraph;
 use InvalidArgumentException;
 
 /**
@@ -29,10 +31,12 @@ class FloydWarshall
      * @var array
      */
     public $next = array();
+
     /**
      * Constructor for the Floyd-Warshall algorithm.
      *
-     * @param object $graph The graph to which the Floyd-Warshall should be applied
+     * @param Graph $graph The graph to which the Floyd-Warshall should be applied
+     * @throws \InvalidArgumentException
      */
     public function __construct($graph)
     {
@@ -58,7 +62,7 @@ class FloydWarshall
             foreach ($vertex1Value as $vertex2 => $vertex2Value) {
                 $this->dist[$vertex1][$vertex2] = $vertex2Value->getValue();
                 $this->next[$vertex1][$vertex2] = $vertex2;
-                if (get_class($this->graph) === 'GraphDS\Graph\UndirectedGraph') {
+                if ($this->graph instanceof UndirectedGraph) {
                     $this->dist[$vertex2][$vertex1] = $this->dist[$vertex1][$vertex2];
                     $this->next[$vertex2][$vertex1] = $vertex1;
                 }
