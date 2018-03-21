@@ -4,6 +4,8 @@
  */
 namespace GraphDS\Algo;
 
+use GraphDS\Graph\DirectedGraph;
+use GraphDS\Graph\UndirectedGraph;
 use InvalidArgumentException;
 use SplStack;
 
@@ -41,6 +43,7 @@ class DFS
      * Constructor for the DFS algorithm.
      *
      * @param object $graph The graph to which the DFS algorithm should be applied
+     * @throws \InvalidArgumentException
      */
     public function __construct($graph)
     {
@@ -54,7 +57,7 @@ class DFS
     /**
      * Runs the DFS from a given vertex $vertex on the graph.
      *
-     * @param mixed $vertex ID of the vertex from which the DFS should begin
+     * @param mixed $root ID of the vertex from which the DFS should begin
      */
     public function run($root)
     {
@@ -75,9 +78,9 @@ class DFS
             if (!in_array($current, $this->discovered)) {
                 $this->discovered[] = $current;
 
-                if (get_class($this->graph) === 'GraphDS\Graph\UndirectedGraph') {
+                if ($this->graph instanceof UndirectedGraph) {
                     $neighbors = $this->graph->vertices[$current]->getNeighbors();
-                } elseif (get_class($this->graph) === 'GraphDS\Graph\DirectedGraph') {
+                } elseif ($this->graph instanceof DirectedGraph) {
                     $neighbors = $this->graph->vertices[$current]->getOutNeighbors();
                 }
 

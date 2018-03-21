@@ -4,6 +4,7 @@
  */
 namespace GraphDS\Persistence;
 
+use GraphDS\Graph\Graph;
 use InvalidArgumentException;
 use SimpleXMLElement;
 use GraphDS\Graph\UndirectedGraph;
@@ -14,24 +15,13 @@ use GraphDS\Graph\DirectedGraph;
  */
 class ImportGraph
 {
-    /**
-     * Reference to the graph.
-     *
-     * @var object
-     */
-    public $graph;
 
     /**
      * Constructor for the graph importer.
      *
-     * @param object $graph The graph into which data should be imported
      */
-    public function __construct($graph)
+    public function __construct()
     {
-        if (empty($graph) || get_parent_class($graph)  !== 'GraphDS\Graph\Graph') {
-            throw new InvalidArgumentException('Only GraphDS graphs can be exported.');
-        }
-        $this->graph = &$graph;
     }
 
     /**
@@ -39,7 +29,7 @@ class ImportGraph
      *
      * @param string $file File containing the GraphML markup
      *
-     * @return object The graph reconstructed from the GraphML
+     * @return Graph The graph reconstructed from the GraphML
      */
     public function fromGraphML($file)
     {

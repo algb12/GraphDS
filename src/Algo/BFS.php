@@ -4,6 +4,8 @@
  */
 namespace GraphDS\Algo;
 
+use GraphDS\Graph\DirectedGraph;
+use GraphDS\Graph\UndirectedGraph;
 use InvalidArgumentException;
 use SplQueue;
 
@@ -56,7 +58,7 @@ class BFS
     /**
      * Runs the BFS from a given vertex $vertex on the graph.
      *
-     * @param mixed $vertex ID of the vertex from which the BFS should begin
+     * @param mixed $root ID of the vertex from which the BFS should begin
      */
     public function run($root)
     {
@@ -75,9 +77,9 @@ class BFS
         while (!$queue->isEmpty()) {
             $this->discovered[] = $current = $queue->dequeue();
 
-            if (get_class($this->graph) === 'GraphDS\Graph\UndirectedGraph') {
+            if ($this->graph instanceof UndirectedGraph) {
                 $neighbors = $this->graph->vertices[$current]->getNeighbors();
-            } elseif (get_class($this->graph) === 'GraphDS\Graph\DirectedGraph') {
+            } elseif ($this->graph instanceof DirectedGraph) {
                 $neighbors = $this->graph->vertices[$current]->getOutNeighbors();
             }
 
