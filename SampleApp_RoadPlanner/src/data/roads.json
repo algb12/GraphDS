@@ -1,19 +1,53 @@
 {
     "countries": {
         "Germany": {
-            "locations": [
-                "Hamburg",
-                "Bremen",
-                "Berlin",
-                "Hannover",
-                "Dortmund",
-                "Cologne",
-                "Bonn",
-                "Frankfurt",
-                "Nurnberg",
-                "Stuttgart",
-                "Munich"
-            ],
+            "map_img": "germany.png",
+            "locations": {
+                "Hamburg": {
+                    "map_x": 275,
+                    "map_y": 77
+                },
+                "Bremen": {
+                    "map_x": 205,
+                    "map_y": 107
+                },
+                "Berlin": {
+                    "map_x": 452,
+                    "map_y": 163
+                },
+                "Hannover": {
+                    "map_x": 262,
+                    "map_y": 168
+                },
+                "Dortmund": {
+                    "map_x": 139,
+                    "map_y": 238
+                },
+                "Cologne": {
+                    "map_x": 109,
+                    "map_y": 290
+                },
+                "Bonn": {
+                    "map_x": 116,
+                    "map_y": 318
+                },
+                "Frankfurt": {
+                    "map_x": 203,
+                    "map_y": 368
+                },
+                "Nurnberg": {
+                    "map_x": 333,
+                    "map_y": 427
+                },
+                "Stuttgart": {
+                    "map_x": 231,
+                    "map_y": 478
+                },
+                "Munich": {
+                    "map_x": 361,
+                    "map_y": 528
+                }
+            },
             "paths": {
                 "Hamburg": {
                     "Bremen": {
@@ -86,19 +120,53 @@
             }
         },
         "X": {
-            "locations": [
-                "A",
-                "B",
-                "C",
-                "D",
-                "E",
-                "F",
-                "G",
-                "H",
-                "I",
-                "J",
-                "K"
-            ],
+            "map_img": "X.png",
+            "locations": {
+                "A": {
+                    "map_x": 57,
+                    "map_y": 473
+                },
+                "B": {
+                    "map_x": 423,
+                    "map_y": 303
+                },
+                "C": {
+                    "map_x": 272,
+                    "map_y": 470
+                },
+                "D": {
+                    "map_x": 426,
+                    "map_y": 415
+                },
+                "E": {
+                    "map_x": 423,
+                    "map_y": 527
+                },
+                "F": {
+                    "map_x": 559,
+                    "map_y": 468
+                },
+                "G": {
+                    "map_x": 284,
+                    "map_y": 588
+                },
+                "H": {
+                    "map_x": 423,
+                    "map_y": 660
+                },
+                "I": {
+                    "map_x": 557,
+                    "map_y": 661
+                },
+                "J": {
+                    "map_x": 740,
+                    "map_y": 465
+                },
+                "K": {
+                    "map_x": 970,
+                    "map_y": 462
+                }
+            },
             "paths": {
                 "A": {
                     "B": {

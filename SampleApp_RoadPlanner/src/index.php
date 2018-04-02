@@ -17,7 +17,7 @@
     use GraphDS\Algo\FloydWarshall;
 
     // Load JSON datafile and create array with data
-    $datafile = file_get_contents('../data/roads.json');
+    $datafile = file_get_contents('data/roads.json');
     $data = json_decode($datafile, true);
 
     // Initial submit button text
@@ -43,8 +43,9 @@
         $g = new UndirectedGraph();
 
         // Populate graph with vertices from JSON
-        foreach ($data['countries'][$country]['locations'] as $location) {
+        foreach ($data['countries'][$country]['locations'] as $location => $location_data) {
             $g->addVertex($location);
+            $g->vertices[$location]->setValue($location_data);
         }
 
         // Populate graph with edges from JSON
@@ -66,18 +67,39 @@
         $info_fw_path = 'To get from '.$start_city.' to '.$dest_city.':<br>';
         $stops = $fw_res['path'];
         $last = count($stops) - 1;
+
+        // Initialise image creation
+        $img = imagecreatefrompng('data/'.$data['countries'][$country]['map_img']);
+        $color = imagecolorallocate($img, 20, 210, 40);
+        imagesetthickness($img, 3);
+
+        $prev_stop = null;
+
         foreach ($stops as $k => $stop) {
+            if ($prev_stop !== null) {
+                $v1 = $g->vertices[$prev_stop]->getValue();
+                $x1 = $v1['map_x'];
+                $y1 = $v1['map_y'];
+                $v2 = $g->vertices[$stop]->getValue();
+                $x2 = $v2['map_x'];
+                $y2 = $v2['map_y'];
+                imageline($img, $x1, $y1, $x2, $y2, $color);
+            }
             if ($k !== $last) {
                 $info_fw_path .= $stop.' → ';
             } else {
                 $info_fw_path .= $stop;
             }
+            $prev_stop = $stop;
         }
 
         // Create distance info text
         $info_fw_dist = 'The distance is ';
         $info_fw_dist .= $fw_res['dist'];
         $info_fw_dist .= ' km.';
+
+        // Save generated image
+        imagepng($img, "data/map_fw.png");
 
         // Dijkstra
         // --------
@@ -91,18 +113,39 @@
         $info_dijk_path = 'To get from '.$start_city.' to '.$dest_city.':<br>';
         $stops = $dijk_res['path'];
         $last = count($stops) - 1;
+
+        // Initialise image creation
+        $img = imagecreatefrompng('data/'.$data['countries'][$country]['map_img']);
+        $color = imagecolorallocate($img, 20, 210, 40);
+        imagesetthickness($img, 3);
+
+        $prev_stop = null;
+
         foreach ($stops as $k => $stop) {
+            if ($prev_stop !== null) {
+                $v1 = $g->vertices[$prev_stop]->getValue();
+                $x1 = $v1['map_x'];
+                $y1 = $v1['map_y'];
+                $v2 = $g->vertices[$stop]->getValue();
+                $x2 = $v2['map_x'];
+                $y2 = $v2['map_y'];
+                imageline($img, $x1, $y1, $x2, $y2, $color);
+            }
             if ($k !== $last) {
                 $info_dijk_path .= $stop.' → ';
             } else {
                 $info_dijk_path .= $stop;
             }
+            $prev_stop = $stop;
         }
 
         // Create distance info text
         $info_dijk_dist = 'The distance is ';
         $info_dijk_dist .= $dijk_res['dist'];
         $info_dijk_dist .= ' km.';
+
+        // Save generated image
+        imagepng($img, "data/map_dijk.png");
 
         // Multi-path Dijkstra
         // --------
@@ -112,17 +155,33 @@
         $dijk_mult_res = $dijk_mult->get($dest_city);
         $dijk_mult_benchmark = (round(microtime(true) * 1000000)) - $dijk_mult_starttime;
 
+        // Initialise image creation
+        $img = imagecreatefrompng('data/'.$data['countries'][$country]['map_img']);
+        $color = imagecolorallocate($img, 20, 210, 40);
+        imagesetthickness($img, 3);
+
         // Create path info text
         $info_dijk_mult_path = 'To get from '.$start_city.' to '.$dest_city.':<br>';
         foreach ($dijk_mult_res['paths'] as $path) {
             $stops = $path;
+            $prev_stop = null;
             $last = count($stops) - 1;
             foreach ($stops as $k => $stop) {
+                if ($prev_stop !== null) {
+                    $v1 = $g->vertices[$prev_stop]->getValue();
+                    $x1 = $v1['map_x'];
+                    $y1 = $v1['map_y'];
+                    $v2 = $g->vertices[$stop]->getValue();
+                    $x2 = $v2['map_x'];
+                    $y2 = $v2['map_y'];
+                    imageline($img, $x1, $y1, $x2, $y2, $color);
+                }
                 if ($k !== $last) {
                     $info_dijk_mult_path .= $stop.' → ';
                 } else {
                     $info_dijk_mult_path .= $stop;
                 }
+                $prev_stop = $stop;
             }
             $info_dijk_mult_path .= '<br>';
         }
@@ -131,6 +190,9 @@
         $info_dijk_mult_dist = 'The distance is ';
         $info_dijk_mult_dist .= $dijk_mult_res['dist'];
         $info_dijk_mult_dist .= ' km.';
+
+        // Save generated image
+        imagepng($img, "data/map_dijk_mult.png");
     }
 ?>
 
@@ -172,7 +234,7 @@
             if (isset($_GET['country'])) {
                 echo '<h3>Country: '.$country.'</h3>';
                 $city_selector = '';
-                foreach ($data['countries'][$country]['locations'] as $location) {
+                foreach ($data['countries'][$country]['locations'] as $location => $location_data) {
                     $city_selector .= '<option value="'.$location.'">'.$location.'</option>';
                 }
 
@@ -195,14 +257,20 @@
             echo '<h4>Dijkstra calculation:</h4>
             <p>'.$info_dijk_path.'</p>
             <p>'.$info_dijk_dist.'</p>
+            <p>Path traced (in green):</p>
+            <img style="width: 500px;" src="data/map_dijk.png">
             <p>Algorithm execution took '.$dijk_benchmark.'&mu;s.</p>
             <h4>Multi-path Dijkstra calculation:</h4>
             <p>'.$info_dijk_mult_path.'</p>
             <p>'.$info_dijk_mult_dist.'</p>
+            <p>Path traced (in green):</p>
+            <img style="width: 500px;" src="data/map_dijk_mult.png">
             <p>Algorithm execution took '.$dijk_mult_benchmark.'&mu;s.</p>
             <h4>Floyd-Warshall calculation:</h4>
             <p>'.$info_fw_path.'</p>
             <p>'.$info_fw_dist.'</p>
+            <p>Path traced (in green):</p>
+            <img style="width: 500px;" src="data/map_fw.png">
             <p>Algorithm execution took '.$fw_benchmark.'&mu;s.</p>';
         }
     ?>

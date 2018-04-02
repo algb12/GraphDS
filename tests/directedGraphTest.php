@@ -8,8 +8,9 @@ use GraphDS\Algo\DFS;
 use GraphDS\Algo\BFS;
 use GraphDS\Persistence\ImportGraph;
 use GraphDS\Persistence\ExportGraph;
+use PHPUnit\Framework\TestCase;
 
-class DirectedGraphTest extends PHPUnit_Framework_TestCase
+class DirectedGraphTest extends TestCase
 {
     public function testVertexAddRemove()
     {

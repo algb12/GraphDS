@@ -53,7 +53,6 @@ class ImportGraph
             if (empty($value)) {
                 $default = $this->import->xpath('key[@for="node"]/default');
                 if (!empty($default)) {
-                    print_r($default);
                     $value = (string) $default;
                 }
             }
