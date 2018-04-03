@@ -4,6 +4,7 @@
  */
 namespace GraphDS\Algo;
 
+use GraphDS\Graph\Graph;
 use GraphDS\Graph\DirectedGraph;
 use GraphDS\Graph\UndirectedGraph;
 use InvalidArgumentException;
@@ -46,7 +47,7 @@ class BFS
      */
     public function __construct($graph)
     {
-        if (empty($graph) || get_parent_class($graph)  !== 'GraphDS\Graph\Graph') {
+        if (empty($graph) || !($graph instanceof Graph)) {
             throw new InvalidArgumentException("Dijkstra's shortest path algorithm requires a graph.");
         }
         $this->graph = &$graph;

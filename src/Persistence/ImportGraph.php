@@ -5,10 +5,10 @@
 namespace GraphDS\Persistence;
 
 use GraphDS\Graph\Graph;
+use GraphDS\Graph\DirectedGraph;
+use GraphDS\Graph\UndirectedGraph;
 use InvalidArgumentException;
 use SimpleXMLElement;
-use GraphDS\Graph\UndirectedGraph;
-use GraphDS\Graph\DirectedGraph;
 
 /**
  * Class defining the graph importer methods.

@@ -125,7 +125,7 @@ class UndirectedGraph extends Graph
                 unset($this->edges[$vertex1]);
             }
         }
-        if (isset($this->edges[$vertex1][$vertex2])) {
+        if (isset($this->edges[$vertex2][$vertex1])) {
             unset($this->edges[$vertex2][$vertex1]);
             if (empty($this->edges[$vertex2])) {
                 unset($this->edges[$vertex2]);

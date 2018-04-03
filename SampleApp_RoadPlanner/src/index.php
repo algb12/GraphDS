@@ -224,7 +224,7 @@
                 }
 
                 echo '<div id="countryselect">
-                    <label for="country">Start city:</label>
+                    <label for="country">Country:</label>
                     <select name="country">'.$country_selector.'</select>
                 </div>';
             } else {

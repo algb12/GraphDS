@@ -48,6 +48,10 @@ class UndirectedGraphTest extends TestCase
         $g->removeEdge('A', 'B');
         $this->assertNull($g->edge('A', 'B'));
         $this->assertNull($g->edge('B', 'A'));
+        $g->addEdge('A', 'B');
+        $g->removeEdge('B', 'A');
+        $this->assertNull($g->edge('A', 'B'));
+        $this->assertNull($g->edge('B', 'A'));
         $this->assertNotContains('B', $g->vertices['A']->getNeighbors());
         $this->assertNotContains('A', $g->vertices['B']->getNeighbors());
     }

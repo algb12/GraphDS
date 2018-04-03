@@ -5,6 +5,7 @@
 namespace GraphDS\Algo;
 
 use GraphDS\Graph\Graph;
+use GraphDS\Graph\DirectedGraph;
 use GraphDS\Graph\UndirectedGraph;
 use InvalidArgumentException;
 
@@ -40,7 +41,7 @@ class FloydWarshall
      */
     public function __construct($graph)
     {
-        if (empty($graph) || get_parent_class($graph)  !== 'GraphDS\Graph\Graph') {
+        if (empty($graph) || !($graph instanceof Graph)) {
             throw new InvalidArgumentException('Floyd-Warshall shortest path algorithm requires a graph.');
         }
         $this->graph = &$graph;
