@@ -6,9 +6,9 @@ GraphDS is an object-oriented, lightweight implementation of the graph data-stru
 
 In a project of mine, I needed a way to represent graphs in PHP. None of the existing solutions suited me, so I have decided to write my own graph library from scratch. The original implementation used in my project contains additional functions for graph traversal and refactoring of graphs, but these functions are specific to my project.
 
-This version of GraphDS is a toned-down version of my original implementation. It makes use of OOP practices to allow algorithms to be loaded only on demand, making GraphDS fast, extendable and lightweight at the same time.
+This version of GraphDS used to be a toned-down version of my original implementation, but has now grown into a separate project. It makes use of OOP practices to allow on-demand loading of algorithms, making GraphDS fast, extendable and lightweight at the same time.
 
-GraphDS requires at least PHP version 5.3. Unit tests are run from PHP 5.4 onwards.
+GraphDS requires at least PHP version 5.3. Unit tests can be run from PHP 5.4 onwards. Although compatibility with older PHP versions tries to be maintained, unit tests are only run officially for the last 3 major PHP versions.
 
 ## How to install
 Simply require the Composer package. In the directory of your project, run:
@@ -16,7 +16,9 @@ Simply require the Composer package. In the directory of your project, run:
 `composer require algb12/graph-ds`
 
 ## What is it even useful for?
-Please see the sample app in the `SampleApp_RoadPlanner` directory to find a primitive application of GraphDS. The RoadPlanner app calculates the shortest road between two cities, using Dijkstra's, multi-path Dijkstra's and the Floyd-Warshall algorithm. It also shows the order of vertex discoveries by the BFS and DFS algorithms.
+Graphs are useful for many things, ranging from transportation to social networks. In this regard, GraphDS makes working with graphs in PHP a lot easier.
+
+Please see the RoadPlanner sample app in the `SampleApp_RoadPlanner` directory to find a primitive application of GraphDS. The RoadPlanner app calculates the shortest road between two cities, using Dijkstra's, multi-path Dijkstra's and the Floyd-Warshall algorithm. Computed paths are represented visually on the source map. To test GraphDS out with your own map, take a look at the `roads.json` file in `src/data`, where you can add in your own map/"country".
 
 ## Basic syntax
 GraphDS has functions to create vertices and edges for both, undirected and directed graphs. The user does not need to worry about which type of edge/vertex is created, as this is all abstracted away under the relevant classes.
@@ -24,9 +26,9 @@ GraphDS has functions to create vertices and edges for both, undirected and dire
 The following is a quick primer on the usage of GraphDS:
 
 ### Directed and undirected graphs
-In graph theory, there are two main types of graphs. On one hand, there are directed graphs. A directed graph has vertices connected with a one-way edge. Think of a directed graph as a one-way lane, you can start at any vertex, but can the only follow along the directionality of each edge to the neighboring vertex.
+In graph theory, there are two main types of graphs. On one hand, there are directed graphs. A directed graph has vertices connected with by one-way edges. Think of a edges of a directed graph as a one-way lanes – you can start at any vertex, but can then only follow along the directionality of the edge to the neighboring vertex.
 
-On the other hand, there are undirected graphs. They allow you to get from any vertex to any neighbor, as in undirected graphs, there is no concept of ancestors and descendants. Vertices are simply connected with each other by directionless edges.
+On the other hand, there are undirected graphs. They allow you to get from any vertex to any neighbor, as in undirected graphs, there is no concept of ancestors and descendants. Think of edges of an undirected graph as normal roads, with traffic in both directions. Vertices are simply connected with each other by directionless edges.
 
 The following shows how to initialize a directed graph:
 
@@ -41,7 +43,7 @@ Note that a graph is an object, and any vertices and edges are contained within 
 In a similar manner, an undirected graph can be initialized, by creating an instance of the `UndirectedGraph` object in place of `DirectedGraph`.
 
 ### Transpose graphs
-The _transpose graph_ of a directed graph is when all edges `(u, v)` become `(v, u)`, where `u` and `v` are vertices connected by an edge.
+The _transpose graph_ of a directed graph is when all edges `(u, v)` become `(v, u)`, where `u` and `v` are vertices connected by a directed edge.
 
 To get the transpose of a directed graph `$g` as a `DirectedGraph` object, call:
 
@@ -56,51 +58,53 @@ In any graph, all vertices can be accessed through the `$g->vertices` array, whe
 Adding and removing vertices can be accomplished using the `$g->addVertex('v')` and `$g->removeVertex('v')` methods, where `v` is the name of the vertex to be added/removed.
 
 #### Getting and setting the value of a vertex
-To get the value of a vertex, `$g->vertices['v']->getValue()` can be called. To set the value of a vertex, `$g->vertices['v']->setValue(value)` can be called, where `value` is stored as a string.
+To get the value of a vertex, `$g->vertices['v']->getValue()` can be called. To set the value of a vertex, `$g->vertices['v']->setValue(value)` can be called, where `value` can be any storable data-type.
 
 #### Getting neighbors of a vertex
 Getting the neighbors of a vertex in an undirected graph can be accomplished by using `$g->vertices['v']->getNeighbors()`.
 
-In a directed graph, `$g->vertices['v']->getInNeighbors` returns an array of all vertices connected by an incoming edge, whereas `$g->vertices['v']->getOutNeighbors()` returns an array of all vertices connected by an outgoing edge to the current vertex. `$g->vertices['v']->getNeighbors()` returns an array of two subarrays, `in` and `out` for incoming and outgoing vertices.
+In a directed graph, `$g->vertices['v']->getInNeighbors()` returns an array of all vertices connected by an incoming edge, whereas `$g->vertices['v']->getOutNeighbors()` returns an array of all vertices connected by an outgoing edge from the current vertex. `$g->vertices['v']->getNeighbors()` returns an array of two subarrays, `in` and `out`, for incoming and outgoing vertices, respectively.
 
-#### Indegrees and Outdegrees
+#### Indegrees and outdegrees
 The indegree and outdegree of a vertex is simply how many incoming and outgoing vertices are connected to a vertex, respectively.
+
+Indegrees and outdegrees only apply to directed graphs, since undirected graphs cannot have incoming or outgoing edges.
 
 The indegree and outdegree of a vertex can be easily determined using `$g->vertices['v']->getIndegree()` and `$g->vertices['v']->getOutdegree()`.
 
 #### Asserting vertex adjacency
-In any graph, asserting that vertex `B` is adjacent to `A` can be done by calling `$g->vertices['A']->adjacent('B')`. Note that in a directed graph, a vertex will be considered as adjacent using the `adjacent` method, no matter whether it is incoming or outgoing.
+In any graph, asserting that vertex `B` is adjacent to `A` can be done by calling `$g->vertices['A']->adjacent('B')`. If the vertex is adjacent, then `true` is returned, otherwise, `false`. Note that in a directed graph, a vertex will be considered as adjacent using the `adjacent` method, no matter whether it is incoming or outgoing.
 
 In a directed graph, inward and outward adjacency can be asserted by using `$g->vertices['A']->inAdjacent('B')` and `$g->vertices['A']->outAdjacent('B')`, respectively.
 
 ### Edges
-Edges are the objects that connect vertices together. Note that in GraphDS, edges are _not actual_ connections between vertices, but merely _abstract_ connections, meaning that they are stored as separate objects to the vertices.
+Edges are the objects that connect vertices together. Note that in GraphDS, edges are stored as separate objects to the vertices, meaning that they exist independently. It is the GraphDS core that manages the relationship between edges and vertices within the graph.
 
 Edges can be accessed easily via `$g->edge('A', 'B')`, where `A` and `B` are the vertices connected by the edge. Note that in an undirected graph, `$g->edge('A', 'B')` and `$g->edge('B', 'A')` are equivalent, whereas in directed graphs, they represent 2 distinct edges.
 
 #### Real and virtual edges
-In GraphDS, edges are stored as object, and each object takes up space. To reduce the spatial footprint, the `edge` function was introduced in version 1.0.3, which returns both, real edges and "virtual" edges.
+In GraphDS, edges are stored as objects, and each object takes up memory space. To reduce the spatial footprint, the `edge` function was introduced in version 1.0.3, which returns both, real edges and "virtual" edges.
 
-Real edges are actual `DirectedEdge` or `UndirectedEdge` objects, whereas virtual edges are _not_ actually edge objects, but merely a result of the `edge` function returning edge `('A', 'B')`, even when `('B', 'A')` is requested. A virtual edge can be modified just like a real edge, with the exception of being removed. Virtual edges are not part of directed graphs.
+Real edges are actual `DirectedEdge` or `UndirectedEdge` objects, whereas virtual edges are _not_ actually edge objects, but merely a result of the `edge` function returning edge `('A', 'B')`, even when `('B', 'A')` is requested. A virtual edge can be modified just like a real edge. Virtual edges are not part of directed graphs, since every directed edge is distinct.
 
 This is desired behavior, as in undirected graphs, edge `('A', 'B')` would be equivalent to `('B', 'A')`. Virtual edges also eliminate the problem of edge duplication in undirected graphs, and therefore also reduce the memory GraphDS takes up.
 
 #### Adding and removing edges
-To add an edge, simply call `$g->addEdge('A', 'B', 'value')`, where `A` and `B` are the vertices in graph `$g` to be connected by this edge, and `value` an optional value for the edge, which must be numeric. The default value of edges is `null`.
+To add an edge, simply call `$g->addEdge('A', 'B', 'value')`, where `A` and `B` are the vertices in graph `$g` to be connected by this edge, and `value` is an optional value of the edge. The value could be used as the weight of the edge. The default value of edges is `null`.
 
-Note that in undirected graphs, this also adds a "virtual" edge `('B', 'A')` in addition to `('A', 'B')`.
+Note that in undirected graphs, this will result in the "virtual" edge `('B', 'A')` being returned, even if `('A', 'B')` is requested.
 
-Removing an edge can be accomplished via `$g->removeEdge('A', 'B')`. Due to the behavior of virtual edges, this will remove both, the real edge `('A', 'B')` and the virtual edge `('B', 'A')` in an undirected graph, but only the real edge in a directed graph.
+Removing an edge can be accomplished via `$g->removeEdge('A', 'B')`. Due to the behavior of virtual edges, this will remove both, the real edge `('A', 'B')` and the virtual edge `('B', 'A')` in an undirected graph, but only the real edge in a directed graph. In undirected graphs, edge removal is order-agnostic, meaning that regardless whether a real or virtual edge is supplied, the correct edge will still be removed.
 
 #### Getting and setting the value of an edge
 To get the value of an edge, `$g->edge('A', 'B')->getValue()` can be called. To set the value of an edge, `$g->edge('A', 'B')->setValue(value)` can be called, where `value` can be any storable data-type.
 
 ## Algorithms
-Since version 1.0.1, GraphDS has support for algorithms. `GraphDS\Algo` is the namespace of algorithms in GraphDS.
+Since version 1.0.1, GraphDS has support for algorithms. `GraphDS\Algo` is the namespace for algorithms in GraphDS.
 
 In GraphDS, algorithms are treated as separate objects modifying the graph. They accept the graph and work on it, but do not impact the graph's core functionality.
 
-This is what makes GraphDS lean and streamlined, as algorithms only have to be loaded into memory if they are needed, as they are not intrinsic to a graph object.
+This is what makes GraphDS lean and streamlined, as algorithms only have to be loaded into memory whenever they are needed, as they are not intrinsic to a graph object.
 
 ### Running algorithms
 1. Any algorithm first has to be "used" by PHP, e.g. `use GraphDS\Algo\Algorithm`
@@ -108,7 +112,7 @@ This is what makes GraphDS lean and streamlined, as algorithms only have to be l
 3. The algorithm can now be run using `$a->run(args)`, where `args` are arguments which differ from algorithm to algorithm
 4. Getting the results of an algorithm is done using `$a->get(args)`, where args are arguments which differ from algorithm to algorithm
 
-The "run-and-get" pragma eases the use of algorithms, as these are the only two public methods an algorithm should have. From now on, the documentation will only refer to the arguments the algorithm methods accept.
+The "run-and-get" pragma eases the use of algorithms, as these are the only two public exposed methods an algorithm should have. From now on, the documentation will only refer to the those two methods accept.
 
 ### Writing GraphDS algorithms
 In order to ease the writing of algorithms, PHP's Standard PHP Library (SPL) provides useful helper classes, such as:
@@ -123,6 +127,9 @@ The following outlines the basic structure of GraphDS algorithms. For the sake o
 <?php
 namespace GraphDS\Algo;
 
+use GraphDS\Graph\Graph;
+use GraphDS\Graph\DirectedGraph;
+use GraphDS\Graph\UndirectedGraph;
 use InvalidArgumentException;
 
 // Class defining an algorithm named "Algorithm"
@@ -136,7 +143,7 @@ class Algorithm
     // Constructor accepts a GraphDS graph and validates it
     public function __construct($graph)
     {
-        if (empty($graph) || get_parent_class($graph)  !== 'GraphDS\Graph\Graph') {
+        if (empty($graph) || !($graph instanceof Graph)) {
             throw new InvalidArgumentException("Algorithm requires a graph.");
         }
         $this->graph = &$graph;
@@ -166,34 +173,34 @@ The above, outlined in words again:
 ### Breadth-first search (BFS)
 BFS, a path traversal algorithm, is in the class `GraphDS\Algo\BFS`. It visits every vertex in the graph, and goes along the breadth of the graph. As such, level by level, it visits every vertex in the graph.
 
-- `$bfs->run($root)` accepts `$root` as a compulsory argument, this is the starting vertex for the BFS
-- `$bfs->get()` accepts no arguments. It returns an array `$arr`, with subarrays:
+- `$bfs->run(root)` accepts `root` as a compulsory argument, this is the name of the starting vertex for the BFS
+- `$bfs->get()` accepts no arguments. It returns an array, `$arr`, with 3 subarrays:
   - `$arr['discovered']` (vertices discovered in BFS order)
   - `$arr['dist']` (the distances of each vertex to the root vertex, in hops)
-  - `$arr['parent']`, each vertex's parent vertex when using BFS
+  - `$arr['parent']` (each vertex's parent vertex when using BFS)
 
 ### Depth-first search (DFS)
-DFS, a path traversal algorithm, is in the class `GraphDS\Algo\DFS`. It visits every vertex in the graph, and goes along the depth of the graph. As such, it visits every vertex in the graph, and only move from vertex to vertex once the vertex has been visited to its full depth.
+DFS, a path traversal algorithm, is in the class `GraphDS\Algo\DFS`. It visits every vertex in the graph, and goes along the depth of the graph. As such, it visits every vertex in the graph, and only moves from one vertex to another vertex once all the vertex's descendants have been visited to their full depth.
 
-- `$dfs->run($root)` accepts `$root` as a compulsory argument, this is the starting vertex for the DFS
-- `$dfs->get()` accepts no arguments. It returns an array `$arr`, with subarrays:
+- `$dfs->run(root)` accepts `root` as a compulsory argument, this is the name of the starting vertex for the DFS
+- `$dfs->get()` accepts no arguments. It returns an array, `arr`, with 3 subarrays:
   - `$arr['discovered']` (vertices discovered in DFS order)
   - `$arr['dist']` (the distances of each vertex to the root vertex, in hops)
-  - `$arr['parent']`, each vertex's parent vertex when using DFS
+  - `$arr['parent']` (each vertex's parent vertex when using DFS)
 
 ### Dijkstra's shortest path algorithm
 Dijkstra's shortest path algorithm finds the shortest path between a vertex and all other vertices. It is in the class `GraphDS\Algo\Dijkstra`.
 
-- `$dijkstra->run($start)` accepts `$start` as a compulsory argument, this is the vertex from which Dijkstra should start
-- `$dijkstra->get($dest)` accepts `$dest` as a compulsory argument, which is the destination vertex to which the shortest path should be returned. It returns an array `$arr`, with subarrays:
-  - `$arr['path']` (the shortest path to the vertex `$dest` from `$start`)
+- `$dijkstra->run(start)` accepts `start` as a compulsory argument, this is the name of the vertex from which Dijkstra should start
+- `$dijkstra->get(dest)` accepts `dest` as a compulsory argument, which is the name of the destination vertex to which the shortest path should be returned. It returns an array, `arr`, with 2 subarrays:
+  - `$arr['path']` (the shortest path to the vertex `dest` from `start`)
   - `$arr['dist']` (the shortest distances of each vertex to the root vertex, in edge weights)
 
 ### Multi-path Dijkstra's shortest path algorithm
 Unlike the single-path version, the multi-path Dijkstra's shortest path algorithm finds _all_ the shortest path between a vertex and all other vertices. It is in the class `GraphDS\Algo\DijkstraMulti`.
 
-- `$dijkstra_mult->run($start)` accepts `$start` as a compulsory argument, this is the vertex from which Dijkstra should start
-- `$dijkstra_mult->get($dest)` accepts `$dest` as a compulsory argument, which is the destination vertex to which all the shortest paths should be returned. It returns an array `$arr`, with subarrays:
+- `$dijkstra_mult->run(start)` accepts `start` as a compulsory argument, this is the name of the vertex from which the multi-path Dijkstra should start
+- `$dijkstra_mult->get(dest)` accepts `dest` as a compulsory argument, which is the destination vertex to which all the shortest paths should be computed. It returns an array, `$arr`, with 2 subarrays:
   - `$arr['paths']` (an array of all the shortest paths to the vertex `$dest` from `$start`)
   - `$arr['dist']` (the shortest distances of each vertex to the root vertex, in edge weights)
 
@@ -201,8 +208,8 @@ Unlike the single-path version, the multi-path Dijkstra's shortest path algorith
 The Floyd-Warshall algorithm calculates the shortest path between every single vertex in the graph. It is in the class `GraphDS\Algo\FloydWarshall`.
 
 - `$fw->run()` accepts no arguments, and simply runs then algorithm on the graph
-- `$fw->get($startVertex, $destVertex)` accepts `$startVertex` and `$destVertex` as a compulsory argument, which are the start vertex and the destination vertex, respectively, between which the shortest path should be worked out. It returns an array `$arr`, with subarrays:
-  - `$arr['path']` (the shortest path to the vertex `$dest` from `$start`)
+- `$fw->get(startVertex, sestVertex)` accepts `startVertex` and `destVertex` as a compulsory argument, which are the start vertex and the destination vertex, respectively, between which the shortest path should be worked out. It returns an array `arr`, with subarrays:
+  - `$arr['path']` (the shortest path to the vertex `$dest` from `start`)
   - `$arr['dist']` (the shortest distance of the destination vertex to the start vertex, in edge weights)
 
 ## Persistence
