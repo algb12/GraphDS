@@ -62,11 +62,14 @@ class DijkstraMulti
      *
      * @param Graph $graph The graph to which the multi-path Dijkstra algorithm should be applied
      */
-    public function __construct($graph)
+    public function __construct(Graph $graph)
     {
-        if (empty($graph) || !($graph instanceof Graph)) {
-            throw new InvalidArgumentException("Dijkstra's shortest path algorithm requires a graph.");
+        if (!($graph instanceof DirectedGraph) && !($graph instanceof UndirectedGraph)) {
+            throw new InvalidArgumentException(
+                "Dijkstra's shortest path algorithm requires a directed or undirected graph"
+            );
         }
+
         $this->graph = &$graph;
     }
 

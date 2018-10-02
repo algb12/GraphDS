@@ -11,28 +11,31 @@ use InvalidArgumentException;
 use SplQueue;
 
 /**
- * Class defining the breadth-dirst search.
+ * Class defining the breadth-first search.
  */
 class BFS
 {
     /**
      * Reference to the graph.
      *
-     * @var object
+     * @var Graph
      */
     public $graph;
+
     /**
      * Distances for each node to root in hops.
      *
      * @var array
      */
     public $dist;
+
     /**
      * Parents for each vertex.
      *
      * @var array
      */
     public $parent;
+
     /**
      * Discovered vertices, in BFS order.
      *
@@ -43,13 +46,16 @@ class BFS
     /**
      * Constructor for the BFS algorithm.
      *
-     * @param object $graph The graph to which the BFS algorithm should be applied
+     * @param Graph $graph The graph to which the BFS algorithm should be applied
      */
-    public function __construct($graph)
+    public function __construct(Graph $graph)
     {
-        if (empty($graph) || !($graph instanceof Graph)) {
-            throw new InvalidArgumentException("Dijkstra's shortest path algorithm requires a graph.");
+        if (!($graph instanceof DirectedGraph) && !($graph instanceof UndirectedGraph)) {
+            throw new InvalidArgumentException(
+                "Breadth-first search algorithm requires a directed or undirected graph"
+            );
         }
+
         $this->graph = &$graph;
         $this->dist = array();
         $this->parent = array();

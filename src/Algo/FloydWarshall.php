@@ -17,15 +17,17 @@ class FloydWarshall
     /**
      * Reference to the graph.
      *
-     * @var object
+     * @var Graph
      */
     public $graph;
+
     /**
      * Array holding the shortest distances to each vertex from the source.
      *
      * @var array
      */
     public $dist = array();
+
     /**
      * Array holding the next vertices for each vertex for the shortest path.
      *
@@ -37,13 +39,17 @@ class FloydWarshall
      * Constructor for the Floyd-Warshall algorithm.
      *
      * @param Graph $graph The graph to which the Floyd-Warshall should be applied
-     * @throws \InvalidArgumentException
+     *
+     * @throws InvalidArgumentException
      */
-    public function __construct($graph)
+    public function __construct(Graph $graph)
     {
-        if (empty($graph) || !($graph instanceof Graph)) {
-            throw new InvalidArgumentException('Floyd-Warshall shortest path algorithm requires a graph.');
+        if (!($graph instanceof DirectedGraph) && !($graph instanceof UndirectedGraph)) {
+            throw new InvalidArgumentException(
+                "Floyd-Warshall shortest path algorithm requires a directed or undirected graph"
+            );
         }
+
         $this->graph = &$graph;
     }
 
@@ -87,7 +93,7 @@ class FloydWarshall
      * @param string $start ID of the start vertex
      * @param string $dest  ID of the destination vertex
      *
-     * @return array An array containing the shortest path and distance
+     * @return array|null An array containing the shortest path and distance
      */
     public function get($start, $dest)
     {
@@ -95,7 +101,7 @@ class FloydWarshall
         $path = array($start);
         while ($start !== $dest) {
             if (!($start = $this->next[$start][$dest])) {
-                return;
+                return null;
             }
             $path[] = $start;
         }

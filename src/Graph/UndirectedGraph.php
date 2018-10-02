@@ -11,6 +11,9 @@ use InvalidArgumentException;
 
 /**
  * Class defining an undirected graph object.
+ *
+ * @property UndirectedVertex[] $vertices
+ * @property UndirectedEdge[][] $edges
  */
 class UndirectedGraph extends Graph
 {
@@ -19,7 +22,6 @@ class UndirectedGraph extends Graph
      */
     public function __construct()
     {
-        parent::__construct();
         $this->directed = false;
     }
 
@@ -39,7 +41,8 @@ class UndirectedGraph extends Graph
      * Removes an undirected vertex from the graph.
      *
      * @param string $vertex ID of the vertex
-     * @throws \InvalidArgumentException
+     *
+     * @throws InvalidArgumentException
      */
     public function removeVertex($vertex)
     {
@@ -64,8 +67,9 @@ class UndirectedGraph extends Graph
      * @param string $vertex1 ID of first vertex
      * @param string $vertex2 ID of second vertex
      *
-     * @return object Instance of UndirectedEdge between $vertex1 and $vertex2
-     * @throws \InvalidArgumentException
+     * @return UndirectedEdge|null Instance of UndirectedEdge between $vertex1 and $vertex2 or null if no edge exists
+     *
+     * @throws InvalidArgumentException
      */
     public function edge($vertex1, $vertex2)
     {
@@ -77,6 +81,8 @@ class UndirectedGraph extends Graph
         } elseif (isset($this->edges[$vertex2][$vertex1])) {
             return $this->edges[$vertex2][$vertex1];
         }
+
+        return null;
     }
 
     /**
@@ -85,7 +91,8 @@ class UndirectedGraph extends Graph
      * @param string $vertex1 ID of first vertex
      * @param string $vertex2 ID of second vertex
      * @param float $value The value/weight the edge should hold
-     * @throws \InvalidArgumentException
+     *
+     * @throws InvalidArgumentException
      */
     public function addEdge($vertex1, $vertex2, $value = null)
     {
@@ -107,7 +114,8 @@ class UndirectedGraph extends Graph
      *
      * @param string $vertex1 ID of first undirected vertex
      * @param string $vertex2 ID of second undirected vertex
-     * @throws \InvalidArgumentException
+     *
+     * @throws InvalidArgumentException
      */
     public function removeEdge($vertex1, $vertex2)
     {

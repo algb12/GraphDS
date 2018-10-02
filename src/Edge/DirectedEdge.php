@@ -9,7 +9,6 @@ namespace GraphDS\Edge;
  */
 class DirectedEdge extends Edge
 {
-
     /**
      * Constructor for DirectedEdge object.
      *

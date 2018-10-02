@@ -15,10 +15,11 @@ class Vertex
      * @var mixed
      */
     protected $value;
+
     /**
      * Array holding references to all neighboring vertices of this vertex.
      *
-     * @var array
+     * @var Vertex[][]
      */
     public $neighbors;
 
