@@ -6,21 +6,47 @@
   <key id="d1" for="edge" attr.name="weight" attr.type="double">
     <default/>
   </key>
-  <graph id="G" edgedefault="directed" parse.nodes="3" parse.edges="4" parse.nodeids="free" parse.edgeids="free" parse.order="nodesfirst">
+  <graph id="G" edgedefault="undirected" parse.nodes="8" parse.edges="11" parse.nodeids="free" parse.edgeids="free" parse.order="nodesfirst">
     <node id="A"/>
     <node id="B"/>
     <node id="C"/>
+    <node id="D"/>
+    <node id="E"/>
+    <node id="F"/>
+    <node id="G"/>
+    <node id="H"/>
     <edge source="A" target="B">
       <data key="d1">20</data>
     </edge>
-    <edge source="A" target="C">
+    <edge source="A" target="D">
       <data key="d1">80</data>
     </edge>
-    <edge source="B" target="C">
+    <edge source="A" target="G">
       <data key="d1">90</data>
     </edge>
-    <edge source="C" target="B">
-      <data key="d1">70</data>
+    <edge source="B" target="F">
+      <data key="d1">10</data>
+    </edge>
+    <edge source="C" target="D">
+      <data key="d1">10</data>
+    </edge>
+    <edge source="C" target="F">
+      <data key="d1">50</data>
+    </edge>
+    <edge source="C" target="H">
+      <data key="d1">20</data>
+    </edge>
+    <edge source="D" target="G">
+      <data key="d1">20</data>
+    </edge>
+    <edge source="E" target="B">
+      <data key="d1">50</data>
+    </edge>
+    <edge source="E" target="G">
+      <data key="d1">30</data>
+    </edge>
+    <edge source="F" target="D">
+      <data key="d1">40</data>
     </edge>
   </graph>
 </graphml>

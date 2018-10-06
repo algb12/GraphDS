@@ -11,13 +11,17 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "GraphDS\\": "src"
+            "GraphDS\\": "src",
+            "Tests\\": "tests"
         }
     },
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.3.0",
+        "ext-dom": "*",
+        "ext-simplexml": "*"
     },
     "require-dev": {
+        "php": ">=5.4",
         "phpunit/phpunit": "7.0.*"
     }
 }

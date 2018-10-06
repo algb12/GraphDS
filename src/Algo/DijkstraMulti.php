@@ -20,36 +20,42 @@ class DijkstraMulti
      * @var Graph
      */
     public $graph;
+
     /**
      * Array holding the shortest distances to each vertex from the source.
      *
      * @var array
      */
     public $dist = array();
+
     /**
      * Array holding the previous vertices for each vertex for the shortest path.
      *
      * @var array
      */
     public $prev = array();
+
     /**
      * Array holding the unvisited vertices in the graph.
      *
      * @var array
      */
     public $unvisitedVertices = array();
+
     /**
      * ID of the start vertex.
      *
      * @var mixed
      */
     public $start;
+
     /**
      * Array holding a single shortest path.
      *
      * @var array
      */
     public $path = array();
+
     /**
      * Array holding the shortest paths in the graph.
      *

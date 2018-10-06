@@ -78,7 +78,7 @@ class DirectedVertex extends Vertex
     /**
      * Returns an array of all outgoing neighbor vertices.
      *
-     * @return DirectedVertex[] Array of all outgoing neighbor vertices
+     * @return string[] Array of all outgoing neighbor vertices
      */
     public function getOutNeighbors()
     {
@@ -88,7 +88,7 @@ class DirectedVertex extends Vertex
     /**
      * Returns an Direct of all neighboring vertices.
      *
-     * @return DirectedVertex[] Array of all neighboring vertices
+     * @return string[] Array of all neighboring vertices
      */
     public function getNeighbors()
     {
