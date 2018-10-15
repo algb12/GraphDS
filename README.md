@@ -225,6 +225,20 @@ To import a graph from a GraphML file, use the `GraphDS\Persistence\ImportGraph`
 
 The object `$g` is now a conventional GraphDS, reconstructed from the GraphML markup in the file of `graph.graphml`.
 
+## Testing
+This app can be tested locally on php 7.2 using `docker`
+
+
+1. Build the docker container using the command below
+
+    ```bash
+    docker build -t docker-graph-ds .
+    ```
+2. Run php unit inside the docker container using the command below.
+    ```bash
+    docker run --rm docker-graph-ds "./vendor/bin/phpunit"
+    ```
+
 ## In case of bugs and/or suggestions
 If, for any reason, there is a bug found in GraphDS, please message me on GitHub or send me an email to: <algb12.19@gmail.com>. The same goes for any suggestions.
 
