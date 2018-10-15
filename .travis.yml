@@ -1,18 +1,19 @@
+env:
+  global:
+  - CC_TEST_REPORTER_ID=af2053e44f0ad6a8e045593ee7bca05ea7e95cefe142ac82770729b481003779
+  - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
 language: php
-
-addons:
-  code_climate:
-    repo_token:
-      secure: "MNmq2lCr5Q1cNAWhGmYjdfpIgKLZXdFSYSVcv6+yl2ZJLKymyqUEJot7SnHmRZ78YQMK6LAmzcRPAG5i34aDG3u4LNYhz+i7ruLJbPTMNJOF/d3QBvT31fRqhI4NqjzF6zFHGsGlnh7J4YZH1k8R52sDpFNZKNkPf/wH811lINl98sHy60CFMn6A5+3v7XPPjPsQva6T/AcRh3QaKyFOe25gRtKljjUYxIrTCjkboYPRy6BHF1Aak4y00IkoFvswKJRq1MHo/t9L/Q0h2QTi6Z/xB48vtEMbssmgYSm0oCuvNtlyqe6UN8NnxycfBVjQCIg07clCzXqbpxrsaw1OK0u/Aal794S7M+wwIWUIvQww8knQe1YUcbT3k7Mq7rE7CjttXQaxi15M0+TxM1o3wa635+t1TRGaCT8bOukilJ0q8hUJyTbktQVmIvg3JNFhiGkV2Nu6MNBKm/+qGAVpX1exyjwOXNotEFEbdmyngx9W68UC46zaVy6LzrkDM8OD80dxMwg0AfJjP0AXHM5DwoGHTlCoPVsopLAfk5iCEHsXkpCnl3AgcDyflV3ZDOo6t+tdn7FeyLmVWoOSKqT71MlxBwW0eOkpMDfHvB6/ApozTiODkwqi5NWaF4skok+FS22+sB5d4gXVwqol6wFBsoeFjrmuVrJzpW7+Pe0xwRQ="
-before_script:
-    - composer install --no-dev
 php:
   - '5.4'
   - '5.6'
   - '7.0'
   - '7.1'
   - '7.2'
-  - nightly
-
-after_script:
-  - vendor/bin/test-reporter
+before_script:
+  - composer install --no-dev
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+script:
+  - "phpunit --coverage-text --coverage-clover build/logs/clover.xml"
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build  -t clover --exit-code $TRAVIS_TEST_RESULT; fi
