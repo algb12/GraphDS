@@ -1,4 +1,9 @@
 language: php
+
+addons:
+  code_climate:
+    repo_token:
+      secure: "MNmq2lCr5Q1cNAWhGmYjdfpIgKLZXdFSYSVcv6+yl2ZJLKymyqUEJot7SnHmRZ78YQMK6LAmzcRPAG5i34aDG3u4LNYhz+i7ruLJbPTMNJOF/d3QBvT31fRqhI4NqjzF6zFHGsGlnh7J4YZH1k8R52sDpFNZKNkPf/wH811lINl98sHy60CFMn6A5+3v7XPPjPsQva6T/AcRh3QaKyFOe25gRtKljjUYxIrTCjkboYPRy6BHF1Aak4y00IkoFvswKJRq1MHo/t9L/Q0h2QTi6Z/xB48vtEMbssmgYSm0oCuvNtlyqe6UN8NnxycfBVjQCIg07clCzXqbpxrsaw1OK0u/Aal794S7M+wwIWUIvQww8knQe1YUcbT3k7Mq7rE7CjttXQaxi15M0+TxM1o3wa635+t1TRGaCT8bOukilJ0q8hUJyTbktQVmIvg3JNFhiGkV2Nu6MNBKm/+qGAVpX1exyjwOXNotEFEbdmyngx9W68UC46zaVy6LzrkDM8OD80dxMwg0AfJjP0AXHM5DwoGHTlCoPVsopLAfk5iCEHsXkpCnl3AgcDyflV3ZDOo6t+tdn7FeyLmVWoOSKqT71MlxBwW0eOkpMDfHvB6/ApozTiODkwqi5NWaF4skok+FS22+sB5d4gXVwqol6wFBsoeFjrmuVrJzpW7+Pe0xwRQ="
 before_script:
     - composer install --no-dev
 php:
@@ -8,3 +13,6 @@ php:
   - '7.1'
   - '7.2'
   - nightly
+
+after_script:
+  - vendor/bin/test-reporter

@@ -22,6 +22,7 @@
     },
     "require-dev": {
         "php": ">=5.4",
-        "phpunit/phpunit": "7.0.*"
+        "phpunit/phpunit": "7.0.*",
+        "codeclimate/php-test-reporter": "^0.4.4"
     }
 }
