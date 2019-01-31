@@ -212,6 +212,14 @@ The Floyd-Warshall algorithm calculates the shortest path between every single v
   - `$arr['path']` (the shortest path to the vertex `$dest` from `start`)
   - `$arr['dist']` (the shortest distance of the destination vertex to the start vertex, in edge weights)
 
+### Yen's algorithm
+Yen's algorithm computes single-source K-shortest loopless paths in the graph. It is in the class `GraphDS\Algo\Yen`.
+
+- `$yen->run(start, dest, k)` accepts `start` as a compulsory argument, this is the name of the vertex from which Yen should start. Accepts `dest` as a compulsory argument, which is the name of the destination vertex to which the shortest K paths should be returned. Accepts `k` as an optional argument with a default of 3, this is the maximum amount of paths to return.
+- `$yen->get()` accepts no arguments. It returns a sorted array `arr`, with subarrays:
+  - `$arr[i]['path']` (the path to the vertex `dest` from `start`)
+  - `$arr[i]['dist']` (the distance of the destination vertex to the start vertex, in edge weights)
+
 ## Persistence
 GraphDS has the ability to export and import graphs using the popular GraphML format. Note that for graph persistence to function correctly, the correct read/write permissions should be set on the server, which is beyond the scope of this README.
 

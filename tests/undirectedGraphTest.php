@@ -4,6 +4,7 @@ use GraphDS\Graph\UndirectedGraph;
 use GraphDS\Algo\Dijkstra;
 use GraphDS\Algo\DijkstraMulti;
 use GraphDS\Algo\FloydWarshall;
+use GraphDS\Algo\Yen;
 use GraphDS\Algo\DFS;
 use GraphDS\Algo\BFS;
 use GraphDS\Persistence\ImportGraph;
@@ -356,6 +357,48 @@ class UndirectedGraphTest extends TestCase
 
         $expected_discovered = array('A', 'B', 'C', 'D', 'E');
         $this->assertEquals($expected_discovered, $res_A['discovered']);
+    }
+
+    public function testYen()
+    {
+        $g = new UndirectedGraph();
+
+        $g->addVertex('C');
+        $g->addVertex('D');
+        $g->addVertex('E');
+        $g->addVertex('F');
+        $g->addVertex('G');
+        $g->addVertex('H');
+
+        $g->addEdge('C', 'D', 3);
+        $g->addEdge('C', 'E', 2);
+        $g->addEdge('E', 'D', 1);
+        $g->addEdge('D', 'F', 4);
+        $g->addEdge('E', 'F', 2);
+        $g->addEdge('E', 'G', 3);
+        $g->addEdge('F', 'G', 2);
+        $g->addEdge('F', 'H', 1);
+        $g->addEdge('G', 'H', 2);
+
+        $d = new Yen($g);
+        $d->run('C', 'H', 3);
+        $result = $d->get();
+
+        $expected = array(
+            array(
+                'path' => array('C', 'E', 'F', 'H'),
+                'dist' => 5,
+            ),
+            array(
+                'path' => array('C', 'D', 'E', 'F', 'H'),
+                'dist' => 7,
+            ),
+            array(
+                'path' => array('C', 'D', 'F', 'H'),
+                'dist' => 8,
+            ),
+        );
+        $this->assertEquals($expected, $result);
     }
 
     public function testImportExport()
