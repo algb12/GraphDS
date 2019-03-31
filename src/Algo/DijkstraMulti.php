@@ -82,10 +82,11 @@ class DijkstraMulti
     /**
      * Calculates the shortest path to every vertex from vertex $start.
      *
-     * @param mixed $start ID of the starting vertex for multi-path Dijkstra's algorithm
+     * @param  mixed $start ID of the starting vertex for multi-path Dijkstra's algorithm
      *
      * @return array Array holding the distances and previous vertices as calculated by Dijkstra's algorithm
-     * @throws \InvalidArgumentException
+     *
+     * @throws InvalidArgumentException
      */
     public function run($start)
     {
@@ -149,8 +150,8 @@ class DijkstraMulti
     /**
      * Enumerates the result of the multi-path Dijkstra as paths.
      *
-     * @param string $source ID of the source vertex
-     * @param string $dest   ID of the destination vertex
+     * @param mixed $source ID of the source vertex
+     * @param mixed $dest   ID of the destination vertex
      */
     private function enumerate($source, $dest)
     {

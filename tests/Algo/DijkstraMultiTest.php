@@ -3,8 +3,8 @@
 namespace Tests\Algo;
 
 use GraphDS\Algo\DijkstraMulti;
-use GraphDS\Graph\DirectedGraph;
 use GraphDS\Graph\Graph;
+use GraphDS\Graph\DirectedGraph;
 use GraphDS\Graph\UndirectedGraph;
 use PHPUnit\Framework\TestCase;
 

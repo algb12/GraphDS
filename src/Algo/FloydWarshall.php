@@ -90,8 +90,8 @@ class FloydWarshall
     /**
      * Returns the shortest path from vertex $start to $dest in the graph.
      *
-     * @param string $start ID of the start vertex
-     * @param string $dest  ID of the destination vertex
+     * @param mixed $start ID of the start vertex
+     * @param mixed $dest  ID of the destination vertex
      *
      * @return array|null An array containing the shortest path and distance
      */

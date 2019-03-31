@@ -115,7 +115,7 @@ class Dijkstra
     /**
      * Returns the shortest path to $destinationVertex from the origin vertex in the graph.
      *
-     * @param string $destinationVertex ID of the destination vertex
+     * @param  mixed $destinationVertex ID of the destination vertex
      *
      * @return array An array containing the shortest path and distance
      */

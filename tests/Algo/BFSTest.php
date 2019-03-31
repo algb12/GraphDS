@@ -2,8 +2,8 @@
 
 namespace Tests\Algo;
 
-use GraphDS\Graph\DirectedGraph;
 use GraphDS\Algo\BFS;
+use GraphDS\Graph\DirectedGraph;
 use GraphDS\Graph\UndirectedGraph;
 use PHPUnit\Framework\TestCase;
 use Tests\Traits\GraphInteractionTrait;
