@@ -20,36 +20,42 @@ class DijkstraMulti
      * @var Graph
      */
     public $graph;
+
     /**
      * Array holding the shortest distances to each vertex from the source.
      *
      * @var array
      */
     public $dist = array();
+
     /**
      * Array holding the previous vertices for each vertex for the shortest path.
      *
      * @var array
      */
     public $prev = array();
+
     /**
      * Array holding the unvisited vertices in the graph.
      *
      * @var array
      */
     public $unvisitedVertices = array();
+
     /**
      * ID of the start vertex.
      *
      * @var mixed
      */
     public $start;
+
     /**
      * Array holding a single shortest path.
      *
      * @var array
      */
     public $path = array();
+
     /**
      * Array holding the shortest paths in the graph.
      *
@@ -62,21 +68,25 @@ class DijkstraMulti
      *
      * @param Graph $graph The graph to which the multi-path Dijkstra algorithm should be applied
      */
-    public function __construct($graph)
+    public function __construct(Graph $graph)
     {
-        if (empty($graph) || !($graph instanceof Graph)) {
-            throw new InvalidArgumentException("Dijkstra's shortest path algorithm requires a graph.");
+        if (!($graph instanceof DirectedGraph) && !($graph instanceof UndirectedGraph)) {
+            throw new InvalidArgumentException(
+                "Dijkstra's shortest path algorithm requires a directed or undirected graph"
+            );
         }
+
         $this->graph = &$graph;
     }
 
     /**
      * Calculates the shortest path to every vertex from vertex $start.
      *
-     * @param mixed $start ID of the starting vertex for multi-path Dijkstra's algorithm
+     * @param  mixed $start ID of the starting vertex for multi-path Dijkstra's algorithm
      *
      * @return array Array holding the distances and previous vertices as calculated by Dijkstra's algorithm
-     * @throws \InvalidArgumentException
+     *
+     * @throws InvalidArgumentException
      */
     public function run($start)
     {
@@ -140,8 +150,8 @@ class DijkstraMulti
     /**
      * Enumerates the result of the multi-path Dijkstra as paths.
      *
-     * @param string $source ID of the source vertex
-     * @param string $dest   ID of the destination vertex
+     * @param mixed $source ID of the source vertex
+     * @param mixed $dest   ID of the destination vertex
      */
     private function enumerate($source, $dest)
     {

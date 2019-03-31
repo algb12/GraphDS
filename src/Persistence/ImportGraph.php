@@ -15,15 +15,6 @@ use SimpleXMLElement;
  */
 class ImportGraph
 {
-
-    /**
-     * Constructor for the graph importer.
-     *
-     */
-    public function __construct()
-    {
-    }
-
     /**
      * Returns GraphDS graph represented by GraphML.
      *

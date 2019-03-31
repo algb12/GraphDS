@@ -20,24 +20,28 @@ class Dijkstra
      * @var Graph
      */
     public $graph;
+
     /**
      * Array holding the shortest distances to each vertex from the source.
      *
      * @var array
      */
     public $dist = array();
+
     /**
      * Array holding the previous vertices for each vertex for the shortest path.
      *
      * @var array
      */
     public $prev = array();
+
     /**
      * Array holding the unvisited vertices in the graph.
      *
      * @var array
      */
     public $unvisitedVertices = array();
+
     /**
      * ID of the start vertex.
      *
@@ -49,13 +53,17 @@ class Dijkstra
      * Constructor for the Dijkstra algorithm.
      *
      * @param Graph $graph The graph to which the Dijkstra algorithm should be applied
-     * @throws \InvalidArgumentException
+     *
+     * @throws InvalidArgumentException
      */
-    public function __construct($graph)
+    public function __construct(Graph $graph)
     {
-        if (empty($graph) || !($graph instanceof Graph)) {
-            throw new InvalidArgumentException("Dijkstra's shortest path algorithm requires a graph.");
+        if (!($graph instanceof DirectedGraph) && !($graph instanceof UndirectedGraph)) {
+            throw new InvalidArgumentException(
+                "Dijkstra's shortest path algorithm requires a directed or undirected graph"
+            );
         }
+
         $this->graph = &$graph;
     }
 
@@ -63,8 +71,8 @@ class Dijkstra
      * Calculates the shortest path to every vertex from vertex $start.
      *
      * @param mixed $start ID of the starting vertex for Dijkstra's algorithm
-     * @return void
-     * @throws \InvalidArgumentException
+     *
+     * @throws InvalidArgumentException
      */
     public function run($start)
     {
@@ -90,6 +98,8 @@ class Dijkstra
                 $neighbors = $this->graph->vertices[$minVertex]->getNeighbors();
             } elseif ($this->graph instanceof DirectedGraph) {
                 $neighbors = $this->graph->vertices[$minVertex]->getOutNeighbors();
+            } else {
+                throw new InvalidArgumentException("The provided graph is neither an undirected graph or a directed graph");
             }
 
             foreach ($neighbors as $vertex) {
@@ -103,27 +113,30 @@ class Dijkstra
     }
 
     /**
-     * Returns the shortest path to $dest from the origin vertex in the graph.
+     * Returns the shortest path to $destinationVertex from the origin vertex in the graph.
      *
-     * @param string $dest ID of the destination vertex
+     * @param  mixed $destinationVertex ID of the destination vertex
      *
      * @return array An array containing the shortest path and distance
      */
-    public function get($dest)
+    public function get($destinationVertex)
     {
-        $destReal = $dest;
+        $originalDestinationVertex = $destinationVertex;
+
         $path = array();
-        while (isset($this->prev[$dest])) {
-            array_unshift($path, $dest);
-            $dest = $this->prev[$dest];
+
+        while (isset($this->prev[$destinationVertex])) {
+            array_unshift($path, $destinationVertex);
+            $destinationVertex = $this->prev[$destinationVertex];
         }
-        if ($dest === $this->start) {
-            array_unshift($path, $dest);
+
+        if ($destinationVertex === $this->start) {
+            array_unshift($path, $destinationVertex);
         }
 
         return array(
             'path' => $path,
-            'dist' => $this->dist[$destReal],
+            'dist' => $this->dist[$originalDestinationVertex],
         );
     }
 }

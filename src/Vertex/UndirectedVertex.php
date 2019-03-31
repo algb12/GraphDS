@@ -34,7 +34,7 @@ class UndirectedVertex extends Vertex
     /**
      * Returns an array of all neighboring vertices of this vertex.
      *
-     * @return array Array of all neighboring vertices of this vertex
+     * @return string[] Array of all neighboring vertices of this vertex
      */
     public function getNeighbors()
     {

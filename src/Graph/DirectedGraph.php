@@ -1,7 +1,4 @@
 <?php
-/**
- * Directed graph.
- */
 namespace GraphDS\Graph;
 
 use GraphDS\Vertex\DirectedVertex;
@@ -10,16 +7,17 @@ use InvalidArgumentException;
 
 /**
  * Class defining a directed graph object.
+ *
+ * @property DirectedVertex[] $vertices
+ * @property DirectedEdge[][] $edges
  */
 class DirectedGraph extends Graph
 {
-
     /**
      * Constructor for DirectedGraph object.
      */
     public function __construct()
     {
-        parent::__construct();
         $this->directed = true;
     }
 
@@ -39,7 +37,8 @@ class DirectedGraph extends Graph
      * Removes a directed vertex from the graph.
      *
      * @param string $vertex ID of the vertex
-     * @throws \InvalidArgumentException
+     *
+     * @throws InvalidArgumentException
      */
     public function removeVertex($vertex)
     {
@@ -48,12 +47,12 @@ class DirectedGraph extends Graph
         }
         $neighbors = $this->vertices[$vertex]->getNeighbors();
         foreach ($neighbors['out'] as $neighbor) {
-            if (($key = array_search($vertex, $this->vertices[$neighbor]->neighbors['in'])) !== false) {
+            if (($key = array_search($vertex, $this->vertices[$neighbor]->getInNeighbors())) !== false) {
                 unset($this->vertices[$neighbor]->neighbors['in'][$key]);
             }
         }
         foreach ($neighbors['in'] as $neighbor) {
-            if (($key = array_search($vertex, $this->vertices[$neighbor]->neighbors['out'])) !== false) {
+            if (($key = array_search($vertex, $this->vertices[$neighbor]->getOutNeighbors())) !== false) {
                 unset($this->vertices[$neighbor]->neighbors['out'][$key]);
             }
             if ($this->edge($neighbor, $vertex)) {
@@ -69,8 +68,9 @@ class DirectedGraph extends Graph
      * @param string $vertex1 ID of first vertex
      * @param string $vertex2 ID of second vertex
      *
-     * @return object Instance of DirectedEdge from $vertex1 to $vertex2
-     * @throws \InvalidArgumentException
+     * @return DirectedEdge Instance of DirectedEdge from $vertex1 to $vertex2 and null if none exists
+     *
+     * @throws InvalidArgumentException
      */
     public function edge($vertex1, $vertex2)
     {
@@ -80,6 +80,8 @@ class DirectedGraph extends Graph
         if (isset($this->edges[$vertex1][$vertex2])) {
             return $this->edges[$vertex1][$vertex2];
         }
+
+        return null;
     }
 
     /**
@@ -88,7 +90,8 @@ class DirectedGraph extends Graph
      * @param string $vertex1 ID of first vertex
      * @param string $vertex2 ID of second vertex
      * @param float $value The value/weight the edge should hold
-     * @throws \InvalidArgumentException
+     *
+     * @throws InvalidArgumentException
      */
     public function addEdge($vertex1, $vertex2, $value = null)
     {
@@ -107,7 +110,8 @@ class DirectedGraph extends Graph
      *
      * @param string $vertex1 ID of first vertex
      * @param string $vertex2 ID of second vertex
-     * @throws \InvalidArgumentException
+     *
+     * @throws InvalidArgumentException
      */
     public function removeEdge($vertex1, $vertex2)
     {
@@ -127,8 +131,10 @@ class DirectedGraph extends Graph
 
     /**
      * Transposes the graph, reversing each directed edge.
+     *
      * @return DirectedGraph The transposed graph
-     * @throws \InvalidArgumentException
+     *
+     * @throws InvalidArgumentException
      */
     public function getTranspose()
     {

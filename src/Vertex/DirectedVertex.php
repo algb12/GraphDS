@@ -16,6 +16,7 @@ class DirectedVertex extends Vertex
     public function __construct()
     {
         parent::__construct();
+
         $this->neighbors['in'] = array();
         $this->neighbors['out'] = array();
     }
@@ -77,7 +78,7 @@ class DirectedVertex extends Vertex
     /**
      * Returns an array of all outgoing neighbor vertices.
      *
-     * @return array Array of all outgoing neighbor vertices
+     * @return string[] Array of all outgoing neighbor vertices
      */
     public function getOutNeighbors()
     {
@@ -85,9 +86,9 @@ class DirectedVertex extends Vertex
     }
 
     /**
-     * Returns an array of all neighboring vertices.
+     * Returns an Direct of all neighboring vertices.
      *
-     * @return array Array of all neighboring vertices
+     * @return string[] Array of all neighboring vertices
      */
     public function getNeighbors()
     {

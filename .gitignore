@@ -2,3 +2,4 @@ vendor/
 .DS_Store
 test.php
 test.graphml
+build

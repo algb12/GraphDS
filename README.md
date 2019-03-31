@@ -1,5 +1,6 @@
 # GraphDS
 [![Code Climate](https://codeclimate.com/github/algb12/GraphDS/badges/gpa.svg)](https://codeclimate.com/github/algb12/GraphDS)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/32f8e63ddde4282fd14a/test_coverage)](https://codeclimate.com/github/AchoArnold/GraphDS/test_coverage)
 
 ## What is GraphDS and why was it created?
 GraphDS is an object-oriented, lightweight implementation of the graph data-structure in PHP.
@@ -212,6 +213,14 @@ The Floyd-Warshall algorithm calculates the shortest path between every single v
   - `$arr['path']` (the shortest path to the vertex `$dest` from `start`)
   - `$arr['dist']` (the shortest distance of the destination vertex to the start vertex, in edge weights)
 
+### Yen's algorithm
+Yen's algorithm computes single-source K-shortest loopless paths in the graph. It is in the class `GraphDS\Algo\Yen`.
+
+- `$yen->run(start, dest, k)` accepts `start` as a compulsory argument, this is the name of the vertex from which Yen should start. Accepts `dest` as a compulsory argument, which is the name of the destination vertex to which the shortest K paths should be returned. Accepts `k` as an optional argument with a default of 3, this is the maximum amount of paths to return.
+- `$yen->get()` accepts no arguments. It returns a sorted array `arr`, with subarrays:
+  - `$arr[i]['path']` (the path to the vertex `dest` from `start`)
+  - `$arr[i]['dist']` (the distance of the destination vertex to the start vertex, in edge weights)
+
 ## Persistence
 GraphDS has the ability to export and import graphs using the popular GraphML format. Note that for graph persistence to function correctly, the correct read/write permissions should be set on the server, which is beyond the scope of this README.
 
@@ -224,6 +233,20 @@ To export a graph to a GraphML file, use the `GraphDS\Persistence\ExportGraph` c
 To import a graph from a GraphML file, use the `GraphDS\Persistence\ImportGraph` class, and run `$i = new ImportGraph()`, where `$i` is the graph importer object. `$g = $i->fromGraphML('graph.graphml')` sets `$g` to a GraphDS graph object represented by the GraphML markup in the file `graph.graphml`.
 
 The object `$g` is now a conventional GraphDS, reconstructed from the GraphML markup in the file of `graph.graphml`.
+
+## Testing
+This app can be tested locally on php 7.2 using `docker`
+
+
+1. Build the docker container using the command below
+
+    ```bash
+    docker build -t docker-graph-ds .
+    ```
+2. Run php unit inside the docker container using the command below.
+    ```bash
+    docker run --rm docker-graph-ds "./vendor/bin/phpunit"
+    ```
 
 ## In case of bugs and/or suggestions
 If, for any reason, there is a bug found in GraphDS, please message me on GitHub or send me an email to: <algb12.19@gmail.com>. The same goes for any suggestions.

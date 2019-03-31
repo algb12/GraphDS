@@ -25,13 +25,11 @@ class ExportGraph
      * Constructor for the graph exporter.
      *
      * @param Graph $graph The graph to be exported
-     * @throws \InvalidArgumentException
+     *
+     * @throws InvalidArgumentException
      */
-    public function __construct($graph)
+    public function __construct(Graph $graph)
     {
-        if (empty($graph) || get_parent_class($graph)  !== 'GraphDS\Graph\Graph') {
-            throw new InvalidArgumentException('Only GraphDS graphs can be exported.');
-        }
         $this->graph = &$graph;
     }
 

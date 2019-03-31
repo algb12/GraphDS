@@ -15,6 +15,7 @@ class Edge
      * @var float
      */
     protected $value;
+
     /**
      * $vertices An array of vertices associated with the edge.
      *
