@@ -144,10 +144,11 @@ class Algorithm
     // Constructor accepts a GraphDS graph and validates it
     public function __construct($graph)
     {
-        if (empty($graph) || !($graph instanceof Graph)) {
-            throw new InvalidArgumentException("Algorithm requires a graph.");
+        if (!($graph instanceof DirectedGraph) && !($graph instanceof UndirectedGraph)) {
+            throw new InvalidArgumentException(
+                "Algorithm requires a directed or undirected graph"
+            );
         }
-        $this->graph = &$graph;
     }
 
     // Running the algorithm
@@ -170,6 +171,8 @@ The above, outlined in words again:
 - Check if graph is actually a graph and use it, otherwise throw `InvalidArgumentException`
 - `run(args)` executes the algorithm, where `args` are arguments
 - `get(args)` gets the results of the algorithm, where `args` are arguments
+
+Do note that the way the results variable is handled is left flexible, as different algorithms may require access to it form different parts of the code.
 
 ### Breadth-first search (BFS)
 BFS, a path traversal algorithm, is in the class `GraphDS\Algo\BFS`. It visits every vertex in the graph, and goes along the breadth of the graph. As such, level by level, it visits every vertex in the graph.
